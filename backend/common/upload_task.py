@@ -17,7 +17,7 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 from celery import shared_task
-
+from macos import settings
 
 @shared_task
 def create_task(task_type):
@@ -56,7 +56,7 @@ def mainFunction():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
-    mFile = "/static/test.apk"
+    mFile = settings.STATIC_URL + "/test.apk"
     chunk_size = 10
     if os.name == "posix":
         filename = os.path.basename(mFile)
