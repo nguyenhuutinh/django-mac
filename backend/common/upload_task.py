@@ -56,7 +56,7 @@ def mainFunction():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
-    mFile = settings.STATIC_URL + "/test.apk"
+    mFile = settings.STATIC_URL + "test.apk"
     chunk_size = 10
     if os.name == "posix":
         filename = os.path.basename(mFile)
