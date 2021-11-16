@@ -58,7 +58,7 @@ def mainFunction():
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    url_path = BASE_DIR + '/static/'
+    url_path = BASE_DIR + '/backend/static/'
 
     mFile = url_path + "test.apk"
     chunk_size = 10
