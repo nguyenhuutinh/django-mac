@@ -23,7 +23,7 @@ from django.utils.timezone import now
 @shared_task
 def create_task(task_type):
    response = mainFunction()
-   delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
+  # delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
    return response
 @shared_task
 def delete_task(task_id):
