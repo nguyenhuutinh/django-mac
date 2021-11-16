@@ -86,7 +86,7 @@ def mainFunction():
     i = 1
     starttime = datetime.now()
     while response is None:
-        print("aaaa")
+        # print("aaaa")
         status, response = request.next_chunk()
         # print(response)
         if status:

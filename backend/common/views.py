@@ -53,10 +53,11 @@ class RestViewSet(viewsets.ViewSet):
 
         task_type = 1
         task = create_task.delay(int(task_type))
-        print("aa")
+        print("upload done")
 
         downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task.info["id"])
         task_id = task.info["id"]
+        print("downloadLink")
         print(downloadLink)
         return JsonResponse({"result": downloadLink }, status=202)
 
