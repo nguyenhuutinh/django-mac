@@ -17,7 +17,8 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 from celery import shared_task
-from macos import settings
+from django.conf import settings
+
 
 @shared_task
 def create_task(task_type):
