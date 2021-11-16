@@ -57,8 +57,8 @@ class RestViewSet(viewsets.ViewSet):
         print(task.result)
 
         task_result = AsyncResult(task.id)
-        print(task_result)
-        downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task_result)
+        print(task_result.result)
+        downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task_result.result)
         # task_id = task.info["id"]
         print("downloadLink")
         print(downloadLink)
@@ -72,7 +72,7 @@ class RestViewSet(viewsets.ViewSet):
     #     result = {
     #         "task_id": task_id,
     #         "task_status": task_result.status,
-    #         "task_result": task_result.result
+    #         "task_result": task_result..
     #     }
     #     return JsonResponse(result, status=200)
 
