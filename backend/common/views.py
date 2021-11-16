@@ -58,7 +58,7 @@ class RestViewSet(viewsets.ViewSet):
         print(task.info)
 
         downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format("aaa")
-        task_id = task.info["id"]
+        # task_id = task.info["id"]
         print("downloadLink")
         print(downloadLink)
         return JsonResponse({"result": downloadLink }, status=202)

@@ -126,7 +126,7 @@ def mainFunction():
     ))
     batch.execute()
     # deleteFile(response.id)
-    return response
+    return file_id
 
 def deleteFile(fileID):
     print("delete" + fileID)
