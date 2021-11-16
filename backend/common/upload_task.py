@@ -56,7 +56,7 @@ def mainFunction():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
-    mFile = "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1920_18MG.mp4"
+    mFile = "/static/test.apk"
     chunk_size = 10
     if os.name == "posix":
         filename = os.path.basename(mFile)
