@@ -51,15 +51,13 @@ class RestViewSet(viewsets.ViewSet):
     def run_task(self, request):
         # print(request.POST)
 
-        task_type = 100
+        task_type = 1
         task = create_task.delay(int(task_type))
         print("aa")
 
         downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task.info["id"])
         task_id = task.info["id"]
-        print(task_id)
-
-
+        print(downloadLink)
         return JsonResponse({"result": downloadLink }, status=202)
 
 
