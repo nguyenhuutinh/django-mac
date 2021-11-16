@@ -18,4 +18,4 @@ psutil
 ipython
 sentry-sdk
 pytz
-httplib2
+google-api-python-client
