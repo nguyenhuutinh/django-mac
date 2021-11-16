@@ -51,7 +51,7 @@ class RestViewSet(viewsets.ViewSet):
     def run_task(self, request):
         # print(request.POST)
 
-        task_type = 1
+        task_type = 100
         task = create_task.delay(int(task_type))
         print("upload done")
         print(task.result)
