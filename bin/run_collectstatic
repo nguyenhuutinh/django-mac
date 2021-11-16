@@ -11,5 +11,5 @@ MANAGE_FILE=${MANAGE_FILE:2}
 
 echo "-----> Collecting static files"
 python $MANAGE_FILE collectstatic --noinput  2>&1 | sed '/^Copying/d;/^$/d;/^ /d' | indent
-echo "-----> Collected static files"
+# echo "-----> Collected static files"
 echo
