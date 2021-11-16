@@ -58,7 +58,7 @@ class RestViewSet(viewsets.ViewSet):
 
         task_result = AsyncResult(task.id)
         print(task_result)
-        downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format("aaa")
+        downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task_result)
         # task_id = task.info["id"]
         print("downloadLink")
         print(downloadLink)
