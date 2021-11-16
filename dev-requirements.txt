@@ -40,7 +40,7 @@ dodgy==0.2.1
     # via prospector
 dparse==0.5.1
     # via safety
-filelock==3.3.2
+filelock==3.4.0
     # via virtualenv
 flake8==3.8.4
     # via
@@ -171,8 +171,6 @@ virtualenv==20.10.0
     # via pre-commit
 wrapt==1.13.3
     # via astroid
-
-
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

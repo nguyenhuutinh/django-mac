@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
 
 from common.upload_task import create_task
-from common.upload_task import delete_task
 
 
 from rest_framework import viewsets, status
@@ -59,8 +58,8 @@ class RestViewSet(viewsets.ViewSet):
         downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task.info["id"])
         task_id = task.info["id"]
         print(task_id)
-        deleteTask = delete_task.apply_async(kwargs={"task_id":task_id},eta=now() + timedelta(seconds=20))
-        print(deleteTask)
+
+
         return JsonResponse({"result": downloadLink }, status=202)
 
 

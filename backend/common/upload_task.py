@@ -7,7 +7,6 @@ from argparse import Namespace
 import httplib2
 import os
 import ntpath
-import datetime
 import json
 
 from googleapiclient.discovery import build
@@ -18,11 +17,13 @@ from oauth2client import tools
 from oauth2client.file import Storage
 from celery import shared_task
 from django.conf import settings
-
+from datetime import datetime, timedelta
+from django.utils.timezone import now
 
 @shared_task
 def create_task(task_type):
    response = mainFunction()
+   deleteTask = delete_task.apply_async(kwargs={"task_id":response["id"]},eta=now() + timedelta(seconds=30))
    return response
 @shared_task
 def delete_task(task_id):
@@ -83,17 +84,17 @@ def mainFunction():
                                     )
     response = None
     i = 1
-    starttime = datetime.datetime.now()
+    starttime = datetime.now()
     while response is None:
         print("aaaa")
         status, response = request.next_chunk()
         # print(response)
         if status:
-            progresstime = datetime.datetime.now()
+            progresstime = datetime.now()
             print("%d %s Uploaded %d%%." %
                 (i, (progresstime - starttime), int(status.progress() * 100)))
             i = i+1
-    stoptime = datetime.datetime.now()
+    stoptime = datetime.now()
     filesize = os.path.getsize(mFile)
     print("File %s Size %.2f MB Duration %s " %
         (filename, float(filesize/(1000*1000)), (stoptime - starttime)))
