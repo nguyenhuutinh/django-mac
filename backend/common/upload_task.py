@@ -31,6 +31,8 @@ def download_task(file_id):
     print(file_id)
     file_name = downloadFile(file_id)
     response = upload_task.apply(kwargs={"file_name":file_name})
+    print("response ---")
+    print(response)
     return response
 
 
@@ -38,7 +40,6 @@ def download_task(file_id):
 def upload_task(file_name):
    response = uploadFile(file_name)
    delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
-
    return response
 @shared_task
 def delete_task(task_id):
