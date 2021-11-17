@@ -10,6 +10,7 @@ import os
 import ntpath
 import json
 import shutil
+import requests
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -23,11 +24,21 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from googleapiclient.http import MediaIoBaseDownload
 
+
+
 @shared_task
-def create_task():
-   response = uploadFile()
+def download_task(file_id):
+    print(file_id)
+    response = downloadFile(file_id)
+    upload_task.apply(kwargs={"file_name":response})
+    return response
+
+
+@shared_task
+def upload_task(file_name):
+   response = uploadFile(file_name)
    delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
-   download_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=20))
+
    return response
 @shared_task
 def delete_task(task_id):
@@ -35,11 +46,6 @@ def delete_task(task_id):
     response = deleteFile(task_id)
     return response
 
-@shared_task
-def download_task(task_id):
-    print(task_id)
-    response = downloadFile(task_id)
-    return response
 
 SCOPES = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata"
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -63,14 +69,14 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def uploadFile():
+def uploadFile(file_name):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/'
 
-    mFile = url_path + "test.apk"
+    mFile = url_path + file_name
     chunk_size = 10
     if os.name == "posix":
         filename = os.path.basename(mFile)
@@ -149,18 +155,20 @@ def deleteFile(fileID):
 
 
 def downloadFile(file_id):
-    url = 'https://drive.google.com/uc?export=download&id='+file_id
+
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
-    request = service.files().export(fileId=file_id)
 
-    response =  request.get(url)
-    header = response.headers['Content-Disposition']
-    file_name = re.search(r'filename="(.*)"', header).group(1)
+    data = service.files().get(fileId=file_id, fields='name,mimeType').execute()
+    file_name = data["name"]
+    mimeType = data["mimeType"]
 
+    print(data)
+
+    req = service.files().get(fileId=file_id)
     fh = io.BytesIO()
-    downloader = MediaIoBaseDownload(fh, request)
+    downloader = MediaIoBaseDownload(fh, req)
     done = False
     while done is False:
         status, done = downloader.next_chunk()
@@ -168,6 +176,11 @@ def downloadFile(file_id):
     print(file_name)
     # The file has been downloaded into RAM, now save it in a file
     fh.seek(0)
-    with open(file_name, 'wb') as f:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    url_path = BASE_DIR + '/static/'
+
+    mFile = url_path + file_name
+    with open(mFile, 'wb') as f:
         shutil.copyfileobj(fh, f, length=131072)
+    return file_name
 

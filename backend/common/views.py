@@ -10,7 +10,9 @@ from django.utils.timezone import now
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
 
-from common.upload_task import create_task
+from common.upload_task import upload_task
+
+from common.upload_task import download_task
 
 
 from rest_framework import viewsets, status
@@ -51,8 +53,7 @@ class RestViewSet(viewsets.ViewSet):
     def run_task(self, request):
         # print(request.POST)
 
-
-        task = create_task.apply()
+        task = download_task.apply(kwargs={"file_id":"14AGncLbD4p8vSrXogjjIbXi6uuyREg4a"})
         print("upload done")
         print(task.result)
 
