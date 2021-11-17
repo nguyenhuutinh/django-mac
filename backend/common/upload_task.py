@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 
 @shared_task
-def create_task(task_type):
+def create_task():
    response = mainFunction()
   # delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
    return response
