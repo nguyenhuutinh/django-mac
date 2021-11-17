@@ -86,7 +86,7 @@ def uploadFile(file_name):
     else:
         if os.name == "nt":
             filename = ntpath.basename(mFile)
-    gdrive_id = ""
+    gdrive_id = "1otrYJJbA92reDpUEKEwq3yCu3dbosfki"
     if gdrive_id != "":
         file_metadata = {'name': filename,
                         'parents': [gdrive_id]
