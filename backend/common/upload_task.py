@@ -29,8 +29,8 @@ from googleapiclient.http import MediaIoBaseDownload
 @shared_task
 def download_task(file_id):
     print(file_id)
-    response = downloadFile(file_id)
-    upload_task.apply(kwargs={"file_name":response})
+    file_name = downloadFile(file_id)
+    response = upload_task.apply(kwargs={"file_name":file_name})
     return response
 
 
