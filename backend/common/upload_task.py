@@ -3,11 +3,13 @@
 from __future__ import print_function
 import time
 from argparse import Namespace
+import io
 
 import httplib2
 import os
 import ntpath
 import json
+import shutil
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -19,11 +21,13 @@ from celery import shared_task
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.utils.timezone import now
+from googleapiclient.http import MediaIoBaseDownload
 
 @shared_task
 def create_task():
-   response = mainFunction()
+   response = uploadFile()
    delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
+   download_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=20))
    return response
 @shared_task
 def delete_task(task_id):
@@ -31,6 +35,11 @@ def delete_task(task_id):
     response = deleteFile(task_id)
     return response
 
+@shared_task
+def download_task(task_id):
+    print(task_id)
+    response = downloadFile(task_id)
+    return response
 
 SCOPES = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata"
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -54,7 +63,7 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def mainFunction():
+def uploadFile():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
@@ -136,4 +145,24 @@ def deleteFile(fileID):
     file = service.files().delete(fileId=fileID).execute()
     print("deleted" + file)
     return file
+
+
+
+def downloadFile(file_id):
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = build('drive', 'v3', http=http)
+    request = service.files().export(fileId=file_id, mimeType='application/file')
+
+    fh = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+        print("Download %d%%" % int(status.progress() * 100))
+
+    # The file has been downloaded into RAM, now save it in a file
+    fh.seek(0)
+    with open('your_filename.pdf', 'wb') as f:
+        shutil.copyfileobj(fh, f, length=131072)
 
