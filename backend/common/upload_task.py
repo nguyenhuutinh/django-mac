@@ -169,7 +169,7 @@ def downloadFile(file_id):
 
     print(data)
 
-    req = service.files().get(fileId=file_id)
+    req = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, req)
     done = False
