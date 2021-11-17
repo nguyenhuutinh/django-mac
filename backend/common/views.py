@@ -53,7 +53,7 @@ class RestViewSet(viewsets.ViewSet):
     def run_task(self, request):
         # print(request.POST)
 
-        task = download_task.apply(kwargs={"file_id":"14AGncLbD4p8vSrXogjjIbXi6uuyREg4a"})
+        task = download_task.apply(kwargs={"file_id":"1c0eZ7fZd37Yh-r4mhlgXTVhynw_HyaQk"})
         print("upload done")
         print(task.result)
 
