@@ -41,12 +41,12 @@ def upload_task(file_name):
    print("upload_task : "+file_name)
    fileId = uploadFile(file_name)
    print("fileId : "+ fileId)
-   delete_task.apply_async(kwargs={"task_id":fileId},eta=now() + timedelta(seconds=60))
+   delete_task.apply_async(kwargs={"task_id":fileId, "file_name": file_name},eta=now() + timedelta(seconds=60))
    return fileId
 @shared_task
-def delete_task(task_id):
+def delete_task(task_id, file_name):
     print("delete_task : "+task_id)
-    response = deleteFile(task_id)
+    response = deleteFile(task_id, file_name)
     return response
 
 
@@ -146,13 +146,17 @@ def uploadFile(file_name):
     # deleteFile(response.id)
     return file_id
 
-def deleteFile(fileID):
+def deleteFile(fileID, fileName):
     print("delete" + fileID)
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
     file = service.files().delete(fileId=fileID).execute()
     print("deleted" + file)
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    url_path = BASE_DIR + '/static/' + fileName
+    os.remove(url_path)
+    print("deleted" + url_path + fileName)
     return file
 
 
