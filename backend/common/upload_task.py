@@ -156,7 +156,7 @@ def deleteFile(fileID, fileName):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/' + fileName
     os.remove(url_path)
-    print("deleted" + url_path + fileName)
+    print("deleted" + url_path )
     return file
 
 
@@ -171,7 +171,7 @@ def downloadFile(file_id):
     file_name = data["name"]
     mimeType = data["mimeType"]
 
-    print(data)
+    # print(data)
 
     req = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
@@ -180,13 +180,14 @@ def downloadFile(file_id):
     while done is False:
         status, done = downloader.next_chunk()
         print("Download %d%%" % int(status.progress() * 100))
-    print(file_name)
+    # print(file_name)
     # The file has been downloaded into RAM, now save it in a file
     fh.seek(0)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/'
 
     mFile = url_path + file_name
+    print(mFile)
     with open(mFile, 'wb') as f:
         shutil.copyfileobj(fh, f, length=131072)
     return file_name
