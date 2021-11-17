@@ -155,8 +155,9 @@ def deleteFile(fileID, fileName):
     print("deleted" + file)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/' + fileName
-    os.remove(url_path)
-    print("deleted" + url_path )
+    if(os.path.exists(url_path)):
+        os.remove(url_path)
+        print("deleted" + url_path )
     return file
 
 
