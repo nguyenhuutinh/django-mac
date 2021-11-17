@@ -38,12 +38,13 @@ def download_task(file_id):
 
 @shared_task
 def upload_task(file_name):
-   response = uploadFile(file_name)
-   delete_task.apply_async(kwargs={"task_id":response},eta=now() + timedelta(seconds=60))
-   return response
+   print("upload_task : "+file_name)
+   fileId = uploadFile(file_name)
+   delete_task.apply_async(kwargs={"task_id":fileId},eta=now() + timedelta(seconds=60))
+   return fileId
 @shared_task
 def delete_task(task_id):
-    print(task_id)
+    print("delete_task : "+task_id)
     response = deleteFile(task_id)
     return response
 
