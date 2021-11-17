@@ -5,7 +5,6 @@ import time
 from argparse import Namespace
 import io
 import re
-from googleapiclient.discovery_cache.file_cache import FILENAME
 import httplib2
 import os
 import ntpath
