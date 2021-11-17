@@ -4,7 +4,8 @@ from __future__ import print_function
 import time
 from argparse import Namespace
 import io
-
+import re
+from googleapiclient.discovery_cache.file_cache import FILENAME
 import httplib2
 import os
 import ntpath
@@ -149,10 +150,15 @@ def deleteFile(fileID):
 
 
 def downloadFile(file_id):
+    url = 'https://drive.google.com/uc?export=download&id='+file_id
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
-    request = service.files().export(fileId=file_id, mimeType='application/file')
+    request = service.files().export(fileId=file_id)
+
+    response =  request.get(url)
+    header = response.headers['Content-Disposition']
+    file_name = re.search(r'filename="(.*)"', header).group(1)
 
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
@@ -160,9 +166,9 @@ def downloadFile(file_id):
     while done is False:
         status, done = downloader.next_chunk()
         print("Download %d%%" % int(status.progress() * 100))
-
+    print(file_name)
     # The file has been downloaded into RAM, now save it in a file
     fh.seek(0)
-    with open('your_filename.pdf', 'wb') as f:
+    with open(file_name, 'wb') as f:
         shutil.copyfileobj(fh, f, length=131072)
 
