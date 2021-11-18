@@ -24,11 +24,26 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from googleapiclient.http import MediaIoBaseDownload
 
+from common.models import DownloadInfo
+
 
 
 @shared_task
-def download_task(file_id):
+def download_task(file_id, ip):
     print(file_id)
+    update_values = {"file_id": file_id, "client_ip": ip, "download_count": 1}
+
+    downloadInfo, created = DownloadInfo.objects.get_or_create(file_id=file_id, defaults =update_values)
+    if created:
+        print("created")
+    else :
+        print(getattr(downloadInfo,"download_count"))
+        newCount = int(getattr(downloadInfo,"download_count")) + 1
+        newIP = getattr(downloadInfo,"client_ip") + ", " + ip
+        downloadInfo.download_count = newCount
+        downloadInfo.client_ip = newIP
+
+        downloadInfo.save(update_fields=['download_count', "client_ip"])
     file_name = downloadFile(file_id)
     response = upload_task.apply(kwargs={"file_name":file_name})
     print("response ---")

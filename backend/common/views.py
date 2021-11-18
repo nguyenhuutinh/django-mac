@@ -51,9 +51,10 @@ class RestViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def run_task(self, request):
-        # print(request.POST)
+        ip = get_client_ip(request)
+        print(ip)
 
-        task = download_task.apply(kwargs={"file_id":"1EBH5bj_jzTNRz1ULeNWbUIe5dVVfcFhx"})
+        task = download_task.apply(kwargs={"file_id":"1EBH5bj_jzTNRz1ULeNWbUIe5dVVfcFhx", "ip" : ip})
         print("upload done")
         print(task.result)
 
@@ -65,6 +66,13 @@ class RestViewSet(viewsets.ViewSet):
         print(downloadLink)
         return JsonResponse({"result": downloadLink }, status=202)
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 
     # @csrf_exempt

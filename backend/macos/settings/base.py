@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "import_export",
     "rest_framework",
     "common",
-    "users",
+    "users"
 ]
 
 MIDDLEWARE = [
