@@ -26,11 +26,46 @@ from googleapiclient.http import MediaIoBaseDownload
 
 from common.models import DownloadInfo
 
+STORE_DRIVE_ID = "1otrYJJbA92reDpUEKEwq3yCu3dbosfki"
+SOURCE_DRIVE_ID = "1HKWPUhH2ldoQ5tdkxaj-3jBmZtSy9PHQ"
+def contains(list, filter):
+    for x in list:
+        if filter(x):
+            return x
+    return
 
+def checkIfFileIsExist(fileName, fileId, folderId):
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = build('drive', 'v3', http=http)
+    items = []
+    pageToken = ""
+    while pageToken is not None:
+        response = service.files().list(q="'" + folderId + "' in parents", pageSize=1000, pageToken=pageToken, fields="nextPageToken, files(id, name)").execute()
+        items.extend(response.get('files', []))
+        pageToken = response.get('nextPageToken')
+    account = contains(items, lambda x: x["name"] == fileName)
+    print("account" , items, account)
+    if(account):
+        return account["id"]
+
+    return
+
+@shared_task
+def doDownloadFlow(file_name, ip):
+    print("doDownloadFlow")
+    file_id = checkIfFileIsExist(file_name, "", STORE_DRIVE_ID)
+    print("file_id", file_id)
+    if file_id:
+        return file_id
+    else :
+        file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
+        return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
 
 @shared_task
 def download_task(file_id, ip):
-    print(file_id)
+
+    print("download_task",file_id)
     update_values = {"file_id": file_id, "client_ip": ip, "download_count": 1}
 
     downloadInfo, created = DownloadInfo.objects.get_or_create(file_id=file_id, defaults =update_values)
@@ -56,7 +91,7 @@ def upload_task(file_name):
    print("upload_task : "+file_name)
    fileId = uploadFile(file_name)
    print("fileId : "+ fileId)
-   delete_task.apply_async(kwargs={"task_id":fileId, "file_name": file_name},eta=now() + timedelta(seconds=30*60))
+   delete_task.apply_async(kwargs={"task_id":fileId, "file_name": file_name},eta=now() + timedelta(seconds=60*60))
    return fileId
 @shared_task
 def delete_task(task_id, file_name):
@@ -101,7 +136,7 @@ def uploadFile(file_name):
     else:
         if os.name == "nt":
             filename = ntpath.basename(mFile)
-    gdrive_id = "1otrYJJbA92reDpUEKEwq3yCu3dbosfki"
+    gdrive_id = STORE_DRIVE_ID
     if gdrive_id != "":
         file_metadata = {'name': filename,
                         'parents': [gdrive_id]

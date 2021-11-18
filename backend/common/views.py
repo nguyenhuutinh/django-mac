@@ -14,6 +14,9 @@ from common.upload_task import upload_task
 
 from common.upload_task import download_task
 
+from common.upload_task import doDownloadFlow
+
+
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -27,19 +30,19 @@ class IndexView(generic.TemplateView):
 
 
 class RestViewSet(viewsets.ViewSet):
-    @action(
-        detail=False,
-        methods=['post'],
-        permission_classes=[AllowAny],
-        url_path='rest-check',
-    )
-    @csrf_exempt
-    def rest_check(self, request):
-        print("ooo")
-        return Response(
-            {"result": "If you're seeing this, the REST API is working!"},
-            status=status.HTTP_200_OK,
-        )
+    # @action(
+    #     detail=False,
+    #     methods=['post'],
+    #     permission_classes=[AllowAny],
+    #     url_path='rest-check',
+    # )
+    # @csrf_exempt
+    # def rest_check(self, request):
+    #     print("ooo")
+    #     return Response(
+    #         {"result": "If you're seeing this, the REST API is working!"},
+    #         status=status.HTTP_200_OK,
+    #     )
     # def home(request):
     #     return render(request, "home.html")
 
@@ -54,7 +57,7 @@ class RestViewSet(viewsets.ViewSet):
         ip = get_client_ip(request)
         print(ip)
 
-        task = download_task.apply(kwargs={"file_id":"1EBH5bj_jzTNRz1ULeNWbUIe5dVVfcFhx", "ip" : ip})
+        task = doDownloadFlow.apply(kwargs={"file_name":"aaaa.mp4", "ip" : ip})
         print("upload done")
         print(task.result)
 
@@ -64,7 +67,9 @@ class RestViewSet(viewsets.ViewSet):
         # task_id = task.info["id"]
         print("downloadLink")
         print(downloadLink)
-        return JsonResponse({"result": downloadLink }, status=202)
+        return JsonResponse({"result": downloadLink }, status=200)
+
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
