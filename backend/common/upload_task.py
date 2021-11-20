@@ -104,8 +104,8 @@ def copy_file(file_id, ip, file_name):
 
     newfile = {'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
     response = service.files().copy(fileId=file_id, body=newfile).execute()
-    print("response", response)
-    return response.json().get("id")
+    print("response", response, response["id"])
+    return response["id"]
 @shared_task
 def download_task(file_id, ip):
 
