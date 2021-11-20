@@ -255,7 +255,7 @@ def downloadFile(file_id):
     # print(data)
 
     req = service.files().get_media(fileId=file_id)
-    fh = io.BytesIO()
+    fh = io.FileIO(file_name, 'wb')
     downloader = MediaIoBaseDownload(fh, req)
     done = False
     while done is False:
