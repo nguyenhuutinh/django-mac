@@ -28,17 +28,21 @@ const Download = (props) => {
     }
   }, [])
   return (
-    <div>
-      <h3>Download</h3>
-      <div id="django-logo-wrapper">
-      <img alt="Django Negative Logo" src={DjangoImgSrc} />
+    <div class="main-screen">
+      <h3>Download System v5</h3>
+      <div >
+      {/* <img alt="Django Negative Logo" src={DjangoImgSrc} /> */}
 
+      <br/>
       </div>
-      <div>{restCheck.result  ? restCheck.result : "loading ..." }</div>
-      {/* <Button variant="outline-dark" onClick={() => setShowBugComponent(true)}>
-        Click to test if Sentry is capturing frontend errors! (Should only work in Production)
-      </Button>
-      {showBugComponent && showBugComponent.field.notexist} */}
+      <div>{restCheck.result  ? restCheck.result : "checking file ..." }</div>
+      <br/>
+      <br/>
+      <br/>
+      {restCheck.result && <Button style={{ width: "200px"}} variant="outline-success" onClick={() => window.location = restCheck.result }>
+        Download File
+      </Button>}
+
 
     </div>
   );

@@ -106,8 +106,9 @@ def copy_file(file_id, ip, file_name):
 
     newfile = {'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
     response = service.files().copy(fileId=file_id, body=newfile).execute()
-    print("response", response, response["id"])
-    return response["id"]
+    file_id = response["id"]
+    setPermission(file_id)
+    return file_id
 @shared_task
 def download_task(file_id, ip):
 
@@ -217,6 +218,14 @@ def uploadFile(file_name):
 
     file_id = response["id"]
     print(file_id)
+    setPermission(file_id)
+    # deleteFile(response.id)
+    return file_id
+
+def setPermission(file_id):
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = build('drive', 'v3', http=http)
     batch = service.new_batch_http_request()
     user_permission = {
         'type': 'anyone',
@@ -239,9 +248,7 @@ def uploadFile(file_name):
             fields='id',
     ))
     batch.execute()
-    # deleteFile(response.id)
-    return file_id
-
+    return True
 def deleteFile(fileID, fileName):
     print("delete" + fileID)
     credentials = get_credentials()
