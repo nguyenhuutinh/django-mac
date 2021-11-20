@@ -21,4 +21,4 @@ pytz
 google-api-python-client
 oauth2client
 httplib2<0.16.0
-json
+jsons
