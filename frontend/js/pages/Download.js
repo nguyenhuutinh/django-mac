@@ -29,7 +29,7 @@ const Download = (props) => {
   }, [])
   return (
     <div class="main-screen">
-      <h3>Download System v5</h3>
+      <h3>Fast Download v5</h3>
       <div >
       {/* <img alt="Django Negative Logo" src={DjangoImgSrc} /> */}
 
@@ -39,8 +39,8 @@ const Download = (props) => {
       <br/>
       <br/>
       <br/>
-      {restCheck.result && <Button style={{ width: "200px"}} variant="outline-success" onClick={() => window.location = restCheck.result }>
-        Download File
+      {restCheck.result && <Button style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = restCheck.result }>
+        File is Ready. Click Here to Download
       </Button>}
 
 
