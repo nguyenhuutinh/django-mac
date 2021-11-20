@@ -10,6 +10,7 @@ import os
 import ntpath
 import json
 import shutil
+from oauth2client import file
 import requests
 
 from googleapiclient.discovery import build
@@ -34,6 +35,24 @@ def contains(list, filter):
             return x
     return
 
+def resolveFileSlug(file_slug):
+    print("resolveFileSlug: " + file_slug)
+    response = requests.get('https://cmacdrive.com/wp-json/wp/v2/posts?slug=' + file_slug)
+    if(response.status_code == 200):
+        print(response.json())
+        try:
+            file_name = response.json()[0].get("acf").get("file_name")
+            print(file_name)
+            return file_name
+        except:
+            return
+
+    else:
+        return
+
+
+
+
 def checkIfFileIsExist(fileName, fileId, folderId):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
@@ -52,15 +71,26 @@ def checkIfFileIsExist(fileName, fileId, folderId):
     return
 
 @shared_task
-def doDownloadFlow(file_name, ip):
-    print("doDownloadFlow")
-    file_id = checkIfFileIsExist(file_name, "", STORE_DRIVE_ID)
-    print("file_id", file_id)
-    if file_id:
-        return file_id
-    else :
-        file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
-        return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
+def doDownloadFlow(file_slug, ip):
+    print("do Download Flow")
+    file_name = resolveFileSlug(file_slug)
+
+    if file_name == None:
+        return "error: file not found (100)"
+    else:
+        print("resolved file_name: " + file_name)
+        file_id = checkIfFileIsExist(file_name, "", STORE_DRIVE_ID)
+        print("file_id", file_id)
+        if file_id:
+            return file_id
+        else :
+            file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
+            if(file_id):
+                return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
+            else :
+                return "error: file not found (101)"
+
+
 
 @shared_task
 def download_task(file_id, ip):

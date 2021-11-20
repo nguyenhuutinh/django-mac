@@ -13,6 +13,7 @@ from celery.result import AsyncResult
 from common.upload_task import upload_task
 
 from common.upload_task import download_task
+import jsons
 
 from common.upload_task import doDownloadFlow
 
@@ -57,21 +58,26 @@ class RestViewSet(viewsets.ViewSet):
         ip = get_client_ip(request)
         print(ip)
         body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        content = body['content']
+        body = jsons.loads(body_unicode)
 
-        print(request.body["flie"])
-        task = doDownloadFlow.apply(kwargs={"file_name":"aaaa.mp4", "ip" : ip})
+        try:
+            file_slug = body['file_slug']
+        except:
+            return JsonResponse({"error_message": "file is not exist" }, status=400)
+        print(file_slug)
+        task = doDownloadFlow.apply(kwargs={"file_slug":file_slug, "ip" : ip})
         print("upload done")
-        print(task.result)
-
-        # task_result = AsyncResult(task.id)
-        # print(task_result.result)
-        downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task.result)
-        # task_id = task.info["id"]
-        print("downloadLink")
-        print(downloadLink)
-        return JsonResponse({"result": downloadLink }, status=200)
+        result = task.result
+        if(result.startswith("error")):
+            return JsonResponse({"result": result }, status=400)
+        else:
+            # task_result = AsyncResult(task.id)
+            # print(task_result.result)
+            downloadLink = 'https://drive.google.com/uc?id={}&export=download'.format(task.result)
+            # task_id = task.info["id"]
+            print("downloadLink")
+            print(downloadLink)
+            return JsonResponse({"result": downloadLink }, status=200)
 
 
 

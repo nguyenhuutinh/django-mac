@@ -14,10 +14,18 @@ export const creators = {
       dispatch({ type: types.FETCH_REQUESTED });
       try {
         const body = { file_slug: file_slug};
+        // console.log("fetchRestCheck", body)
         const res = await api.post('/api/rest/run-task/', body);
-        dispatch({ type: types.FETCH_SUCCESS, data: res.data });
+        // console.log("fetchRestCheck", res.data)
+        if(res.status == 200){
+          dispatch({ type: types.FETCH_SUCCESS, data: res.data });
+        }else{
+          dispatch({ type: types.FETCH_ERROR, data: res.data });
+        }
+
       } catch (error) {
-        dispatch({ type: types.FETCH_ERROR, error });
+        // console.log( error.response.data)
+        dispatch({ type: types.FETCH_ERROR, data: error.response.data });
       }
     };
   },
@@ -25,6 +33,8 @@ export const creators = {
 
 // Reducer
 export const restCheckReducer = (state = {}, action) => {
+  // console.log(action.data)
   if (action.type === types.FETCH_SUCCESS) return action.data;
+  if (action.type === types.FETCH_ERROR) return action.data;
   return state;
 };

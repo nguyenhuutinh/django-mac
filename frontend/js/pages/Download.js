@@ -22,7 +22,7 @@ const Download = (props) => {
 
   useEffect(() => {
 
-    console.log(path)
+    // console.log(path)
     return () => {
 
     }
