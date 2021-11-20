@@ -253,9 +253,10 @@ def downloadFile(file_id):
     mimeType = data["mimeType"]
 
     # print(data)
-
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    url_path = BASE_DIR + '/static/' + file_name
     req = service.files().get_media(fileId=file_id)
-    fh = io.FileIO(file_name, 'wb')
+    fh = io.FileIO(url_path, 'wb')
     downloader = MediaIoBaseDownload(fh, req)
     done = False
     while done is False:
