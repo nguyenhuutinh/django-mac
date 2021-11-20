@@ -54,6 +54,8 @@ def resolveFileSlug(file_slug):
 
 
 def checkIfFileIsExist(fileName, fileId, folderId):
+
+    print("checkIfFileIsExist " + fileName + " in "+ folderId)
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
@@ -63,8 +65,9 @@ def checkIfFileIsExist(fileName, fileId, folderId):
         response = service.files().list(q="'" + folderId + "' in parents", pageSize=1000, pageToken=pageToken, fields="nextPageToken, files(id, name)").execute()
         items.extend(response.get('files', []))
         pageToken = response.get('nextPageToken')
+    print("items" , items)
     account = contains(items, lambda x: x["name"] == fileName)
-    print("account" , items, account)
+    print("account", account)
     if(account):
         return account["id"]
 
@@ -86,12 +89,23 @@ def doDownloadFlow(file_slug, ip):
         else :
             file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
             if(file_id):
-                return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
+                return copy_file.apply(kwargs={"file_id":file_id, "ip": ip, "file_name" : file_name},)
+                # return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
             else :
                 return "error: file not found (101)"
 
 
+@shared_task
+def copy_file(file_id, ip, file_name):
+    print("copy_file" + file_id +"," + file_name)
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = build('drive', 'v3', http=http)
 
+    newfile = {'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
+    response = service.files().copy(fileId=file_id, body=newfile).execute()
+    print("response", response)
+    return response
 @shared_task
 def download_task(file_id, ip):
 
