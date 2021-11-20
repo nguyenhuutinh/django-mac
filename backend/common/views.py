@@ -68,7 +68,7 @@ class RestViewSet(viewsets.ViewSet):
         task = doDownloadFlow.apply(kwargs={"file_slug":file_slug, "ip" : ip})
         print("upload done")
         result = task.result
-        if(result.startswith("error")):
+        if(type(result) == str and result.startswith("error")):
             return JsonResponse({"result": result }, status=400)
         else:
             # task_result = AsyncResult(task.id)
