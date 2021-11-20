@@ -89,7 +89,9 @@ def doDownloadFlow(file_slug, ip):
         else :
             file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
             if(file_id):
-                return copy_file.apply(kwargs={"file_id":file_id, "ip": ip, "file_name" : file_name},)
+                resp =  copy_file.apply(kwargs={"file_id":file_id, "ip": ip, "file_name" : file_name})
+                print(resp)
+                return resp.result
                 # return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
             else :
                 return "error: file not found (101)"

@@ -66,7 +66,7 @@ class RestViewSet(viewsets.ViewSet):
             return JsonResponse({"error_message": "file is not exist" }, status=400)
         print(file_slug)
         task = doDownloadFlow.apply(kwargs={"file_slug":file_slug, "ip" : ip})
-        print("upload done")
+        print("doDownloadFlow done", task)
         result = task.result
         if(type(result) == str and result.startswith("error")):
             return JsonResponse({"result": result }, status=400)
