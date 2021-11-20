@@ -9,11 +9,12 @@ const types = {
 
 // Action creators
 export const creators = {
-  fetchRestCheck: () => {
+  fetchRestCheck: (file_slug) => {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_REQUESTED });
       try {
-        const res = await api.post('/api/rest/run-task/');
+        const body = { file_slug: file_slug};
+        const res = await api.post('/api/rest/run-task/', body);
         dispatch({ type: types.FETCH_SUCCESS, data: res.data });
       } catch (error) {
         dispatch({ type: types.FETCH_ERROR, error });

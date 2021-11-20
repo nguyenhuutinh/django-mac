@@ -43,6 +43,6 @@ module.exports = {
   ],
   resolve: {
     modules: ['node_modules', 'bower_components', path.resolve(__dirname, 'frontend/js/')],
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.tsx'],
   },
 };

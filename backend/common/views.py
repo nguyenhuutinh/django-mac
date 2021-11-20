@@ -56,7 +56,11 @@ class RestViewSet(viewsets.ViewSet):
     def run_task(self, request):
         ip = get_client_ip(request)
         print(ip)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        content = body['content']
 
+        print(request.body["flie"])
         task = doDownloadFlow.apply(kwargs={"file_name":"aaaa.mp4", "ip" : ip})
         print("upload done")
         print(task.result)
