@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <div id="django-background">
+      <div>
         <h3>Hello World</h3>
         </div>
 
