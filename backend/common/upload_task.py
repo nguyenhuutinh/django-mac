@@ -104,10 +104,16 @@ def copy_file(file_id, ip, file_name):
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
 
-    newfile = {'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
+    newfile = {'kind': "drive#fileLink", 'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
     response = service.files().copy(fileId=file_id, body=newfile).execute()
-    file_id = response["id"]
+
+    new_file_id = response["id"]
     setPermission(file_id)
+    # Move copy to new folder
+    response = service.files().update(fileId=new_file_id, addParents= STORE_DRIVE_ID,
+    removeParents= SOURCE_DRIVE_ID,
+    fields= 'id, parents'
+    ).execute()
     return file_id
 @shared_task
 def download_task(file_id, ip):
