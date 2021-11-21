@@ -115,7 +115,8 @@ def copy_file(file_id, ip, file_name):
     removeParents= SOURCE_DRIVE_ID,
     fields= 'id, parents'
     ).execute()
-    return file_id
+    print("response", response , new_file_id)
+    return new_file_id
 @shared_task
 def download_task(file_id, ip):
 
