@@ -145,7 +145,7 @@ def upload_task(file_name):
    print("upload_task : "+file_name)
    fileId = uploadFile(file_name)
    print("fileId : "+ fileId)
-   delete_task.apply_async(kwargs={"task_id":fileId, "file_name": file_name},eta=now() + timedelta(seconds=30*60))
+   delete_task.apply_async(kwargs={"task_id":fileId, "file_name": file_name},eta=now() + timedelta(seconds=1*60))
    return fileId
 @shared_task
 def delete_task(task_id, file_name):
