@@ -90,7 +90,7 @@ def doDownloadFlow(file_slug, ip):
             file_id = checkIfFileIsExist(file_name, "", SOURCE_DRIVE_ID)
             if(file_id):
                 resp =  copy_file.apply(kwargs={"file_id":file_id, "ip": ip, "file_name" : file_name})
-                delete_task.apply_async(kwargs={"task_id":resp.result, "file_name": file_name},eta=now() + timedelta(seconds=30*60))
+                delete_task.apply_async(kwargs={"task_id":resp.result, "file_name": file_name},eta=now() + timedelta(seconds=1*60))
                 print(resp)
                 return resp.result
                 # return download_task.apply(kwargs={"file_id":file_id, "ip": ip},)
@@ -100,7 +100,7 @@ def doDownloadFlow(file_slug, ip):
 
 @shared_task
 def copy_file(file_id, ip, file_name):
-    print("copy_file" + file_id +"," + file_name)
+    print("copy_file " + file_id +"," + file_name)
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
