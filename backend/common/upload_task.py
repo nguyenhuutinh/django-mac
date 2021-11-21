@@ -105,7 +105,7 @@ def copy_file(file_id, ip, file_name):
     http = credentials.authorize(httplib2.Http())
     service = build('drive', 'v3', http=http)
 
-    newfile = {'kind': "drive#fileLink", 'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
+    newfile = {'kind': "drive#parentReference", 'title': file_name, 'parents' : [ { "id" : STORE_DRIVE_ID } ]}
     response = service.files().copy(fileId=file_id, body=newfile).execute()
 
     new_file_id = response["id"]
