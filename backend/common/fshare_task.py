@@ -150,6 +150,6 @@ def heartbeat():
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
     }
 
-    resp = requests.delete('https://www.fshare.vn/site/motion-auth', cookies=jar, headers=headers_api)
+    resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=jar, headers=headers_api)
     print("heartbeat", resp)
     return resp
