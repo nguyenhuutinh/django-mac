@@ -29,6 +29,17 @@ const Fshare = (props) => {
     e.preventDefault();
     var {location} = props
     showLoading(true)
+    if(code.startsWith("https")){
+      let url = new URL(code);
+
+
+      // Delete the foo parameter.
+      url.hash = ""
+      url.search = ""
+      code  = url.replaceAll("https://www.fshare.vn/file/","")
+      code  = url.replaceAll("https://fshare.vn/file/","")
+
+    }
     const action = creators.getFshareLink(code);
     dispatch(action);
   }
@@ -38,7 +49,7 @@ const Fshare = (props) => {
       <div >
       <form onSubmit={(e)=>{handleSubmit(e)}}>
         <label>
-          Name:
+          Fshare Code:
           <input type="text" value={code} onChange={(e)=>handleChange(e)} />
         </label>
         <input type="submit" value="Submit" />
