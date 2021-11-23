@@ -40,7 +40,9 @@ const Fshare = (props) => {
       console.log(url.toString())
       newCode  = url.toString().replaceAll("https://www.fshare.vn/file/","")
       console.log("replace",newCode)
+      newCode  = newCode.replaceAll("www.fshare.vn/file/","")
       newCode  = newCode.replaceAll("https://fshare.vn/file/","")
+      newCode  = newCode.replaceAll("fshare.vn/file/","")
 
     }
     console.log(newCode)
