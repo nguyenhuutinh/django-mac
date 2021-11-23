@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     showLoading(true)
-    const action = creators.fetchRestCheck();
+    const action = creators.fetchAuthCheck();
     dispatch(action);
   }, [dispatch]);
 

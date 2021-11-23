@@ -4,8 +4,13 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from datetime import datetime, timedelta
 from django.utils.timezone import now
+import pprint
+from http.cookiejar import MozillaCookieJar
+from pathlib import Path
 
-
+import os
+import re
+import requests
 
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
@@ -14,7 +19,7 @@ from common.upload_task import upload_task
 
 from common.upload_task import download_task
 import jsons
-
+import json
 from common.upload_task import doDownloadFlow
 
 
@@ -101,4 +106,70 @@ def get_client_ip(request):
     #     return JsonResponse(result, status=200)
 
 
+
+
+class AuthViewSet(viewsets.ViewSet):
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[AllowAny],
+        url_path='rest_check',
+    )
+    @csrf_exempt
+    def rest_check(self, request):
+        # Opening JSON file
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        url_path = BASE_DIR + '/static/' + "fshare.vn_cookies.txt"
+        jar = parseCookieFile(url_path)
+
+        myobj = {'linkcode': 'DUUINH64UOH7', 'clone_to_folder':'/', 'secure': 0}
+        print("ooo")
+        headers_api = {
+            'Authorization': 'Bearer ' + "jcrnprtt0l9vlt10p0ous2a6d9",
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+            'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+
+        resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', cookies=jar, data=myobj, headers=headers_api)
+        print(resp.request.url)
+        print(resp.request.body)
+        print(resp.request.headers)
+
+        print('aaaaaaaaaa')
+        print(resp.headers)
+        linkCode = resp.json().get("linkcode")
+        if linkCode == None:
+            return  Response(
+            {"result": "Error 400 - Cannot download File"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+        resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
+        print(resp.request.url)
+        print(resp.request.body)
+        print(resp.request.headers)
+
+        print('bbbbbbbbbb')
+        print(resp.headers)
+        print(resp.json())
+
+
+        return Response(
+            {"result": resp.json()},
+            status=status.HTTP_200_OK,
+        )
+    def home(request):
+        return render(request, "home.html")
+
+
+
+
+
+def parseCookieFile(cookiefile):
+    cookies = Path(cookiefile)
+
+    jar = MozillaCookieJar(cookies)
+    jar.load()
+    # print(jar)
+    return jar
 

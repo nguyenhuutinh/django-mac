@@ -29,6 +29,26 @@ export const creators = {
       }
     };
   },
+  fetchAuthCheck: (file_slug) => {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_REQUESTED });
+      try {
+        const body = { file_slug: file_slug};
+        // console.log("fetchRestCheck", body)
+        const res = await api.post('/api/auth/rest_check/', body);
+        // console.log("fetchRestCheck", res.data)
+        if(res.status == 200){
+          dispatch({ type: types.FETCH_SUCCESS, data: res.data });
+        }else{
+          dispatch({ type: types.FETCH_ERROR, data: res.data });
+        }
+
+      } catch (error) {
+        // console.log( error.response.data)
+        dispatch({ type: types.FETCH_ERROR, data: error.response.data });
+      }
+    };
+  },
 };
 
 // Reducer
