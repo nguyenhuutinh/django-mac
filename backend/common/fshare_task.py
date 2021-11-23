@@ -60,6 +60,7 @@ def doFshareFlow(code):
     if linkCode == None:
         return resp.json()
 
+    deleteFshareFile.apply_async(kwargs={ "code": linkCode},eta=now() + timedelta(seconds=5*60))
 
     resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
     print(resp.request.url)
@@ -72,7 +73,36 @@ def doFshareFlow(code):
 
     return resp.json()
 
+@shared_task
+def deleteFshareFile(code):
+    # credentials = get_credentials()
+    # http = credentials.authorize(httplib2.Http())
+    # service = build('drive', 'v3', http=http)
+    # response = service.files().update(fileId=task_id, addParents= STORE_DRIVE_ID,
+    # removeParents= SOURCE_DRIVE_ID,
+    # fields= 'id, parents'
+    # ).execute()
 
+    print("deleteFshareFile : "+ code)
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    url_path = BASE_DIR + '/static/' + "fshare.vn_cookies.txt"
+    jar = parseCookieFile(url_path)
+
+    myobj = {'files' : [{'linkcode': code}]}
+    body = json.dumps(myobj)
+    print("myobj" , myobj)
+    headers_api = {
+        'Authorization': 'Bearer ' + "jcrnprtt0l9vlt10p0ous2a6d9",
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+    }
+
+    resp = requests.delete('https://www.fshare.vn/api/v3/files/delete-files', cookies=jar, data= body, headers=headers_api)
+    print(resp.request.url)
+    print(resp.request.body)
+    print(resp.request.headers)
+    print(resp.json())
+    return resp
 
 def parseCookieFile(cookiefile):
     cookies = Path(cookiefile)
