@@ -16,11 +16,11 @@ const Fshare = (props) => {
 
   useEffect(() => {
 
-    // console.log(path)
+    showLoading(false)
     return () => {
 
     }
-  }, [])
+  }, [fshareCheck])
 
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -46,7 +46,7 @@ const Fshare = (props) => {
 
       <br/>
       </div>
-      <div>{fshareCheck.result  ? fshareCheck.result : "checking file ..." }</div>
+      <div>{loading &&  "checking file ..." }</div>
       <br/>
       <br/>
       <br/>
