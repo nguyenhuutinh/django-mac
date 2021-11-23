@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
-
+import {Form, Button, ButtonGroup, FormControl} from 'react-bootstrap';
 import DjangoImgSrc from '../../assets/images/django-logo-negative.png';
 import { creators } from '../store/rest_check';
 
@@ -10,7 +9,7 @@ const Fshare = (props) => {
   const fshareCheck = useSelector((state) => state.fshareCheck);
   const [loading, showLoading] = useState(false);
   const [code, setCode] = useState();
-
+  const [server, setServer] = useState(1);
 
 
 
@@ -45,22 +44,32 @@ const Fshare = (props) => {
 
     }
     console.log(newCode)
-    const action = creators.getFshareLink(newCode);
+    const action = creators.getFshareLink(newCode, server);
     dispatch(action);
   }
   console.log("fshareCheck", fshareCheck.result, typeof fshareCheck.result === 'json')
   return (
     <div class="main-screen">
       <h3>Fshare Vip Download v5</h3>
-      
+
       <div >
-      <form onSubmit={(e)=>{handleSubmit(e)}}>
-        <label>
-          Fshare Code:
-          <input type="text" value={code} onChange={(e)=>handleChange(e)} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <Form onSubmit={(e)=>{handleSubmit(e)}} >
+       <Form.Group className="mb-3" controlId="formBasicServer">
+          <Form.Label>Server {server}</Form.Label>
+          <ButtonGroup aria-label="Server">
+            <Button variant={server == 1 ? "primary" : "secondary"} style={{marginRight: "10px"}} onClick={()=>setServer(1)}>1</Button>
+            <Button variant={server == 2 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(2)}>2</Button>
+            <Button variant={server == 3 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(3)}>3</Button>
+          </ButtonGroup>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicCode">
+          <Form.Label>Fshare Link:</Form.Label>
+
+          <FormControl type="text" value={code} onChange={(e)=>handleChange(e)} />
+        </Form.Group>
+        <Button type="submit" value="Submit" >Get File</Button>
+      </Form>
 
       <br/>
       </div>
