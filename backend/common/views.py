@@ -125,7 +125,7 @@ class AuthViewSet(viewsets.ViewSet):
             server = body['server']
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
-
+        print(code, server)
         res = doFshareFlow.apply(kwargs={"code":code, "server": server})
         print("res", res.result)
         if res :
