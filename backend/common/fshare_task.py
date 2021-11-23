@@ -76,12 +76,12 @@ def doFshareFlow(code, server):
     }
 
     resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', data=myobj, headers=headers_api)
-    print(resp.request.url)
-    print(resp.request.body)
-    print(resp.request.headers)
+    # print(resp.request.url)
+    # print(resp.request.body)
+    # print(resp.request.headers)
 
-    print('download file to my drive')
-    print(resp.headers)
+    print('downloaded file to my drive')
+    # print(resp.headers)
     print(resp.json())
     linkCode = resp.json().get("linkcode")
     if linkCode == None:
@@ -94,8 +94,8 @@ def doFshareFlow(code, server):
     # print(resp.request.body)
     # print(resp.request.headers)
 
-    print('download zip')
-    print(resp.headers)
+    print('downloaded zip')
+    # print(resp.headers)
     print(resp.json())
 
     return resp.json()
@@ -121,7 +121,7 @@ def deleteFshareFile(code):
 
     myobj = {'files' : [{'linkcode': code}]}
     body = json.dumps(myobj)
-    print("myobj" , myobj)
+    # print("myobj" , myobj)
     headers_api = {
         'Authorization': 'Bearer ' + BEARER_KEY,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
@@ -165,9 +165,9 @@ def heartbeat():
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
     isSuccess = resp.json().get("success")
-    print(resp.request.url)
-    print(resp.request.body)
-    print(resp.request.headers)
+    # print(resp.request.url)
+    # print(resp.request.body)
+    # print(resp.request.headers)
     if isSuccess != True:
         thread.cancel()
     print(resp.json())
