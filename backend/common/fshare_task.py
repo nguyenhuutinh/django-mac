@@ -146,6 +146,7 @@ def heartbeat():
 
     headers_api = {
         # 'Authorization': 'Bearer ' + BEARER_KEY,
+        "referer":"https://www.fshare.vn/file/manager",
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':'A-fWA56bvXMQJOrRU1sfop--caYRmhadenW9lApzQ7A334Rhxt_fPVpluZMCPkXL2tce4XKtUfgJRNn5eD8x6Q==',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
