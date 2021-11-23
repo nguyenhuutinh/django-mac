@@ -150,9 +150,9 @@ def parseCookieFile(cookiefile):
 def heartbeat():
     thread = threading.Timer(60.0, heartbeat)
     thread.start()
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    url_path = BASE_DIR + '/static/' + FILE_NAME
-    jar = parseCookieFile(url_path)
+    # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # url_path = BASE_DIR + '/static/' + FILE_NAME
+    # jar = parseCookieFile(url_path)
 
     headers_api = {
         # 'Authorization': 'Bearer ' + BEARER_KEY,
