@@ -19,7 +19,7 @@ const Download = (props) => {
   }, [dispatch]);
 
 
-
+  console.log(loading)
   useEffect(() => {
 
     // console.log(path)
@@ -39,7 +39,7 @@ const Download = (props) => {
       <br/>
       <br/>
       <br/>
-      {restCheck.result && <Button style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = restCheck.result }>
+      {restCheck.result && <Button disabled={loading} style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = restCheck.result }>
         File is Ready. Click Here to Download
       </Button>}
 

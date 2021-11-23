@@ -4,6 +4,8 @@
 from __future__ import print_function
 import time
 from argparse import Namespace
+
+import threading
 import io
 import re
 import httplib2
@@ -34,7 +36,7 @@ from common.models import DownloadInfo
 
 BEARER_KEY_1 = "9ck8scdmnimjvuvhblvhgdg38i"
 FILE_NAME_1 = "fshare.vn_cookies.txt"
-BEARER_KEY_2 = "u9af6ldqbrg9bvraclm35ha1af"
+BEARER_KEY_2 = "d9c7peshf5v2ermmd24hf8liu6"
 FILE_NAME_2 = "fshare.vn_cookies2.txt"
 BEARER_KEY_3 = "bhui9plvkal757v7fep95ij56k"
 FILE_NAME_3 = "fshare.vn_cookies3.txt"
@@ -77,8 +79,8 @@ def doFshareFlow(code, server):
     if linkCode == None:
         return resp.json()
 
-    deleteFshareFile.apply_async(kwargs={ "code": linkCode},eta=now() + timedelta(seconds=5*60))
-
+    # deleteFshareFile.apply_async(kwargs={ "code": linkCode},eta=now() + timedelta(seconds=5*60))
+    heartBeating.apply_async(eta=now() + timedelta(seconds=1*30))
     resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
     print(resp.request.url)
     print(resp.request.body)
@@ -89,6 +91,10 @@ def doFshareFlow(code, server):
     print(resp.json())
 
     return resp.json()
+
+@shared_task
+def heartBeating():
+    heartbeat()
 
 @shared_task
 def deleteFshareFile(code):
@@ -130,3 +136,20 @@ def parseCookieFile(cookiefile):
     return jar
 
 
+
+
+def heartbeat():
+    threading.Timer(60.0, heartbeat).start()
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    url_path = BASE_DIR + '/static/' + FILE_NAME
+    jar = parseCookieFile(url_path)
+
+    headers_api = {
+        'Authorization': 'Bearer ' + BEARER_KEY,
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+    }
+
+    resp = requests.delete('https://www.fshare.vn/site/motion-auth', cookies=jar, headers=headers_api)
+    print("heartbeat", resp)
+    return resp

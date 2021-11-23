@@ -9,7 +9,7 @@ const Fshare = (props) => {
   const fshareCheck = useSelector((state) => state.fshareCheck);
   const [loading, showLoading] = useState(false);
   const [code, setCode] = useState();
-  const [server, setServer] = useState(1);
+  const [server, setServer] = useState(2);
 
 
 
