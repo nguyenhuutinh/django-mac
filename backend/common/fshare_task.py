@@ -45,19 +45,21 @@ FILE_NAME_3 = "fshare.vn_cookies3.txt"
 COOKIE_3 = '_fbp=fb.1.1637416756636.822035357; _ga=GA1.2.780574709.1637416756; _gid=GA1.2.1725019688.1637416756; ajs_group_id=null; fpt_uuid="15cc3bf0-d723-421c-81ca-7dc278b76e56"; _uidcms=1637416755053161666; __gads=ID=0e4cfce35e6f747f-2281df7134cf0088:T=1637416756:RT=1637635837:S=ALNI_MavgVG8wZ18XvH7QvfUTm5jycvuBA; VIP_USER17443112=364ddc37cef322dfb17a9cd96abce91f5a19902046e30724bf1e066c4243e8a2a:2:{i:0;s:16:"VIP_USER17443112";i:1;a:6:{s:13:"timesToAppear";i:99;s:16:"timesToLoadPopUp";i:3;s:8:"dayToday";i:3;s:16:"timeToApearAgain";i:1630631242;s:12:"timeToAppear";i:1630687994;s:4:"show";b:1;}}; __yoid__=5d88082137ad2ee441760bc208a5c7f6; _identity-app=548b9be2965aa9f0702a974ab7f13b0d66558433de06d9ddc249ca3937d31fbea:2:{i:0;s:13:"_identity-app";i:1;s:56:"[17443112,"Jfkh8PhRTiRiv-zqFqqqxrANIV9tzyj3",1637031972]";}; fshare-app=6f2f9g8lmm8s70dsl4f7pdcclu; _ftitfsi=3137343433313132; _gat_gtag_UA_97071061_1=1; _gat_UA-97071061-1=1; _csrf=L0InS0WatRmbFKgwV3QIeWVwF7aUJNeo'
 FILE_NAME = FILE_NAME_2
 BEARER_KEY = BEARER_KEY_2
-COOKIE = COOKIE_2
+COOKIE_DATA = COOKIE_2
 @shared_task
 def doFshareFlow(code, server):
     if server == 1:
         FILE_NAME = FILE_NAME_1
         BEARER_KEY = BEARER_KEY_1
+        COOKIE_DATA = COOKIE_1
     elif server == 2:
         FILE_NAME = FILE_NAME_2
         BEARER_KEY = BEARER_KEY_2
-        COOKIE = COOKIE_2
+        COOKIE_DATA = COOKIE_2
     else:
         FILE_NAME = FILE_NAME_3
         BEARER_KEY = BEARER_KEY_3
+        COOKIE_DATA = COOKIE_3
     print("do Fshare Download Flow")
     # Opening JSON file
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,7 +72,7 @@ def doFshareFlow(code, server):
         'Authorization': 'Bearer ' + BEARER_KEY,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cookie': COOKIE
+        'Cookie': COOKIE_DATA
     }
 
     resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', data=myobj, headers=headers_api)
@@ -124,7 +126,7 @@ def deleteFshareFile(code):
         'Authorization': 'Bearer ' + BEARER_KEY,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cookie': COOKIE
+        'Cookie': COOKIE_DATA
     }
 
     resp = requests.delete('https://www.fshare.vn/api/v3/files/delete-files',  data= body, headers=headers_api)
@@ -158,7 +160,7 @@ def heartbeat():
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':'A-fWA56bvXMQJOrRU1sfop--caYRmhadenW9lApzQ7A334Rhxt_fPVpluZMCPkXL2tce4XKtUfgJRNn5eD8x6Q==',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-        'Cookie': COOKIE
+        'Cookie': COOKIE_DATA
     }
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
