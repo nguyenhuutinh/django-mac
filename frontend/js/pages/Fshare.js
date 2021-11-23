@@ -48,6 +48,7 @@ const Fshare = (props) => {
     const action = creators.getFshareLink(newCode);
     dispatch(action);
   }
+  console.log("fshareCheck", fshareCheck.result, typeof fshareCheck.result === 'json')
   return (
     <div class="main-screen">
       <h3>Fshare Vip Download v5</h3>
@@ -66,11 +67,11 @@ const Fshare = (props) => {
       <br/>
       <br/>
       <br/>
-      {fshareCheck.result && typeof fshareCheck.result === 'string' && fshareCheck.result.startsWith("https") && <Button style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = fshareCheck.result }>
+      {!loading && fshareCheck.result && typeof fshareCheck.result === 'string' && fshareCheck.result.startsWith("https") && <Button style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = fshareCheck.result }>
         File is Ready. Click Here to Download
       </Button>}
-      {fshareCheck.result && typeof fshareCheck.result === JSON && <div>{JSON.stringify(fshareCheck.result) }</div>}
-      {fshareCheck.result && typeof fshareCheck.result === String && <div>{(fshareCheck.result) }</div>}
+      {!loading &&fshareCheck.result && typeof fshareCheck.result === 'object' && <div>{JSON.stringify(fshareCheck.result) }</div>}
+      {!loading && fshareCheck.result && typeof fshareCheck.result === String && <div>{(fshareCheck.result) }</div>}
     </div>
   );
 }
