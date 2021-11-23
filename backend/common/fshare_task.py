@@ -37,13 +37,13 @@ def doFshareFlow(code):
     print("do Fshare Download Flow")
     # Opening JSON file
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    url_path = BASE_DIR + '/static/' + "fshare.vn_cookies.txt"
+    url_path = BASE_DIR + '/static/' + "fshare.vn_cookies2.txt"
     jar = parseCookieFile(url_path)
 
     myobj = {'linkcode': code, 'clone_to_folder':'/', 'secure': 0}
     print("code" , code)
     headers_api = {
-        'Authorization': 'Bearer ' + "jcrnprtt0l9vlt10p0ous2a6d9",
+        'Authorization': 'Bearer ' + "p8c07sfivms4dc0utekne9j0nv",
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
     }

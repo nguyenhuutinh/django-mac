@@ -29,11 +29,11 @@ export const creators = {
       }
     };
   },
-  getFshareLink: (code) => {
+  getFshareLink: (code, server =1) => {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_REQUESTED });
       try {
-        const body = { code: code};
+        const body = { code: code, server: server};
         console.log("getFshareLink", body)
         const res = await api.post('/api/auth/rest_check/', body);
         console.log("getFshareLink", res.data)
