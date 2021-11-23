@@ -36,7 +36,7 @@ from common.models import DownloadInfo
 
 BEARER_KEY_1 = "9ck8scdmnimjvuvhblvhgdg38i"
 FILE_NAME_1 = "fshare.vn_cookies.txt"
-BEARER_KEY_2 = "2ss2ibm1e8fiiq1c491iiq0ot9"
+BEARER_KEY_2 = "d9c7peshf5v2ermmd24hf8liu6"
 FILE_NAME_2 = "fshare.vn_cookies2.txt"
 BEARER_KEY_3 = "bhui9plvkal757v7fep95ij56k"
 FILE_NAME_3 = "fshare.vn_cookies3.txt"
