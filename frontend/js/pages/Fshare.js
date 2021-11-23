@@ -27,8 +27,10 @@ const Fshare = (props) => {
   }
   const handleSubmit = (e) =>{
     e.preventDefault();
-    var {location} = props
+    // var {location} = props
     showLoading(true)
+    console.log(code)
+    var newCode = code
     if(code.startsWith("https")){
       let url = new URL(code);
 
@@ -36,11 +38,14 @@ const Fshare = (props) => {
       // Delete the foo parameter.
       url.hash = ""
       url.search = ""
-      code  = url.replaceAll("https://www.fshare.vn/file/","")
-      code  = url.replaceAll("https://fshare.vn/file/","")
+      console.log(url.toString())
+      newCode  = url.toString().replaceAll("https://www.fshare.vn/file/","")
+      console.log("replace",newCode)
+      newCode  = newCode.replaceAll("https://fshare.vn/file/","")
 
     }
-    const action = creators.getFshareLink(code);
+    console.log(newCode)
+    const action = creators.getFshareLink(newCode);
     dispatch(action);
   }
   return (
