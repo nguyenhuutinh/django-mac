@@ -53,8 +53,8 @@ const Fshare = (props) => {
       {fshareCheck.result && typeof fshareCheck.result === 'string' && fshareCheck.result.startsWith("https") && <Button style={{ width: "400px"}} variant="outline-success" onClick={() => window.location = fshareCheck.result }>
         File is Ready. Click Here to Download
       </Button>}
-      {fshareCheck.result && <div>{json.stringify(fshareCheck.result) }</div>}
-
+      {fshareCheck.result && typeof fshareCheck.result === JSON && <div>{JSON.stringify(fshareCheck.result) }</div>}
+      {fshareCheck.result && typeof fshareCheck.result === String && <div>{(fshareCheck.result) }</div>}
     </div>
   );
 }
