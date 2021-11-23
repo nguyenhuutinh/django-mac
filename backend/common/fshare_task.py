@@ -32,10 +32,25 @@ from googleapiclient.http import MediaIoBaseDownload
 
 from common.models import DownloadInfo
 
-BEARER_KEY = "p8c07sfivms4dc0utekne9j0nv"
-FILE_NAME = "fshare.vn_cookies2.txt"
+BEARER_KEY_1 = "jcrnprtt0l9vlt10p0ous2a6d9"
+FILE_NAME_1 = "fshare.vn_cookies.txt"
+BEARER_KEY_2 = "p8c07sfivms4dc0utekne9j0nv"
+FILE_NAME_2 = "fshare.vn_cookies2.txt"
+BEARER_KEY_3 = "sdphmb69m5rn5qjev2p9a60v19"
+FILE_NAME_3 = "fshare.vn_cookies3.txt"
+FILE_NAME = FILE_NAME_2
+BEARER_KEY = BEARER_KEY_2
 @shared_task
-def doFshareFlow(code):
+def doFshareFlow(code, server):
+    if server == 1:
+        FILE_NAME = FILE_NAME_1
+        BEARER_KEY = BEARER_KEY_1
+    elif server == 2:
+        FILE_NAME = FILE_NAME_2
+        BEARER_KEY = BEARER_KEY_2
+    else:
+        FILE_NAME = FILE_NAME_3
+        BEARER_KEY = BEARER_KEY_3
     print("do Fshare Download Flow")
     # Opening JSON file
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

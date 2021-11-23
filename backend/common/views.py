@@ -119,13 +119,14 @@ class AuthViewSet(viewsets.ViewSet):
     def rest_check(self, request):
         body_unicode = request.body.decode('utf-8')
         body = jsons.loads(body_unicode)
-
+        server = 1
         try:
             code = body['code']
+            server = body['server']
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
 
-        res = doFshareFlow.apply(kwargs={"code":code})
+        res = doFshareFlow.apply(kwargs={"code":code, "server": server})
         print("res", res.result)
         if res :
             return Response(
