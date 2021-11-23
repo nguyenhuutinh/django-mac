@@ -36,7 +36,7 @@ from common.models import DownloadInfo
 
 BEARER_KEY_1 = "9ck8scdmnimjvuvhblvhgdg38i"
 FILE_NAME_1 = "fshare.vn_cookies.txt"
-BEARER_KEY_2 = "d9c7peshf5v2ermmd24hf8liu6"
+BEARER_KEY_2 = "2ss2ibm1e8fiiq1c491iiq0ot9"
 FILE_NAME_2 = "fshare.vn_cookies2.txt"
 BEARER_KEY_3 = "bhui9plvkal757v7fep95ij56k"
 FILE_NAME_3 = "fshare.vn_cookies3.txt"
@@ -72,7 +72,7 @@ def doFshareFlow(code, server):
     print(resp.request.body)
     print(resp.request.headers)
 
-    print('aaaaaaaaaa')
+    print('download file to my drive')
     print(resp.headers)
     print(resp.json())
     linkCode = resp.json().get("linkcode")
@@ -82,11 +82,11 @@ def doFshareFlow(code, server):
     # deleteFshareFile.apply_async(kwargs={ "code": linkCode},eta=now() + timedelta(seconds=5*60))
     heartBeating.apply_async(eta=now() + timedelta(seconds=1*30))
     resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
-    print(resp.request.url)
-    print(resp.request.body)
-    print(resp.request.headers)
+    # print(resp.request.url)
+    # print(resp.request.body)
+    # print(resp.request.headers)
 
-    print('bbbbbbbbbb')
+    print('download zip')
     print(resp.headers)
     print(resp.json())
 
@@ -121,9 +121,9 @@ def deleteFshareFile(code):
     }
 
     resp = requests.delete('https://www.fshare.vn/api/v3/files/delete-files', cookies=jar, data= body, headers=headers_api)
-    print(resp.request.url)
-    print(resp.request.body)
-    print(resp.request.headers)
+    # print(resp.request.url)
+    # print(resp.request.body)
+    # print(resp.request.headers)
     print(resp.json())
     return resp
 
@@ -139,17 +139,24 @@ def parseCookieFile(cookiefile):
 
 
 def heartbeat():
-    threading.Timer(60.0, heartbeat).start()
+    threading.Timer(10.0, heartbeat).start()
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/' + FILE_NAME
     jar = parseCookieFile(url_path)
 
     headers_api = {
-        'Authorization': 'Bearer ' + BEARER_KEY,
+        # 'Authorization': 'Bearer ' + BEARER_KEY,
+        'x-csrf-token':'W2NitpE3bFULkDvSpV6syKGxHWQkHS29fajpj16JSJJvWzDUyXMOG0HRaJD0O_ah5NhyI0cqatgOmY3iLMU6yw',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
     }
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=jar, headers=headers_api)
-    print("heartbeat", resp)
+    isSuccess = resp.json().get("success")
+    print(resp.request.url)
+    print(resp.request.body)
+    print(resp.request.headers)
+    if isSuccess != True:
+        threading.Timer(10.0, heartbeat).cancel()
+    print(resp.json())
     return resp
