@@ -18,4 +18,4 @@ www.fshare.vn	FALSE	/	FALSE	0	showPopupMemReg	fbef979f496638a917becd07db77635fbb
 www.fshare.vn	FALSE	/	FALSE	0	fshare-app	d9c7peshf5v2ermmd24hf8liu6
 .fshare.vn	TRUE	/	FALSE	1637684429	_gat_gtag_UA_97071061_1	1
 .fshare.vn	TRUE	/	FALSE	1637684429	_gat_UA-97071061-1	1
-www.fshare.vn	FALSE	/	FALSE	0	_csrf	j5_1dnoeAZZsThMNSGzWS5uzO5ffi-VC
+www.fshare.vn	FALSE	/	FALSE	0	_csrf	wo_pV4R-C6AQ1JiJZAnJIaJadoaaXsDm
