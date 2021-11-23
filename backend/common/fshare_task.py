@@ -34,14 +34,18 @@ from googleapiclient.http import MediaIoBaseDownload
 
 from common.models import DownloadInfo
 
-BEARER_KEY_1 = "9ck8scdmnimjvuvhblvhgdg38i"
+BEARER_KEY_1 = "shaqp44l3lj3co5d8pbi5aiopg"
 FILE_NAME_1 = "fshare.vn_cookies.txt"
+COOKIE_1 = "_fbp=fb.1.1637416756636.822035357; _ga=GA1.2.780574709.1637416756; _gid=GA1.2.1725019688.1637416756; ajs_group_id=null; fpt_uuid=%2215cc3bf0-d723-421c-81ca-7dc278b76e56%22; _uidcms=1637416755053161666; __gads=ID=0e4cfce35e6f747f-2281df7134cf0088:T=1637416756:RT=1637635837:S=ALNI_MavgVG8wZ18XvH7QvfUTm5jycvuBA; VIP_USER17443112=364ddc37cef322dfb17a9cd96abce91f5a19902046e30724bf1e066c4243e8a2a%3A2%3A%7Bi%3A0%3Bs%3A16%3A%22VIP_USER17443112%22%3Bi%3A1%3Ba%3A6%3A%7Bs%3A13%3A%22timesToAppear%22%3Bi%3A99%3Bs%3A16%3A%22timesToLoadPopUp%22%3Bi%3A3%3Bs%3A8%3A%22dayToday%22%3Bi%3A3%3Bs%3A16%3A%22timeToApearAgain%22%3Bi%3A1630631242%3Bs%3A12%3A%22timeToAppear%22%3Bi%3A1630687994%3Bs%3A4%3A%22show%22%3Bb%3A1%3B%7D%7D; _identity-app=59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17968929%2C%22Zb5Y1cu3jmvTbCq76URkunJU_rfe6Ij9%22%2C1634889338%5D%22%3B%7D; fshare-app=shaqp44l3lj3co5d8pbi5aiopg; _ftitfsi=3137393638393239; _gat_gtag_UA_97071061_1=1; _gat_UA-97071061-1=1; _csrf=6YwWtzDJmFBC0ESVkmft5ZLJp4bJVw71"
 BEARER_KEY_2 = "d9c7peshf5v2ermmd24hf8liu6"
 FILE_NAME_2 = "fshare.vn_cookies2.txt"
-BEARER_KEY_3 = "bhui9plvkal757v7fep95ij56k"
+COOKIE_2 = "_uidcms=1601864159616834536; fs_same_site=sameSite; _ga=GA1.2.504762787.1601864160; ajs_group_id=null; fpt_uuid=\"bf9df483-4a74-4479-aadd-b3f3a3c4cc6c\"; _gid=GA1.2.2097226903.1637504167; _fbp=fb.1.1637504167210.508549578; __gads=ID=be91e8f23e2a503a-22a775b833cf008b:T=1637504167:RT=1637504167:S=ALNI_MYMR59VmDHBm4UnIfTlwy6EjnHR0A; __yoid__=8941ce3caac7018bc56cdf633fcb411f; _ftitfsi=36353635343136; showPopupMemRegBeginTime=0a4a1bba24faf41c61d412300a499a137235ab8b05d3b508ba4a73313fc2e721a:2:{i:0;s:24:\"showPopupMemRegBeginTime\";i:1;i:1637643277;}; showPopupMemRegLastTime=dcb2f05f2125f3d00d594301ae640d36674e7e73a689a450f436c87b1a786cb9a:2:{i:0;s:23:\"showPopupMemRegLastTime\";i:1;i:1637643277;}; showPopupMemReg=fbef979f496638a917becd07db77635fbb7ecc3957e8dee12415ec2a2eb41024a:2:{i:0;s:15:\"showPopupMemReg\";i:1;i:1;}; fshare-app=d9c7peshf5v2ermmd24hf8liu6; _gat_gtag_UA_97071061_1=1; _gat_UA-97071061-1=1; _csrf=SKGoQyyou3RPoKiemBTcEzX4jEI5VzZG"
+BEARER_KEY_3 = "6f2f9g8lmm8s70dsl4f7pdcclu"
 FILE_NAME_3 = "fshare.vn_cookies3.txt"
+COOKIE_3 = '_fbp=fb.1.1637416756636.822035357; _ga=GA1.2.780574709.1637416756; _gid=GA1.2.1725019688.1637416756; ajs_group_id=null; fpt_uuid="15cc3bf0-d723-421c-81ca-7dc278b76e56"; _uidcms=1637416755053161666; __gads=ID=0e4cfce35e6f747f-2281df7134cf0088:T=1637416756:RT=1637635837:S=ALNI_MavgVG8wZ18XvH7QvfUTm5jycvuBA; VIP_USER17443112=364ddc37cef322dfb17a9cd96abce91f5a19902046e30724bf1e066c4243e8a2a:2:{i:0;s:16:"VIP_USER17443112";i:1;a:6:{s:13:"timesToAppear";i:99;s:16:"timesToLoadPopUp";i:3;s:8:"dayToday";i:3;s:16:"timeToApearAgain";i:1630631242;s:12:"timeToAppear";i:1630687994;s:4:"show";b:1;}}; __yoid__=5d88082137ad2ee441760bc208a5c7f6; _identity-app=548b9be2965aa9f0702a974ab7f13b0d66558433de06d9ddc249ca3937d31fbea:2:{i:0;s:13:"_identity-app";i:1;s:56:"[17443112,"Jfkh8PhRTiRiv-zqFqqqxrANIV9tzyj3",1637031972]";}; fshare-app=6f2f9g8lmm8s70dsl4f7pdcclu; _ftitfsi=3137343433313132; _gat_gtag_UA_97071061_1=1; _gat_UA-97071061-1=1; _csrf=L0InS0WatRmbFKgwV3QIeWVwF7aUJNeo'
 FILE_NAME = FILE_NAME_2
 BEARER_KEY = BEARER_KEY_2
+COOKIE = COOKIE_2
 @shared_task
 def doFshareFlow(code, server):
     if server == 1:
@@ -50,24 +54,26 @@ def doFshareFlow(code, server):
     elif server == 2:
         FILE_NAME = FILE_NAME_2
         BEARER_KEY = BEARER_KEY_2
+        COOKIE = COOKIE_2
     else:
         FILE_NAME = FILE_NAME_3
         BEARER_KEY = BEARER_KEY_3
     print("do Fshare Download Flow")
     # Opening JSON file
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    url_path = BASE_DIR + '/static/' + FILE_NAME
-    jar = parseCookieFile(url_path)
+    # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # url_path = BASE_DIR + '/static/' + FILE_NAME
+    # jar = parseCookieFile(url_path)
 
     myobj = {'linkcode': code, 'clone_to_folder':'/', 'secure': 0}
     print("code" , code, FILE_NAME, BEARER_KEY)
     headers_api = {
         'Authorization': 'Bearer ' + BEARER_KEY,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+        'Cookie': COOKIE
     }
 
-    resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', cookies=jar, data=myobj, headers=headers_api)
+    resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', data=myobj, headers=headers_api)
     print(resp.request.url)
     print(resp.request.body)
     print(resp.request.headers)
@@ -81,7 +87,7 @@ def doFshareFlow(code, server):
 
     # deleteFshareFile.apply_async(kwargs={ "code": linkCode},eta=now() + timedelta(seconds=5*60))
     heartBeating.apply_async(eta=now() + timedelta(seconds=1*30))
-    resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
+    resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode,  headers=headers_api)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
@@ -107,9 +113,9 @@ def deleteFshareFile(code):
     # ).execute()
 
     print("deleteFshareFile : "+ code)
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    url_path = BASE_DIR + '/static/' + FILE_NAME
-    jar = parseCookieFile(url_path)
+    # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # url_path = BASE_DIR + '/static/' + FILE_NAME
+    # jar = parseCookieFile(url_path)
 
     myobj = {'files' : [{'linkcode': code}]}
     body = json.dumps(myobj)
@@ -117,10 +123,11 @@ def deleteFshareFile(code):
     headers_api = {
         'Authorization': 'Bearer ' + BEARER_KEY,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+        'Cookie': COOKIE
     }
 
-    resp = requests.delete('https://www.fshare.vn/api/v3/files/delete-files', cookies=jar, data= body, headers=headers_api)
+    resp = requests.delete('https://www.fshare.vn/api/v3/files/delete-files',  data= body, headers=headers_api)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
@@ -139,7 +146,7 @@ def parseCookieFile(cookiefile):
 
 
 def heartbeat():
-    thread = threading.Timer(10.0, heartbeat)
+    thread = threading.Timer(60.0, heartbeat)
     thread.start()
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     url_path = BASE_DIR + '/static/' + FILE_NAME
@@ -151,7 +158,7 @@ def heartbeat():
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':'A-fWA56bvXMQJOrRU1sfop--caYRmhadenW9lApzQ7A334Rhxt_fPVpluZMCPkXL2tce4XKtUfgJRNn5eD8x6Q==',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-        'Cookie':'_uidcms=1601864159616834536; fs_same_site=sameSite; _ga=GA1.2.504762787.1601864160; ajs_group_id=null; fpt_uuid=%22bf9df483-4a74-4479-aadd-b3f3a3c4cc6c%22; _gid=GA1.2.2097226903.1637504167; _fbp=fb.1.1637504167210.508549578; __gads=ID=be91e8f23e2a503a-22a775b833cf008b:T=1637504167:RT=1637504167:S=ALNI_MYMR59VmDHBm4UnIfTlwy6EjnHR0A; __yoid__=8941ce3caac7018bc56cdf633fcb411f; _ftitfsi=36353635343136; showPopupMemRegBeginTime=0a4a1bba24faf41c61d412300a499a137235ab8b05d3b508ba4a73313fc2e721a%3A2%3A%7Bi%3A0%3Bs%3A24%3A%22showPopupMemRegBeginTime%22%3Bi%3A1%3Bi%3A1637643277%3B%7D; showPopupMemRegLastTime=dcb2f05f2125f3d00d594301ae640d36674e7e73a689a450f436c87b1a786cb9a%3A2%3A%7Bi%3A0%3Bs%3A23%3A%22showPopupMemRegLastTime%22%3Bi%3A1%3Bi%3A1637643277%3B%7D; showPopupMemReg=fbef979f496638a917becd07db77635fbb7ecc3957e8dee12415ec2a2eb41024a%3A2%3A%7Bi%3A0%3Bs%3A15%3A%22showPopupMemReg%22%3Bi%3A1%3Bi%3A1%3B%7D; fshare-app=d9c7peshf5v2ermmd24hf8liu6; _csrf=wo_pV4R-C6AQ1JiJZAnJIaJadoaaXsDm'
+        'Cookie': COOKIE
     }
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
