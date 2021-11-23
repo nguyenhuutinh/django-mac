@@ -146,9 +146,10 @@ def heartbeat():
 
     headers_api = {
         # 'Authorization': 'Bearer ' + BEARER_KEY,
-        'x-csrf-token':'W2NitpE3bFULkDvSpV6syKGxHWQkHS29fajpj16JSJJvWzDUyXMOG0HRaJD0O_ah5NhyI0cqatgOmY3iLMU6yw',
+        "x-requested-with":'XMLHttpRequest',
+        'x-csrf-token':'A-fWA56bvXMQJOrRU1sfop--caYRmhadenW9lApzQ7A334Rhxt_fPVpluZMCPkXL2tce4XKtUfgJRNn5eD8x6Q==',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+
     }
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=jar, headers=headers_api)
