@@ -32,7 +32,7 @@ from googleapiclient.http import MediaIoBaseDownload
 
 from common.models import DownloadInfo
 
-BEARER_KEY_1 = "noppst0vjg4f2oebaks7fqlmmn"
+BEARER_KEY_1 = "9ck8scdmnimjvuvhblvhgdg38i"
 FILE_NAME_1 = "fshare.vn_cookies.txt"
 BEARER_KEY_2 = "u9af6ldqbrg9bvraclm35ha1af"
 FILE_NAME_2 = "fshare.vn_cookies2.txt"
