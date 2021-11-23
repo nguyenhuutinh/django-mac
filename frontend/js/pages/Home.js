@@ -11,9 +11,9 @@ const Home = () => {
   const [loading, showLoading] = useState(false);
 
   useEffect(() => {
-    showLoading(true)
-    const action = creators.fetchAuthCheck();
-    dispatch(action);
+    // showLoading(true)
+    // const action = creators.fetchAuthCheck();
+    // dispatch(action);
   }, [dispatch]);
 
   const [showBugComponent, setShowBugComponent] = useState(false);

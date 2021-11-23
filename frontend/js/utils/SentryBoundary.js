@@ -40,7 +40,7 @@ class ExampleBoundary extends Component {
   render() {
     const { eventId, hasError } = this.state;
     const { children } = this.props;
-
+    console.log(hasError)
     // render fallback UI
     if (hasError) {
       return <FallbackUI eventId={eventId} />;

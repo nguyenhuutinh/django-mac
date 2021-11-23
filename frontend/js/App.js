@@ -4,23 +4,23 @@ import { Provider } from 'react-redux';
 
 import Home from './pages/Home';
 import Download from './pages/Download.js';
+import Fshare from './pages/Fshare.js';
 import configureStore from './store';
 import SentryBoundary from './utils/SentryBoundary';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const store = configureStore({});
 const App = (props) => (
-
   <SentryBoundary>
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-
-          </Route>
-            <Route path="/download/:topicId" element={ <Download  name="Sara" location={window.location}/>}>
-
-          </Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route
+            path="/download/:topicId"
+            element={<Download name="Sara" location={window.location} />}
+          ></Route>
+          <Route path="/fshare" element={<Fshare name="Sara" location={window.location} />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

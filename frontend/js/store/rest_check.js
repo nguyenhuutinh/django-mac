@@ -29,14 +29,14 @@ export const creators = {
       }
     };
   },
-  fetchAuthCheck: (file_slug) => {
+  getFshareLink: (code) => {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_REQUESTED });
       try {
-        const body = { file_slug: file_slug};
-        // console.log("fetchRestCheck", body)
+        const body = { code: code};
+        console.log("getFshareLink", body)
         const res = await api.post('/api/auth/rest_check/', body);
-        // console.log("fetchRestCheck", res.data)
+        console.log("getFshareLink", res.data)
         if(res.status == 200){
           dispatch({ type: types.FETCH_SUCCESS, data: res.data });
         }else{
@@ -53,6 +53,15 @@ export const creators = {
 
 // Reducer
 export const restCheckReducer = (state = {}, action) => {
+  // console.log(action.data)
+  if (action.type === types.FETCH_SUCCESS) return action.data;
+  if (action.type === types.FETCH_ERROR) return action.data;
+  return state;
+};
+
+
+// Reducer
+export const fshareReducer = (state = {}, action) => {
   // console.log(action.data)
   if (action.type === types.FETCH_SUCCESS) return action.data;
   if (action.type === types.FETCH_ERROR) return action.data;

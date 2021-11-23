@@ -22,7 +22,7 @@ import jsons
 import json
 from common.upload_task import doDownloadFlow
 
-
+from common.fshare_task import doFshareFlow
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -117,59 +117,27 @@ class AuthViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def rest_check(self, request):
-        # Opening JSON file
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        url_path = BASE_DIR + '/static/' + "fshare.vn_cookies.txt"
-        jar = parseCookieFile(url_path)
+        body_unicode = request.body.decode('utf-8')
+        body = jsons.loads(body_unicode)
 
-        myobj = {'linkcode': 'DUUINH64UOH7', 'clone_to_folder':'/', 'secure': 0}
-        print("ooo")
-        headers_api = {
-            'Authorization': 'Bearer ' + "jcrnprtt0l9vlt10p0ous2a6d9",
-            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-            'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
-        }
+        try:
+            code = body['code']
+        except:
+            return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
 
-        resp = requests.post('https://www.fshare.vn/api/v3/downloads/clone-file', cookies=jar, data=myobj, headers=headers_api)
-        print(resp.request.url)
-        print(resp.request.body)
-        print(resp.request.headers)
+        res = doFshareFlow.apply(kwargs={"code":code})
+        print("res", res.result)
+        if res :
+            return Response(
+                {"result": res.result},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"result": "error"},
+                status=status.HTTP_400_BAD_REQUEST)
 
-        print('aaaaaaaaaa')
-        print(resp.headers)
-        linkCode = resp.json().get("linkcode")
-        if linkCode == None:
-            return  Response(
-            {"result": "Error 400 - Cannot download File"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-        resp = requests.get('https://www.fshare.vn/api/v3/files/download-zip?linkcodes=' + linkCode, cookies=jar, headers=headers_api)
-        print(resp.request.url)
-        print(resp.request.body)
-        print(resp.request.headers)
-
-        print('bbbbbbbbbb')
-        print(resp.headers)
-        print(resp.json())
-
-
-        return Response(
-            {"result": resp.json()},
-            status=status.HTTP_200_OK,
-        )
     def home(request):
         return render(request, "home.html")
 
-
-
-
-
-def parseCookieFile(cookiefile):
-    cookies = Path(cookiefile)
-
-    jar = MozillaCookieJar(cookies)
-    jar.load()
-    # print(jar)
-    return jar
 
