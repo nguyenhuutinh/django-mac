@@ -106,6 +106,7 @@ def doFshareFlow2(code, server):
     if resp.status_code == 200:
         return resp.json().get("url")
     else :
+        print(resp.status_code, resp.content)
         return
 
 @shared_task
