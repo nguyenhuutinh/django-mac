@@ -39,11 +39,17 @@ const Fshare = (props) => {
       url.search = ""
       console.log(url.toString())
       newCode  = url.toString().replaceAll("https://www.fshare.vn/file/","")
-      console.log("replace",newCode)
-      newCode  = newCode.replaceAll("www.fshare.vn/file/","")
+
+
       newCode  = newCode.replaceAll("https://fshare.vn/file/","")
       newCode  = newCode.replaceAll("fshare.vn/file/","")
-
+      console.log("replace",newCode)
+    }
+    if(code.startsWith("www.fshare.vn/file/")){
+      newCode  = newCode.replaceAll("www.fshare.vn/file/","")
+    }
+    if(code.startsWith("fshare.vn")){
+      newCode  = newCode.replaceAll("fshare.vn/file/","")
     }
     console.log(newCode)
     const action = creators.getFshareLink(newCode, server);
