@@ -35,7 +35,8 @@ export const creators = {
       try {
         const body = { code: code, server: server};
         console.log("getFshareLink", body)
-        const res = await api.post('/api/auth/rest_check/', body);
+        var url = server == 1 ? '/api/auth/rest_check_2/' : '/api/auth/rest_check/'
+        const res = await api.post(url , body);
         console.log("getFshareLink", res.data)
         if(res.status == 200){
           dispatch({ type: types.FETCH_SUCCESS, data: res.data });

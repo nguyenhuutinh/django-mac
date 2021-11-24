@@ -9,7 +9,7 @@ const Fshare = (props) => {
   const fshareCheck = useSelector((state) => state.fshareCheck);
   const [loading, showLoading] = useState(false);
   const [code, setCode] = useState();
-  const [server, setServer] = useState(2);
+  const [server, setServer] = useState(1);
 
 
 
@@ -63,11 +63,11 @@ const Fshare = (props) => {
       <div >
       <Form onSubmit={(e)=>{handleSubmit(e)}} >
        <Form.Group className="mb-3" controlId="formBasicServer">
-          <Form.Label>Server {server}</Form.Label>
+          <Form.Label> {server}</Form.Label>
           <ButtonGroup aria-label="Server">
             <Button variant={server == 1 ? "primary" : "secondary"} style={{marginRight: "10px"}} onClick={()=>setServer(1)}>1</Button>
             <Button variant={server == 2 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(2)}>2</Button>
-            <Button variant={server == 3 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(3)}>3</Button>
+            {/* <Button variant={server == 3 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(3)}>3</Button> */}
           </ButtonGroup>
         </Form.Group>
 

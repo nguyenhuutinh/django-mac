@@ -23,6 +23,7 @@ import json
 from common.upload_task import doDownloadFlow
 
 from common.fshare_task import doFshareFlow
+from common.fshare_task2 import doFshareFlow2
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -127,6 +128,42 @@ class AuthViewSet(viewsets.ViewSet):
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
         res = doFshareFlow.apply(kwargs={"code":code, "server": server})
+        print("res", res.result)
+        if res :
+            return Response(
+                {"result": res.result},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"result": "error"},
+                status=status.HTTP_400_BAD_REQUEST)
+
+    def home(request):
+        return render(request, "home.html")
+
+
+
+
+class AuthViewSet(viewsets.ViewSet):
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[AllowAny],
+        url_path='rest_check_2',
+    )
+    @csrf_exempt
+    def rest_check_2(self, request):
+        body_unicode = request.body.decode('utf-8')
+        body = jsons.loads(body_unicode)
+        server = 1
+        try:
+            code = body['code']
+            server = body['server']
+        except:
+            return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
+        print(code, server)
+        res = doFshareFlow2.apply(kwargs={"code":code, "server": server})
         print("res", res.result)
         if res :
             return Response(
