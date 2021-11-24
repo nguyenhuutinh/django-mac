@@ -27,7 +27,7 @@ from googleapiclient.http import MediaIoBaseDownload
 
 from common.models import DownloadInfo
 
-STORE_DRIVE_ID = "1otrYJJbA92reDpUEKEwq3yCu3dbosfki"
+STORE_DRIVE_ID = "1Fj0_Smex1hLFPEeQkrdZrkTuffnGTUEf"
 SOURCE_DRIVE_ID = "1HKWPUhH2ldoQ5tdkxaj-3jBmZtSy9PHQ"
 def contains(list, filter):
     for x in list:
