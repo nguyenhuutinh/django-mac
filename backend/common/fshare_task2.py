@@ -102,11 +102,10 @@ def doFshareFlow2(code, server):
     }
     print(COOKIE_DATA)
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj,  headers=headers_api)
-    # print(resp.status_code, resp.content)
+    print(resp.status_code, resp.content)
     if resp.status_code == 200:
         return resp.json().get("url")
     else :
-        print(resp.status_code, resp.content)
         return
 
 @shared_task
