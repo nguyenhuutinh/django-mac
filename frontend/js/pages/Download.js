@@ -18,6 +18,13 @@ const Download = (props) => {
     dispatch(action);
   }, [dispatch]);
 
+  useEffect(() => {
+
+    showLoading(false)
+    return () => {
+
+    }
+  }, [restCheck])
 
   console.log(loading)
   useEffect(() => {
