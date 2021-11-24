@@ -33,7 +33,7 @@ export const creators = {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_REQUESTED });
       try {
-        const body = { code: code, server: server};
+        const body = { code: code, server: 2};
         console.log("getFshareLink", body)
         var url = server == 1 ? '/api/auth/rest_check_2/' : '/api/auth/rest_check/'
         const res = await api.post(url , body);
