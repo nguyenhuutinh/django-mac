@@ -109,10 +109,22 @@ def doFshareFlow(code, server):
 def heartBeating(server):
     print("heartBeating in acc " + str(server))
     if server == 1:
+        global startedHeartBeat1
+        if startedHeartBeat1 == True:
+            return
+        startedHeartBeat1 = True
         heartbeat1()
     elif server == 2:
+        global startedHeartBeat2
+        if startedHeartBeat2 == True:
+            return
+        startedHeartBeat2 = True
         heartbeat2()
     else:
+        global startedHeartBeat3
+        if startedHeartBeat3 == True:
+            return
+        startedHeartBeat3 = True
         heartbeat3()
 
 @shared_task
@@ -162,11 +174,9 @@ startedHeartBeat2 = False
 startedHeartBeat3 = False
 
 def heartbeat1():
-    global startedHeartBeat1
-    if startedHeartBeat1 == True:
-        return
+
     print("start heart beat thread 1")
-    startedHeartBeat1 = True
+
     thread = threading.Timer(60.0, heartbeat1)
     thread.start()
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -196,10 +206,7 @@ def heartbeat1():
 
 
 def heartbeat2():
-    global startedHeartBeat2
-    if startedHeartBeat2 == True:
-        return
-    startedHeartBeat2 = True
+
 
     thread = threading.Timer(60.0, heartbeat2)
     thread.start()
@@ -231,10 +238,6 @@ def heartbeat2():
 
 
 def heartbeat3():
-    global startedHeartBeat3
-    if startedHeartBeat3 == True:
-        return
-    startedHeartBeat3 = True
 
     thread = threading.Timer(60.0, heartbeat3)
     thread.start()
