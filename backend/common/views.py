@@ -109,6 +109,7 @@ def get_client_ip(request):
 
 
 
+
 class AuthViewSet(viewsets.ViewSet):
     @action(
         detail=False,
@@ -120,7 +121,7 @@ class AuthViewSet(viewsets.ViewSet):
     def rest_check(self, request):
         body_unicode = request.body.decode('utf-8')
         body = jsons.loads(body_unicode)
-        server = 1
+        server = 2
         try:
             code = body['code']
             server = body['server']
@@ -138,14 +139,7 @@ class AuthViewSet(viewsets.ViewSet):
             return Response(
                 {"result": "error"},
                 status=status.HTTP_400_BAD_REQUEST)
-
-    def home(request):
-        return render(request, "home.html")
-
-
-
-
-class AuthViewSet(viewsets.ViewSet):
+                
     @action(
         detail=False,
         methods=['post'],
@@ -156,7 +150,7 @@ class AuthViewSet(viewsets.ViewSet):
     def rest_check_2(self, request):
         body_unicode = request.body.decode('utf-8')
         body = jsons.loads(body_unicode)
-        server = 1
+        server = 2
         try:
             code = body['code']
             server = body['server']
