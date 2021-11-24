@@ -107,6 +107,7 @@ def doFshareFlow(code, server):
 
 @shared_task
 def heartBeating(server):
+    print("heartBeating in acc " + server)
     if server == 1:
         heartbeat1()
     elif server == 2:
