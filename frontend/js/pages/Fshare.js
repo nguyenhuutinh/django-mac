@@ -76,7 +76,7 @@ const Fshare = (props) => {
 
           <FormControl type="text" value={code} onChange={(e)=>handleChange(e)} />
         </Form.Group>
-        <Button type="submit" value="Submit" >Get File</Button>
+        <Button type="submit" value="Submit" >Get Download Link</Button>
       </Form>
 
       <br/>
