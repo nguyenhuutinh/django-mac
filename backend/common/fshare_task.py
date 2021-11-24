@@ -164,7 +164,7 @@ def heartbeat1():
     global startedHeartBeat1
     if startedHeartBeat1 == True:
         return
-
+    print("start heart beat thread 1")
     startedHeartBeat1 = True
     thread = threading.Timer(60.0, heartbeat1)
     thread.start()
@@ -189,6 +189,7 @@ def heartbeat1():
     if isSuccess != True:
         thread.cancel()
         startedHeartBeat1 = False
+        print("cancel thread 1")
     print(resp.json())
     return resp
 
@@ -201,6 +202,7 @@ def heartbeat2():
 
     thread = threading.Timer(60.0, heartbeat2)
     thread.start()
+    print("start heart beat thread 2")
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # url_path = BASE_DIR + '/static/' + FILE_NAME
     # jar = parseCookieFile(url_path)
@@ -222,6 +224,7 @@ def heartbeat2():
     if isSuccess != True:
         thread.cancel()
         startedHeartBeat2 = False
+        print("cancel thread 2")
     print(resp.json())
     return resp
 
@@ -234,6 +237,7 @@ def heartbeat3():
 
     thread = threading.Timer(60.0, heartbeat3)
     thread.start()
+    print("start heart beat thread 3")
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # url_path = BASE_DIR + '/static/' + FILE_NAME
     # jar = parseCookieFile(url_path)
@@ -253,6 +257,7 @@ def heartbeat3():
     # print(resp.request.body)
     # print(resp.request.headers)
     if isSuccess != True:
+        print("cancel thread 3")
         thread.cancel()
         startedHeartBeat3 = False
     print(resp.json())
