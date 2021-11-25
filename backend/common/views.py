@@ -7,7 +7,6 @@ from django.utils.timezone import now
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
-import logging
 
 import os
 import re
@@ -159,14 +158,8 @@ class AuthViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
-        # You must initialize logging, otherwise you'll not see debug output.
-        logging.basicConfig()
-        logging.getLogger().setLevel(logging.DEBUG)
-        requests_log = logging.getLogger("requests.packages.urllib3")
-        requests_log.setLevel(logging.DEBUG)
-        requests_log.propagate = True
-        res = requests.head('https://www.fshare.vn')
-        print("res", res.result)
+
+
         res = doFshareFlow2.apply(kwargs={ "code":code, "server": server})
         print("res", res.result)
         if res :
