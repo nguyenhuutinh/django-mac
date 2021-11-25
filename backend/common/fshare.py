@@ -96,10 +96,7 @@ class FS:
                 raise Exception('Login failed. Empty Cookie')
             self.token = self.get_token(r)
             self.cookies = r.cookies
-            # print(self.token, self.cookies)
-            d = dict();
-            d['token'] = self.token
-            d['cookies'] = self.cookies
+            
             return self.updateToDB(self.idenCookie, self.token, self.cookies)
 
 

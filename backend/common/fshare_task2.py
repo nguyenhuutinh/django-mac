@@ -51,9 +51,7 @@ def checkVariable(server):
 @shared_task
 def doFshareFlow2(code, server):
     print("doFshareFlow2")
-    checkVariable(server)
-    fshareI  = FS(server)
-    tokenInfo = fshareI.readCookieDB()
+    tokenInfo = checkVariable(server)
     if tokenInfo is None:
         raise Exception("token is empty")
     cookie_share_app = getattr(tokenInfo,"cookie_share_app")
