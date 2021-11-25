@@ -40,7 +40,7 @@ class FS:
         self.login_url = "https://www.fshare.vn/site/login"
         self.bypass_url = "https://www.fshare.vn/file/{}?token={}"
         self.user_agent = (
-            "Chrome/59.0.3071.115 Safari/537.36"
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
         )
         self.folder_api = (
             'https://www.fshare.vn/api/v3/files/'
