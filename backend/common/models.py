@@ -27,3 +27,18 @@ class DownloadInfo(models.Model):
         return ret
     # class Meta:
     #     unique_together = ['file_id']
+class TokenInfo(models.Model):
+    # define department name and description columns, the id column will be added automatically.
+    account_id = models.CharField(max_length=1000,primary_key = True)
+    cookie_share_app = models.CharField(max_length=1000)
+    cookie_csrf = models.CharField(max_length=1000, default="")
+
+    created = AutoCreatedField(_("created"), db_index=True)
+    modified = AutoLastModifiedField(_("modified"), db_index=True)
+
+    # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
+    def __str__(self):
+        ret = self.account_id + ',' + str(self.modified)
+        return ret
+    # class Meta:
+    #     unique_together = ['file_id']

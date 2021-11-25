@@ -32,7 +32,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from googleapiclient.http import MediaIoBaseDownload
 
-from common.models import DownloadInfo
+from common.models import TokenInfo
 CSRF_1 = "GJT4JS85sLKIQFT18Oq2ETYWCPK2rdS2"
 BEARER_KEY_1 = "6ivddn6ase7ckmn0bjcnrffpjj"
 FILE_NAME_1 = "fshare.vn_cookies.txt"

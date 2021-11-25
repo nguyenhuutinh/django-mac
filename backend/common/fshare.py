@@ -7,6 +7,15 @@ import math
 import ntpath
 import os
 import requests
+from common.models import TokenInfo
+
+ID_COOKIE_1 = "59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17968929%2C%22Zb5Y1cu3jmvTbCq76URkunJU_rfe6Ij9%22%2C1634889338%5D%22%3B%7D"
+
+
+ID_COOKIE_2 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
+
+
+ID_COOKIE_3 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
 class FS:
@@ -14,8 +23,13 @@ class FS:
     Get link Fshare with your account. If you have VIP, you will get
     premium download link.
     """
-    def __init__(self, idenCookie):
-        self.idenCookie = idenCookie
+    def __init__(self, server):
+        if server == 1:
+            self.idenCookie = ID_COOKIE_1
+        elif server == 3:
+            self.idenCookie = ID_COOKIE_3
+        else :
+            self.idenCookie = ID_COOKIE_2
         # self.email = email
         # self.password = password
         self.s = requests.Session()
@@ -78,13 +92,38 @@ class FS:
         if tree.xpath('//*[@href="/signup"]'):
             raise Exception('Login failed. Please check your email & password')
         else:
+            if r.cookies.get("fshare-app") == None:
+                raise Exception('Login failed. Empty Cookie')
             self.token = self.get_token(r)
             self.cookies = r.cookies
             # print(self.token, self.cookies)
             d = dict();
             d['token'] = self.token
             d['cookies'] = self.cookies
+            self.updateToDB(self.idenCookie, self.token, self.cookies)
             return d
+
+
+    def updateToDB(self, idenCookie, token , cookies):
+        update_values = {"account_id": idenCookie, "cookie_share_app": cookies.get("fshare-app"), "cookie_csrf": token}
+        tokenInfo, created = TokenInfo.objects.get_or_create(account_id=idenCookie, defaults =update_values)
+        if created:
+            print("created")
+            return self.readCookieDB()
+        else :
+            print(getattr(tokenInfo,"account_id"))
+            newSharedApp = cookies.get("fshare-app")
+            newToken = token
+            tokenInfo.cookie_csrf = newToken
+            tokenInfo.cookie_share_app = newSharedApp
+            tokenInfo.save(update_fields=['cookie_share_app', "cookie_csrf"])
+            return tokenInfo
+
+    def readCookieDB(self):
+        if TokenInfo.objects.filter(account_id = self.idenCookie).exists():
+            return TokenInfo.objects.filter(account_id = self.idenCookie)
+        else:
+            pass
 
     def get_media_link(self, media_id):
         """
