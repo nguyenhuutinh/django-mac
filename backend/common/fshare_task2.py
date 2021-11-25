@@ -97,7 +97,7 @@ def doFshareFlow2(code, server):
     checkVariable(server)
     global  COOKIE_DATA, TOKEN_KEY
 
-    print(COOKIE_DATA, TOKEN_KEY)
+    # print(COOKIE_DATA, TOKEN_KEY)
 
 
 
@@ -106,7 +106,7 @@ def doFshareFlow2(code, server):
         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
         'x-csrf-token': TOKEN_KEY
     }
-    print(COOKIE_DATA, TOKEN_KEY)
+    # print(COOKIE_DATA, TOKEN_KEY)
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj, cookies=COOKIE_DATA, headers=headers_api)
     print(resp.status_code)
     if resp.status_code == 200:
