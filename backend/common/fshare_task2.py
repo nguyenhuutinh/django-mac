@@ -59,7 +59,7 @@ def doFshareFlow2(code, server):
     cookie_csrf = getattr(tokenInfo,"cookie_csrf")
     print("token info: ", cookie_csrf, cookie_share_app)
 
-    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=1*10))
+    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=10*60))
 
     myobj = {'linkcode': code, 'withFcode5':0}
     headers_api = {
