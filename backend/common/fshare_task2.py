@@ -35,7 +35,7 @@ from common.fshare import FS
 
 from common.models import TokenInfo
 
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36\", \"sec-ch-ua-platform\":\"macOS\",\"sec-ch-ua-mobile\":\"?0\",\"sec-ch-ua\":\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
 
 
 def bypassword(server, filecode, password, token, app, passToken):
@@ -83,11 +83,14 @@ def doFshareFlow2(code, server, password, token):
     print("token info: ", cookie_csrf, cookie_share_app)
 
 
-    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=10*60))
+    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=1*10))
 
-    myobj = {'linkcode': code, 'withFcode5':0}
+    myobj = {'linkcode': code, 'withFcode5':0, '_csrf-app': cookie_csrf}
     headers_api = {
         'User-Agent': str(USER_AGENT),
+        "sec-ch-ua-platform":"macOS",
+        "sec-ch-ua-mobile":"?0",
+        "sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99",
         'x-csrf-token': cookie_csrf,
         'Cookie':'fshare-app=' + cookie_share_app
     }
@@ -221,7 +224,7 @@ def heartbeat2(csrf, app):
     print("heartbeat2", csrf)
     if(csrf == ""):
         return
-    thread = threading.Timer(60.0, heartbeat2, [csrf, app])
+    thread = threading.Timer(360.0, heartbeat2, [csrf, app])
     thread.start()
     print("start heart beat thread 2")
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
