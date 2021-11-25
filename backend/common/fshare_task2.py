@@ -190,7 +190,7 @@ def heartbeat2(csrf, app):
     print("heartbeat2", csrf)
     if(csrf == ""):
         return
-    thread = threading.Timer(60.0, heartbeat2)
+    thread = threading.Timer(60.0, heartbeat2, [csrf, app])
     thread.start()
     print("start heart beat thread 2")
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
