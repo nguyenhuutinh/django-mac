@@ -118,7 +118,7 @@ class FS:
                 return self.updateToDB(self.idenCookie, self.token, newApp)
             elif res.status_code == 201:
                 # self.token = self.get_token(res)
-                # print(self.token, res.cookies)
+                print(res.headers['location'])
                 return self.updateToDB(self.idenCookie, self.token, newApp)
             else :
                 pass
