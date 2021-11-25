@@ -80,7 +80,7 @@ class FS:
         else:
             self.token = self.get_token(r)
             self.cookies = r.cookies
-            print(self.token, self.cookies)
+            # print(self.token, self.cookies)
             d = dict();
             d['token'] = self.token
             d['cookies'] = self.cookies
