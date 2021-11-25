@@ -77,9 +77,6 @@ class FS:
                 raise Exception('No token for url {}'.format(response.url))
 
     def bypass(self, filecode, password, token, app, passToken):
-
-
-
             print("bypass", filecode, password, token, app, passToken)
             self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
             headers_api = {
@@ -87,9 +84,6 @@ class FS:
                 'Cookie':'fshare-app=' + app,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-
-
-
             r = requests.get(self.bypass_url.format(filecode, passToken), headers=headers_api)
             print(r.status_code)
             print(r.url)
