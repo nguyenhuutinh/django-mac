@@ -54,31 +54,32 @@ def doFshareFlow2(code, server):
     tokenInfo = checkVariable(server)
     if tokenInfo is None:
         raise Exception("token is empty")
+    print(tokenInfo)
     cookie_share_app = getattr(tokenInfo,"cookie_share_app")
     cookie_csrf = getattr(tokenInfo,"cookie_csrf")
     print("token info: ", cookie_csrf, cookie_share_app)
 
-    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=1*10))
+    # heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=1*10))
 
     myobj = {'linkcode': code, 'withFcode5':0}
     headers_api = {
-        'User-Agent': USER_AGENT,
+        'User-Agent': str(USER_AGENT),
         'x-csrf-token': cookie_csrf,
         'Cookie':'fshare-app=' + cookie_share_app
     }
-    # print(COOKIE_DATA, TOKEN_KEY)
+    print(headers_api)
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj, headers=headers_api)
     print("get file status code: ", resp.status_code)
     if resp.status_code == 200:
-
+        print("get file response", resp.content)
         response = resp.json().get("url")
-        print("get file response", response,  resp.json())
+
         return response
     else :
         return
 
 @shared_task
-def heartBeating(server, csrf, app ):
+def heartBeating(server, csrf, app):
     print("heartBeating in acc " + str(server),csrf, app )
     if server == 1:
         global startedHeartBeat1
@@ -202,9 +203,9 @@ def heartbeat2(csrf, app):
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':csrf,
         'Cookie':'fshare-app=' + app,
-        'User-Agent': USER_AGENT
+        'User-Agent': str(USER_AGENT)
     }
-
+    print(headers_api)
     resp = requests.get('https://www.fshare.vn/site/motion-auth',  headers=headers_api)
     isSuccess = resp.json().get("success")
     print("heartbeat2 result",resp.status_code, resp.content)

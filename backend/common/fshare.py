@@ -96,7 +96,7 @@ class FS:
                 raise Exception('Login failed. Empty Cookie')
             self.token = self.get_token(r)
             self.cookies = r.cookies
-            
+
             return self.updateToDB(self.idenCookie, self.token, self.cookies)
 
 
@@ -118,7 +118,7 @@ class FS:
 
     def readCookieDB(self):
         if TokenInfo.objects.filter(account_id = self.idenCookie).exists():
-            return TokenInfo.objects.filter(account_id = self.idenCookie)
+            return TokenInfo.objects.filter(account_id = self.idenCookie).first()
         else:
             pass
 

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
+from common.models import TokenInfo
 # the module name is app_name.models
 from common.models import DownloadInfo
 # Register your models to admin site, then you can add, edit, delete and search your models in Django admin site.
@@ -29,3 +30,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(DownloadInfo)
+admin.site.register(TokenInfo)

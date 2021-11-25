@@ -120,15 +120,13 @@ class AuthViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def rest_check(self, request):
-        body_unicode = request.body.decode('utf-8')
-        body = jsons.loads(body_unicode)
-        server = 2
         try:
-            code = body['code']
-            server = body['server']
+            code = request.data['code']
+            server = request.data['server']
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
+
         res = doFshareFlow.apply(kwargs={"code":code, "server": server})
         print("res", res.result)
         if res :
@@ -149,12 +147,11 @@ class AuthViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def rest_check_2(self, request):
-        body_unicode = request.body.decode('utf-8')
-        body = jsons.loads(body_unicode)
-        server = 2
+
+
         try:
-            code = body['code']
-            server = body['server']
+            code = request.data['code']
+            server = request.data['server']
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
