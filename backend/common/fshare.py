@@ -94,7 +94,10 @@ class FS:
             print(r.status_code)
             print(r.url)
             self.token = self.get_token(r)
-            newApp = r.cookies.get("fshare-app")
+            if r.cookies.get("fshare-app"):
+                newApp = r.cookies.get("fshare-app")
+            else :
+                newApp = app
             print("new-token", self.token)
             print("new-app", newApp)
             headers_api = {
@@ -116,7 +119,8 @@ class FS:
                 title = self.getTitle(res)
                 print(title)
                 self.token = self.get_token(res)
-                return self.updateToDB(self.idenCookie, self.token, res.cookies)
+                print(self.token, res.cookies)
+                return self.updateToDB(self.idenCookie, self.token, newApp)
             else :
                 pass
 
@@ -156,21 +160,21 @@ class FS:
             self.token = self.get_token(r)
             self.cookies = r.cookies
             print("login success with " + self.token)
-            return self.updateToDB(self.idenCookie, self.token, self.cookies)
+            return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
 
 
 
-    def updateToDB(self, idenCookie, token , cookies):
-        if(cookies.get("fshare-app") == None):
-            return
-        update_values = {"account_id": idenCookie, "cookie_share_app": cookies.get("fshare-app"), "cookie_csrf": token}
+    def updateToDB(self, idenCookie, token , app):
+        if(app == None):
+            raise Exception("shareapp Cookie empty")
+        update_values = {"account_id": idenCookie, "cookie_share_app": app, "cookie_csrf": token}
         tokenInfo, created = TokenInfo.objects.get_or_create(account_id=idenCookie, defaults =update_values)
         if created:
             print("created")
             return self.readCookieDB()
         else :
             print(getattr(tokenInfo,"account_id"))
-            newSharedApp = cookies.get("fshare-app")
+            newSharedApp = app
             newToken = token
             tokenInfo.cookie_csrf = newToken
             tokenInfo.cookie_share_app = newSharedApp
