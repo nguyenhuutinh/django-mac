@@ -153,7 +153,7 @@ def heartbeat1(csrf, app):
         return
     print("start heart beat thread 1")
 
-    thread = threading.Timer(60.0, heartbeat1)
+    thread = threading.Timer(60.0, heartbeat1, [csrf, app])
     thread.start()
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # url_path = BASE_DIR + '/static/' + FILE_NAME
@@ -227,7 +227,7 @@ def heartbeat3(csrf, app):
     global startedHeartBeat3
     if(csrf == ""):
         return
-    thread = threading.Timer(60.0, heartbeat3)
+    thread = threading.Timer(60.0, heartbeat3, [csrf, app])
     thread.start()
     print("start heart beat thread 3")
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
