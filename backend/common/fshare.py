@@ -19,7 +19,7 @@ ID_COOKIE_2 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a
 ID_COOKIE_3 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36\", \"sec-ch-ua-platform\":\"macOS\",\"sec-ch-ua-mobile\":\"?0\",\"sec-ch-ua\":\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
 
 
 class FS:
@@ -96,7 +96,7 @@ class FS:
             print("new-token", self.token)
             print("new-app", newApp)
             headers_api = {
-                # 'User-Agent': str(USER_AGENT),
+                'User-Agent': str(USER_AGENT),
                 'Cookie':'fshare-app=' + newApp,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
