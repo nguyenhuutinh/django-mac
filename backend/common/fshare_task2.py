@@ -224,7 +224,7 @@ def heartbeat1():
 
 
 def heartbeat2():
-
+    print("heartbeat2", TOKEN_KEY_2)
     global startedHeartBeat2,TOKEN_KEY_2
     if(TOKEN_KEY_2 == ""):
         return
