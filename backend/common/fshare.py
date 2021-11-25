@@ -86,6 +86,7 @@ class FS:
                 'Cookie':'fshare-app={}'.format(app) ,
                 # 'Content-Type': 'application/x-www-form-urlencoded'
             }
+            self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
             print(url)
@@ -108,6 +109,7 @@ class FS:
             print("new-token", self.token)
             print("new-app", newApp)
             self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+            self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
             headers_api = {
                 'User-Agent': str(USER_AGENT),
                 'Content-Type': 'application/x-www-form-urlencoded'
