@@ -29,12 +29,13 @@ const Fshare = (props) => {
     setPass(event.target.value);
   }
   const getParameterByName = (name, url = window.location.href) =>{
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    let searchParams = new URLSearchParams(url);
+    for (let p of searchParams) {
+      console.log(p);
+    }
+    console.log(url, searchParams.toString())
+    return searchParams.get(name)
+
 }
   const handleSubmit = (e) =>{
     e.preventDefault();
@@ -50,7 +51,7 @@ const Fshare = (props) => {
       // if(url.search.has('token')){
       //   token = url.get("token")
       // }
-      token = getParameterByName("token", code)
+      token = getParameterByName("token", url.search)
       console.log("token", token)
 
       url.hash = ""

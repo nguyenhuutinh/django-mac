@@ -31,8 +31,8 @@ class TokenInfo(models.Model):
     # define department name and description columns, the id column will be added automatically.
     account_id = models.CharField(max_length=1000,primary_key = True)
     cookie_share_app = models.CharField(max_length=1000)
-    cookie_csrf = models.CharField(max_length=1000, default="")
-
+    cookie_csrf = models.CharField(max_length=1000)
+    # cookie_csrf_2 = models.CharField(max_length=1000)
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
 

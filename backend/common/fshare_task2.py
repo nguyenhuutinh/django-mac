@@ -243,15 +243,17 @@ def heartbeat2(csrf, app):
     resp = requests.get('https://www.fshare.vn/site/motion-auth',  headers=headers_api)
     isSuccess = resp.json().get("success")
     print("heartbeat2 result",resp.status_code, resp.content)
+    print(resp.json())
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
     if isSuccess != True:
         thread.cancel()
         startedHeartBeat2 = False
+        print("canceled thread 2")
         doLoginAgain(2)
-        print("cancel thread 2")
-    print(resp.json())
+
+
     return resp
 
 

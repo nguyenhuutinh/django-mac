@@ -21,7 +21,7 @@ ID_COOKIE_3 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
 
-
+cookies = None
 class FS:
     """
     Get link Fshare with your account. If you have VIP, you will get
@@ -52,7 +52,7 @@ class FS:
             'download?dl_type=media&linkcode={}'
         )
         self.token = ""
-        self.cookies = None
+
 
     def get_token(self, response):
         """
@@ -77,24 +77,36 @@ class FS:
                 raise Exception('No token for url {}'.format(response.url))
 
     def bypass(self, filecode, password, token, app, passToken):
+            global cookies
             print("bypass", filecode, password, token, app, passToken)
-            self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+
             headers_api = {
-                'User-Agent': str(USER_AGENT),
-                'Cookie':'fshare-app=' + app,
-                'Content-Type': 'application/x-www-form-urlencoded'
+                "x-csrf-token": token,
+                # 'User-Agent': str(USER_AGENT),
+                'Cookie':'fshare-app={}'.format(app) ,
+                # 'Content-Type': 'application/x-www-form-urlencoded'
             }
-            r = self.s.get(self.bypass_url.format(filecode, passToken), headers=headers_api)
+            # print(passToken)
+            url = self.bypass_url.format(filecode, passToken)
+            print(url)
+            r = self.s.get(url, cookies = cookies, headers=headers_api)
             print(r.status_code)
-            self.cookies= r.cookies
-            print(r.url)
-            self.token = self.get_token(r)
-            if r.cookies.get("fshare-app"):
-                newApp = r.cookies.get("fshare-app")
+            # print(r.request.body)
+            # print(r.request.headers)
+            print(r.cookies)
+            # self.cookies= r.cookies
+
+            if r.url != self.bypass_url.format(filecode, passToken):
+                self.token = self.get_token(r)
+                if r.cookies.get("fshare-app"):
+                    newApp = r.cookies.get("fshare-app")
+                else :
+                    newApp = app
             else :
                 newApp = app
             print("new-token", self.token)
             print("new-app", newApp)
+            self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
             headers_api = {
                 'User-Agent': str(USER_AGENT),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -104,7 +116,7 @@ class FS:
                 'DownloadPasswordForm[password]': password,
             }
 
-            res = self.s.post(r.url, data=data,cookies = self.cookies, headers=headers_api)
+            res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api)
             print(res.url)
             print(res.request.headers)
 
@@ -123,6 +135,7 @@ class FS:
                 pass
 
     def login(self):
+        global cookies
         print("login")
         if(self.idenCookie == ""):
             raise Exception("identity Cookie empty")
@@ -157,7 +170,8 @@ class FS:
                 raise Exception('Login failed. Empty Cookie')
             self.token = self.get_token(r)
             self.cookies = r.cookies
-            print("login success with " + self.token)
+            cookies = r.cookies
+            print("login success with " + self.token, self.cookies.get("fshare-app"))
             return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
 
 
