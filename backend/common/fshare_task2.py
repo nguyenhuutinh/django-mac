@@ -99,7 +99,7 @@ def doFshareFlow2(code, server):
 
     # print(COOKIE_DATA, TOKEN_KEY)
 
-
+    heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*10))
 
     myobj = {'linkcode': code, 'withFcode5':0}
     headers_api = {
@@ -186,7 +186,10 @@ startedHeartBeat2 = False
 startedHeartBeat3 = False
 
 def heartbeat1():
-    global startedHeartBeat1
+
+    global startedHeartBeat1, TOKEN_KEY_1
+    if(TOKEN_KEY_1 == ""):
+        return
     print("start heart beat thread 1")
 
     thread = threading.Timer(60.0, heartbeat1)
@@ -200,11 +203,12 @@ def heartbeat1():
         "referer":"https://www.fshare.vn/file/manager",
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':TOKEN_KEY_1,
+        'Cookie':'fshare-app=' + COOKIE_1.get("fshare-app"),
         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
         # 'Cookie': COOKIE_1
     }
 
-    resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=COOKIE_1, headers=headers_api)
+    resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
     isSuccess = resp.json().get("success")
     # print(resp.request.url)
     # print(resp.request.body)
@@ -222,6 +226,8 @@ def heartbeat1():
 def heartbeat2():
 
     global startedHeartBeat2,TOKEN_KEY_2
+    if(TOKEN_KEY_2 == ""):
+        return
     thread = threading.Timer(60.0, heartbeat2)
     thread.start()
     print("start heart beat thread 2")
@@ -234,10 +240,11 @@ def heartbeat2():
         "referer":"https://www.fshare.vn/file/manager",
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':TOKEN_KEY_2,
+        'Cookie':'fshare-app=' + COOKIE_2.get("fshare-app"),
         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""
     }
 
-    resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=COOKIE_2, headers=headers_api)
+    resp = requests.get('https://www.fshare.vn/site/motion-auth',  headers=headers_api)
     isSuccess = resp.json().get("success")
     print("heartbeat2 result",resp.status_code, resp.content)
     # print(resp.request.url)
@@ -254,7 +261,11 @@ def heartbeat2():
 
 
 def heartbeat3():
-    global startedHeartBeat3, TOKEN_KEY_1
+
+
+    global startedHeartBeat3, TOKEN_KEY_3
+    if(TOKEN_KEY_3 == ""):
+        return
     thread = threading.Timer(60.0, heartbeat3)
     thread.start()
     print("start heart beat thread 3")
@@ -267,10 +278,11 @@ def heartbeat3():
         "referer":"https://www.fshare.vn/file/manager",
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':TOKEN_KEY_3,
+        'Cookie':'fshare-app=' + COOKIE_3.get("fshare-app"),
         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
     }
 
-    resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=COOKIE_3, headers=headers_api)
+    resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
     isSuccess = resp.json().get("success")
     # print(resp.request.url)
     # print(resp.request.body)
