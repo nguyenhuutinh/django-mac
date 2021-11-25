@@ -66,7 +66,7 @@ const Fshare = (props) => {
           <Form.Label> Server {server}</Form.Label>
           <ButtonGroup aria-label="Server">
             <Button variant={server == 1 ? "primary" : "secondary"} style={{marginRight: "10px"}} onClick={()=>setServer(1)}>1</Button>
-            <Button variant={server == 2 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(2)}>2</Button>
+            {/* <Button variant={server == 2 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(2)}>2</Button> */}
             {/* <Button variant={server == 3 ? "primary" : "secondary"} style={{marginRight: "10px"}}  onClick={()=>setServer(3)}>3</Button> */}
           </ButtonGroup>
         </Form.Group>
