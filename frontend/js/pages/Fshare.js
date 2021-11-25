@@ -98,7 +98,7 @@ const Fshare = (props) => {
 
           <FormControl type="text" value={password} onChange={(e)=>handlePassChange(e)} />
         </Form.Group>
-        <Button type="submit" value="Submit" >Get Download Link</Button>
+        <Button type="submit" value="Submit" disabled={loading} loading={loading}>{loading ? "Checking..." : "Get Download Link"}</Button>
       </Form>
 
       <br/>
