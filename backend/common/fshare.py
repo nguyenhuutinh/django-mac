@@ -100,8 +100,8 @@ class FS:
             d = dict();
             d['token'] = self.token
             d['cookies'] = self.cookies
-            self.updateToDB(self.idenCookie, self.token, self.cookies)
-            return d
+            return self.updateToDB(self.idenCookie, self.token, self.cookies)
+
 
 
     def updateToDB(self, idenCookie, token , cookies):
