@@ -84,8 +84,9 @@ class FS:
                 'Cookie':'fshare-app=' + app,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-            r = requests.get(self.bypass_url.format(filecode, passToken), headers=headers_api)
+            r = self.s.get(self.bypass_url.format(filecode, passToken), headers=headers_api)
             print(r.status_code)
+            cookies= r.cookies
             print(r.url)
             self.token = self.get_token(r)
             if r.cookies.get("fshare-app"):
@@ -104,7 +105,7 @@ class FS:
                 'DownloadPasswordForm[password]': password,
             }
 
-            res = requests.post(r.url, data=data, headers=headers_api)
+            res = self.s.post(r.url, data=data,cookies =cookies, headers=headers_api)
             print(res.url)
             print(res.request.headers)
 
