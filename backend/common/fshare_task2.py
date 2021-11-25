@@ -110,7 +110,7 @@ def doFshareFlow2(code, server):
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj, cookies=COOKIE_DATA, headers=headers_api)
     print(resp.status_code)
     if resp.status_code == 200:
-        heartBeating(server)
+        heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
         return resp.json().get("url")
     else :
         return
