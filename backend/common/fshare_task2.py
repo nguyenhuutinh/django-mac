@@ -98,7 +98,7 @@ def doFshareFlow2(code, server):
     global  COOKIE_DATA, TOKEN_KEY
 
     # print(COOKIE_DATA, TOKEN_KEY)
-    heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
+
 
 
     myobj = {'linkcode': code, 'withFcode5':0}
@@ -108,11 +108,11 @@ def doFshareFlow2(code, server):
     }
     # print(COOKIE_DATA, TOKEN_KEY)
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj, cookies=COOKIE_DATA, headers=headers_api)
-    print(resp.status_code)
+    print("get file status code: ", resp.status_code)
     if resp.status_code == 200:
 
         response = resp.json().get("url")
-        print(response)
+        print("get file response", response,  resp.json())
         return response
     else :
         return
@@ -186,7 +186,7 @@ startedHeartBeat2 = False
 startedHeartBeat3 = False
 
 def heartbeat1():
-
+    global startedHeartBeat1
     print("start heart beat thread 1")
 
     thread = threading.Timer(60.0, heartbeat1)
@@ -221,7 +221,7 @@ def heartbeat1():
 
 def heartbeat2():
 
-
+    global startedHeartBeat2,TOKEN_KEY_2
     thread = threading.Timer(60.0, heartbeat2)
     thread.start()
     print("start heart beat thread 2")
@@ -245,14 +245,15 @@ def heartbeat2():
     if isSuccess != True:
         thread.cancel()
         startedHeartBeat2 = False
-        doLoginAgain(ID_COOKIE_2)
+        TOKEN_KEY_2 = ""
+        checkVariable(3)
         print("cancel thread 2")
     print(resp.json())
     return resp
 
 
 def heartbeat3():
-
+    global startedHeartBeat3, TOKEN_KEY_1
     thread = threading.Timer(60.0, heartbeat3)
     thread.start()
     print("start heart beat thread 3")
@@ -276,7 +277,8 @@ def heartbeat3():
     if isSuccess != True:
         print("cancel thread 3")
         thread.cancel()
-        doLoginAgain(ID_COOKIE_3)
+        TOKEN_KEY_1 = ""
+        checkVariable(3)
         startedHeartBeat3 = False
     print(resp.json())
     return resp

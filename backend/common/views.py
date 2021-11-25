@@ -24,6 +24,7 @@ from common.upload_task import doDownloadFlow
 
 from common.fshare_task import doFshareFlow
 from common.fshare_task2 import doFshareFlow2
+from common.fshare_task2 import heartBeating
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -157,6 +158,8 @@ class AuthViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
+        heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
+
         res = doFshareFlow2.apply(kwargs={ "code":code, "server": server})
         print("res", res.result)
         if res :
