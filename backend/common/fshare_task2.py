@@ -81,7 +81,7 @@ def checkVariable(server):
     else:
 
         if(TOKEN_KEY_3 == ""):
-            res = doLoginAgain(ID_COOKIE_1)
+            res = doLoginAgain(ID_COOKIE_3)
             if res:
                 TOKEN_KEY_3 = res("token")
                 COOKIE_3 = res("cookies")
@@ -239,6 +239,7 @@ def heartbeat2():
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', cookies=COOKIE_2, headers=headers_api)
     isSuccess = resp.json().get("success")
+    print("heartbeat2 result",resp.status_code, resp.content)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
@@ -246,7 +247,7 @@ def heartbeat2():
         thread.cancel()
         startedHeartBeat2 = False
         TOKEN_KEY_2 = ""
-        checkVariable(3)
+        checkVariable(2)
         print("cancel thread 2")
     print(resp.json())
     return resp
