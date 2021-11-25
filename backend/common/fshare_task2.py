@@ -43,16 +43,12 @@ def bypassword(server, filecode, password, token, app, passToken):
     return fshareI.bypass(filecode, password, token, app, passToken)
 
 def checkVariable(server):
-    fshareI  = FS(server)
-    tokenInfo = fshareI.readCookieDB()
-    if(tokenInfo == None):
-        res = doLoginAgain(server)
-        if res == None:
-            raise Exception("error login")
-        else:
-            return res
+    # fshareI  = FS(server)
+    res = doLoginAgain(server)
+    if res == None:
+        raise Exception("error login")
     else:
-        return tokenInfo
+        return res
 @shared_task
 def doFshareFlow2(code, server, password, token):
     print("doFshareFlow2")
