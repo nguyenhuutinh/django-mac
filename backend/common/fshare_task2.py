@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import threading
 import io
 import re
-import httplib2
+import logging
 import os
 import ntpath
 import json
@@ -37,6 +37,11 @@ from common.models import TokenInfo
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36\", \"sec-ch-ua-platform\":\"macOS\",\"sec-ch-ua-mobile\":\"?0\",\"sec-ch-ua\":\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
 
+
+def bypassword(server, filecode, password, token, app, passToken):
+    fshareI  = FS(server)
+    return fshareI.bypass(filecode, password, token, app, passToken)
+
 def checkVariable(server):
     fshareI  = FS(server)
     tokenInfo = fshareI.readCookieDB()
@@ -49,17 +54,35 @@ def checkVariable(server):
     else:
         return tokenInfo
 @shared_task
-def doFshareFlow2(code, server):
+def doFshareFlow2(code, server, password, token):
     print("doFshareFlow2")
+
+    logging.basicConfig(level=logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
     tokenInfo = checkVariable(server)
     if tokenInfo is None:
         raise Exception("token is empty")
-    print(tokenInfo)
+
     cookie_share_app = getattr(tokenInfo,"cookie_share_app")
     cookie_csrf = getattr(tokenInfo,"cookie_csrf")
+
+    if password and password != "" :
+        if token == "" or token == None:
+            return "File có password cần gửi link đầy đủ. ví dụ: https://www.fshare.vn/file/X7TAOCTDJAJNA96RT?token=1637849239"
+        tokenInfo = bypassword(server, code, password, cookie_csrf, cookie_share_app, token)
+
+        if tokenInfo:
+            cookie_share_app = getattr(tokenInfo,"cookie_share_app")
+            cookie_csrf = getattr(tokenInfo,"cookie_csrf")
+            print("tokenInfo2222", cookie_csrf, cookie_share_app)
+
     print("token info: ", cookie_csrf, cookie_share_app)
 
-    heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=10*60))
+
+    # heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=10*60))
 
     myobj = {'linkcode': code, 'withFcode5':0}
     headers_api = {
@@ -222,7 +245,7 @@ def heartbeat2(csrf, app):
     if isSuccess != True:
         thread.cancel()
         startedHeartBeat2 = False
-        checkVariable(2)
+        doLoginAgain(2)
         print("cancel thread 2")
     print(resp.json())
     return resp

@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Form, Button, ButtonGroup, FormControl} from 'react-bootstrap';
 import DjangoImgSrc from '../../assets/images/django-logo-negative.png';
 import { creators } from '../store/rest_check';
-
+import qs from 'qs';
 const Fshare = (props) => {
   const dispatch = useDispatch();
   const fshareCheck = useSelector((state) => state.fshareCheck);
   const [loading, showLoading] = useState(false);
   const [code, setCode] = useState();
+  const [password, setPass] = useState();
   const [server, setServer] = useState(1);
 
 
@@ -24,17 +25,34 @@ const Fshare = (props) => {
   const handleChange = (event) => {
     setCode(event.target.value);
   }
+  const handlePassChange = (event) => {
+    setPass(event.target.value);
+  }
+  const getParameterByName = (name, url = window.location.href) =>{
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
   const handleSubmit = (e) =>{
     e.preventDefault();
-    // var {location} = props
+    console.log(e)
     showLoading(true)
-    console.log(code)
+    // console.log(code)
     var newCode = code
+    let token = ""
     if(code.startsWith("https")){
       let url = new URL(code);
 
-
       // Delete the foo parameter.
+      // if(url.search.has('token')){
+      //   token = url.get("token")
+      // }
+      token = getParameterByName("token", code)
+      console.log("token", token)
+
       url.hash = ""
       url.search = ""
       console.log(url.toString())
@@ -51,8 +69,8 @@ const Fshare = (props) => {
     if(code.startsWith("fshare.vn")){
       newCode  = newCode.replaceAll("fshare.vn/file/","")
     }
-    console.log(newCode)
-    const action = creators.getFshareLink(newCode, server);
+    // console.log(newCode)
+    const action = creators.getFshareLink(newCode, server, password, token);
     dispatch(action);
   }
   console.log("fshareCheck", fshareCheck.result, typeof fshareCheck.result === 'json')
@@ -72,9 +90,12 @@ const Fshare = (props) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicCode">
-          <Form.Label>Fshare Link:</Form.Label>
+          <Form.Label>Fshare Link or Code:</Form.Label>
 
           <FormControl type="text" value={code} onChange={(e)=>handleChange(e)} />
+          <Form.Label>File Password:</Form.Label>
+
+          <FormControl type="text" value={password} onChange={(e)=>handlePassChange(e)} />
         </Form.Group>
         <Button type="submit" value="Submit" >Get Download Link</Button>
       </Form>
@@ -89,7 +110,7 @@ const Fshare = (props) => {
         File is Ready. Click Here to Download
       </Button>}
       {!loading &&fshareCheck.result && typeof fshareCheck.result === 'object' && <div>{JSON.stringify(fshareCheck.result) }</div>}
-      {!loading && fshareCheck.result && typeof fshareCheck.result === String && <div>{(fshareCheck.result) }</div>}
+      {!loading && fshareCheck.result && typeof fshareCheck.result === 'string' && <div>{(fshareCheck.result) }</div>}
     </div>
   );
 }

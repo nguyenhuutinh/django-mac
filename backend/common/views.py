@@ -147,17 +147,19 @@ class AuthViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def rest_check_2(self, request):
-
+        print("rest_check_2")
 
         try:
-            code = request.data['code']
-            server = request.data['server']
+            code = request.data.get('code')
+            server = request.data.get('server')
+            password = request.data.get('password')
+            token = request.data.get('token')
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
-        print(code, server)
+        print(code, server, password, token)
 
 
-        res = doFshareFlow2.apply(kwargs={ "code":code, "server": server})
+        res = doFshareFlow2.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
         print("res", res.result)
         if res :
             return Response(

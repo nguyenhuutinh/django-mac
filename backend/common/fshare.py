@@ -1,5 +1,6 @@
 import json
 import io
+import logging
 
 from requests.api import head
 from lxml import html
@@ -18,6 +19,9 @@ ID_COOKIE_2 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a
 ID_COOKIE_3 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36\", \"sec-ch-ua-platform\":\"macOS\",\"sec-ch-ua-mobile\":\"?0\",\"sec-ch-ua\":\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+
+
 class FS:
     """
     Get link Fshare with your account. If you have VIP, you will get
@@ -34,6 +38,7 @@ class FS:
         # self.password = password
         self.s = requests.Session()
         self.login_url = "https://www.fshare.vn/site/login"
+        self.bypass_url = "https://www.fshare.vn/file/{}?token={}"
         self.user_agent = (
             "Chrome/59.0.3071.115 Safari/537.36"
         )
@@ -59,7 +64,61 @@ class FS:
             return token
         except IndexError:
             raise Exception('No token for url {}'.format(response.url))
-            pass
+
+    def getTitle(self, response):
+            """
+            Get Title for POST requests.
+            """
+            tree = html.fromstring(response.content)
+            try:
+                token = tree.xpath('/html/head/title/text()')
+                return token
+            except IndexError:
+                raise Exception('No token for url {}'.format(response.url))
+
+    def bypass(self, filecode, password, token, app, passToken):
+
+
+
+            print("bypass", filecode, password, token, app, passToken)
+            self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+            headers_api = {
+                'User-Agent': str(USER_AGENT),
+                'Cookie':'fshare-app=' + app,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+
+
+
+            r = requests.get(self.bypass_url.format(filecode, passToken), headers=headers_api)
+            print(r.status_code)
+            print(r.url)
+            self.token = self.get_token(r)
+            newApp = r.cookies.get("fshare-app")
+            print("new-token", self.token)
+            print("new-app", newApp)
+            headers_api = {
+                'User-Agent': str(USER_AGENT),
+                'Cookie':'fshare-app=' + newApp,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            data = {
+                '_csrf-app': self.token,
+                'DownloadPasswordForm[password]': password,
+            }
+
+            res = requests.post(r.url, data=data, headers=headers_api)
+            print(res.url)
+            print(res.request.headers)
+
+            print(res.status_code)
+            if res.status_code == 200:
+                title = self.getTitle(res)
+                print(title)
+                self.token = self.get_token(res)
+                return self.updateToDB(self.idenCookie, self.token, res.cookies)
+            else :
+                pass
 
     def login(self):
         print("login")
@@ -96,12 +155,14 @@ class FS:
                 raise Exception('Login failed. Empty Cookie')
             self.token = self.get_token(r)
             self.cookies = r.cookies
-
+            print("login success with " + self.token)
             return self.updateToDB(self.idenCookie, self.token, self.cookies)
 
 
 
     def updateToDB(self, idenCookie, token , cookies):
+        if(cookies.get("fshare-app") == None):
+            return
         update_values = {"account_id": idenCookie, "cookie_share_app": cookies.get("fshare-app"), "cookie_csrf": token}
         tokenInfo, created = TokenInfo.objects.get_or_create(account_id=idenCookie, defaults =update_values)
         if created:
