@@ -78,7 +78,7 @@ class FS:
 
     def bypass(self, filecode, password, token, app, passToken):
             global cookies
-            print("bypass", filecode, password, token, app, passToken)
+            print("bypass", filecode, password, token, app, passToken, cookies)
 
             headers_api = {
                 "x-csrf-token": token,
@@ -88,8 +88,9 @@ class FS:
             }
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
-            # print(url)
+            print(url)
             r = self.s.get(url, cookies = cookies, headers=headers_api)
+            print(r.url)
             # print(r.status_code)
             # print(r.request.body)
             # print(r.request.headers)
