@@ -109,9 +109,13 @@ class FS:
             print(res.request.headers)
 
             print(res.status_code)
-            if res.ok:
+            if res.status_code == 200:
                 title = self.getTitle(res)
                 print(title)
+                self.token = self.get_token(res)
+                print(self.token, res.cookies)
+                return self.updateToDB(self.idenCookie, self.token, newApp)
+            elif res.status_code == 201:
                 self.token = self.get_token(res)
                 print(self.token, res.cookies)
                 return self.updateToDB(self.idenCookie, self.token, newApp)
