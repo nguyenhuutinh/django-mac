@@ -133,7 +133,8 @@ class FS:
             elif res.status_code == 201:
                 # self.token = self.get_token(res)
                 print(res.content)
-                return self.updateToDB(self.idenCookie, self.token, newApp)
+                self.updateToDB(self.idenCookie, self.token, newApp)
+                pass
             else :
                 pass
 
