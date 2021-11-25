@@ -158,7 +158,7 @@ class AuthViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
-        heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
+        # heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
 
         res = doFshareFlow2.apply(kwargs={ "code":code, "server": server})
         print("res", res.result)
