@@ -96,7 +96,7 @@ class FS:
             print("new-token", self.token)
             print("new-app", newApp)
             headers_api = {
-                'User-Agent': str(USER_AGENT),
+                # 'User-Agent': str(USER_AGENT),
                 'Cookie':'fshare-app=' + newApp,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
