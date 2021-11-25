@@ -88,12 +88,12 @@ class FS:
             }
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
-            print(url)
+            # print(url)
             r = self.s.get(url, cookies = cookies, headers=headers_api)
-            print(r.status_code)
+            # print(r.status_code)
             # print(r.request.body)
             # print(r.request.headers)
-            print(r.cookies)
+            # print(r.cookies)
             # self.cookies= r.cookies
 
             if r.url != self.bypass_url.format(filecode, passToken):
@@ -117,8 +117,8 @@ class FS:
             }
 
             res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api)
-            print(res.url)
-            print(res.request.headers)
+            # print(res.url)
+            # print(res.request.headers)
 
             print(res.status_code)
             if res.status_code == 200:
