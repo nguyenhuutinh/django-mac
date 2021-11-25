@@ -72,14 +72,15 @@ def doFshareFlow2(code, server):
     print("get file status code: ", resp.status_code)
     if resp.status_code == 200:
         try:
-            print("get file response", resp.json())
+            print(resp.content)
+            # print("get file response", resp.json())
             response = resp.json().get("url")
             if response:
                 return response
             else :
                 return resp.json().get("errors")
         except Exception:
-            return Exception(resp.json())
+            return resp.content
 
     else :
         return
