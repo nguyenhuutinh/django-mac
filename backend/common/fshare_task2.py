@@ -111,7 +111,9 @@ def doFshareFlow2(code, server):
     print(resp.status_code)
     if resp.status_code == 200:
         heartBeating.apply_async(kwargs={ "server": server}, eta=now() + timedelta(seconds=1*30))
-        return resp.json().get("url")
+        response = resp.json().get("url")
+        print(response)
+        return response
     else :
         return
 
@@ -212,7 +214,7 @@ def heartbeat1():
         startedHeartBeat1 = False
         print("cancel thread 1")
         doLoginAgain(ID_COOKIE_1)
-        doLoginAgain()
+
     print(resp.json())
     return resp
 
