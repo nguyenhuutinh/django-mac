@@ -109,7 +109,7 @@ class FS:
             print(res.request.headers)
 
             print(res.status_code)
-            if res.status_code == 200:
+            if res.ok:
                 title = self.getTitle(res)
                 print(title)
                 self.token = self.get_token(res)
@@ -308,7 +308,7 @@ class FS:
         Check if link is alive.
         """
         r = self.s.head(url, allow_redirects=True)
-        if r.status_code == 200:
+        if r.ok:
             return True
         else:
             return False
@@ -316,7 +316,7 @@ class FS:
     def is_exist(self, url):
 
         r = self.s.get(url, allow_redirects=False)
-        if r.status_code == 200:
+        if r.ok:
             tree = html.fromstring(r.content)
             title = tree.xpath('//title/text()')[0]
             if title == 'Not Found - Fshare':

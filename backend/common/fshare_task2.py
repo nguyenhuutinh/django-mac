@@ -94,7 +94,7 @@ def doFshareFlow2(code, server, password, token):
     print(headers_api)
     resp = requests.post('https://www.fshare.vn/download/get',data = myobj, headers=headers_api)
     print("get file status code: ", resp.status_code)
-    if resp.status_code == 200:
+    if resp.ok:
         try:
             print(resp.content)
             # print("get file response", resp.json())
