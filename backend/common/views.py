@@ -139,7 +139,7 @@ class AuthViewSet(viewsets.ViewSet):
             return Response(
                 {"result": "error"},
                 status=status.HTTP_400_BAD_REQUEST)
-                
+
     @action(
         detail=False,
         methods=['post'],
@@ -157,7 +157,7 @@ class AuthViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
-        res = doFshareFlow2.apply(kwargs={"code":code, "server": server})
+        res = doFshareFlow2.apply(kwargs={ "code":code, "server": server})
         print("res", res.result)
         if res :
             return Response(
