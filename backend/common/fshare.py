@@ -70,8 +70,8 @@ class FS:
             """
             Get Title for POST requests.
             """
-            tree = html.fromstring(response.content)
             try:
+                tree = html.fromstring(response.content)
                 token = tree.xpath('/html/head/title/text()')
                 return token
             except IndexError:
@@ -137,7 +137,7 @@ class FS:
                 self.token = self.get_token(res)
                 print(self.token, res.cookies, res.content)
                 return self.updateToDB(self.idenCookie, self.token, newApp)
-                pass
+                # pass
             else :
                 pass
 
