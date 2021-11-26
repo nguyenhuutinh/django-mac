@@ -171,13 +171,14 @@ class AuthViewSet(viewsets.ViewSet):
         serial = RestCaptchaSerializer(data=data)
         key = get_cache_key(capchaValue)
         value = cache.get(key)
+        isValidCaptcha = "{}.0".format(capchaValue) in key
         print(key, value)
         print(code, server, password, token)
         print(capchaKey, capchaValue,serial.is_valid())
-        # if serial.is_valid() == False:
-        #     return Response(
-        #                     {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if isValidCaptcha == False:
+            return Response(
+                            {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
+                            status=status.HTTP_401_UNAUTHORIZED)
 
 
 
