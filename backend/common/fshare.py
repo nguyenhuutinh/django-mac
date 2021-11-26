@@ -310,17 +310,20 @@ class FS:
 
     def get_file_name(self, resp):
         tree = html.fromstring(resp.content)
-        file_name = tree.xpath(
-            '//*[@property="og:title"]'
-        )[0].get('content').split(' - Fshare')[0]
+        try:
+            file_name = tree.xpath(
+                '//*[@property="og:title"]'
+            )[0].get('content').split(' - Fshare')[0]
+        except Exception:
+            return "Unknown"
         if file_name:
             return file_name
         else:
             return "Unknown"
     def get_file_size(self, resp):
         tree = html.fromstring(resp.content)
-        file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')[0]
-        if file_size and  len(file_size.split("|")) > 1:
+        file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
+        if file_size and len(file_size) > 0 and  len(file_size.split("|")) > 1:
             return file_size.split("|")[1].strip()
         else:
             return 'Unknown'
