@@ -114,7 +114,7 @@ def get_client_ip(request):
 
 
 class AuthViewSet(viewsets.ViewSet):
-    serializer_class = RestCaptchaSerializer
+    # serializer_class = RestCaptchaSerializer
 
     @action(
         detail=False,
