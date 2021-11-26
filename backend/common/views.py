@@ -7,6 +7,7 @@ from django.utils.timezone import now
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
+from rest_captcha import VERSION
 
 import os
 import re
@@ -32,7 +33,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.cache import cache
 from common.captcha import RestCaptchaSerializer
+from macos.settings import base
 
+cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
@@ -166,6 +169,9 @@ class AuthViewSet(viewsets.ViewSet):
 
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
         serial = RestCaptchaSerializer(data=data)
+        key = get_cache_key(capchaValue)
+        value = cache.get(capchaKey)
+        print(key, value)
         print(code, server, password, token)
         print(capchaKey, capchaValue,serial.is_valid())
         # if serial.is_valid() == False:
@@ -192,3 +198,7 @@ class AuthViewSet(viewsets.ViewSet):
         return render(request, "home.html")
 
 
+
+def get_cache_key(captcha_key):
+    cache_key = cache_template.format(key=captcha_key, version=VERSION.major)
+    return cache_key
