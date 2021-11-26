@@ -28,7 +28,7 @@ DATABASES = {
 }
 
 REST_CAPTCHA = {
-#     # 'CAPTCHA_CACHE': 'default',
+    'CAPTCHA_CACHE': 'default',
     'CAPTCHA_TIMEOUT': 3000000,  # 5 minutes
     'CAPTCHA_LENGTH': 1,
     'CAPTCHA_FONT_SIZE': 30,
@@ -37,9 +37,9 @@ REST_CAPTCHA = {
     'CAPTCHA_FOREGROUND_COLOR': '#cd1417',
     'CAPTCHA_BACKGROUND_COLOR': '#ffffff',
 #     # 'CAPTCHA_FONT_PATH': FONT_PATH,
-#     # 'CAPTCHA_CACHE_KEY': 'rest_captcha_{key}.{version}',
-#     # 'FILTER_FUNCTION': 'rest_captcha.captcha.filter_default',
-#     # 'NOISE_FUNCTION': 'rest_captcha.captcha.noise_default'
+    'CAPTCHA_CACHE_KEY': 'rest_captcha_{key}.{version}',
+    'FILTER_FUNCTION': 'rest_captcha.captcha.filter_default',
+    'NOISE_FUNCTION': 'rest_captcha.captcha.noise_default'
 }
 
 CACHES={
