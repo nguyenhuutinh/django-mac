@@ -30,7 +30,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-
+from django.core.cache import cache
+from common.captcha import RestCaptchaSerializer
 
 
 class IndexView(generic.TemplateView):
@@ -38,6 +39,7 @@ class IndexView(generic.TemplateView):
 
 
 class RestViewSet(viewsets.ViewSet):
+
     # @action(
     #     detail=False,
     #     methods=['post'],
@@ -112,6 +114,8 @@ def get_client_ip(request):
 
 
 class AuthViewSet(viewsets.ViewSet):
+    serializer_class = RestCaptchaSerializer
+
     @action(
         detail=False,
         methods=['post'],
@@ -143,20 +147,32 @@ class AuthViewSet(viewsets.ViewSet):
         detail=False,
         methods=['post'],
         permission_classes=[AllowAny],
-        url_path='rest_check_2',
+        url_path='download_direct',
     )
     @csrf_exempt
-    def rest_check_2(self, request):
-        print("rest_check_2")
-
+    def download_direct(self, request):
+        print("download_direct")
         try:
             code = request.data.get('code')
             server = request.data.get('server')
             password = request.data.get('password')
             token = request.data.get('token')
+            capchaKey = request.data.get('captcha_key')
+            capchaValue = request.data.get('captcha_value')
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
-        print(code, server, password, token)
+
+
+
+        data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
+        serial = RestCaptchaSerializer(data=data)
+        print(code, server, password, token, capchaKey, capchaValue,serial.is_valid())
+        if serial.is_valid() == False:
+            return Response(
+                            {"result": "captcha is invalid"},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+
 
 
         res = doFshareFlow2.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})

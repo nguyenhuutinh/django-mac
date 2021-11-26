@@ -62,6 +62,7 @@ django==3.2.9
     #   django-js-reverse
     #   django-log-request-id
     #   django-model-utils
+    #   django-rest-captcha
     #   djangorestframework
 django-cors-headers==3.10.0
     # via -r requirements.in
@@ -75,10 +76,14 @@ django-log-request-id==1.7.0
     # via -r requirements.in
 django-model-utils==4.2.0
     # via -r requirements.in
+django-rest-captcha==0.2.0
+    # via -r requirements.in
 django-webpack-loader==1.4.1
     # via -r requirements.in
 djangorestframework==3.12.4
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   django-rest-captcha
 et-xmlfile==1.1.0
     # via openpyxl
 google-api-core==2.2.2
@@ -130,6 +135,8 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
+pillow==8.4.0
+    # via django-rest-captcha
 prompt-toolkit==3.0.22
     # via
     #   click-repl

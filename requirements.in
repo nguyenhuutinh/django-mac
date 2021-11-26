@@ -25,3 +25,4 @@ jsons
 beautifulsoup4
 lxml
 django-cors-headers
+django-rest-captcha

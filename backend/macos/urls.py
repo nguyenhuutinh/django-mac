@@ -17,6 +17,6 @@ urlpatterns = [
     path("", include("common.urls"), name="common"),
     path("admin/", admin.site.urls, name="admin"),
     path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),
-
+    path(r'api/captcha/', include('rest_captcha.urls')),
     path("api/", include(router.urls), name="api"),
 ]
