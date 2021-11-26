@@ -199,7 +199,7 @@ def heartbeat1(csrf, app):
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':csrf,
         'Cookie':'fshare-app='+ app,
-        'User-Agent': USER_AGENT
+        'User-Agent': str(USER_AGENT)
         # 'Cookie': COOKIE_1
     }
 
@@ -276,7 +276,7 @@ def heartbeat3(csrf, app):
         "x-requested-with":'XMLHttpRequest',
         'x-csrf-token':csrf,
         'Cookie':'fshare-app=' + app,
-        'User-Agent': USER_AGENT,
+        'User-Agent': str(USER_AGENT),
     }
 
     resp = requests.get('https://www.fshare.vn/site/motion-auth', headers=headers_api)
