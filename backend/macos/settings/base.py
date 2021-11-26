@@ -42,7 +42,13 @@ REST_CAPTCHA = {
 #     # 'NOISE_FUNCTION': 'rest_captcha.captcha.noise_default'
 }
 
-
+CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'rest-captcha',
+        'MAX_ENTRIES': 100000,
+    }
+}
 CORS_ALLOWED_ORIGINS = (
 # 'http://localhost:3000',  # for localhost (REACT Default)
 'https://ezyfshare.com', # for network
