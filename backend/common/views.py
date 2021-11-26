@@ -214,9 +214,9 @@ class FshareViewSet(viewsets.ViewSet):
         print("url", url)
         fileName = fileNameTask.apply(kwargs={"server": 2,  'url': url})
         fileSize = fileSizeTask.apply(kwargs={"server": 2,  'url': url})
-        if fileName and fileSize:
+        if fileName :
             return Response(
-                {"result": {"fileName": fileName, "fileSize": fileSize}},
+                {"result": {"fileName": fileName, "fileSize": "fileSize"}},
                 status=status.HTTP_200_OK,
             )
         else:
