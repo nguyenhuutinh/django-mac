@@ -131,10 +131,12 @@ class FS:
                 self.token = self.get_token(res)
                 print(self.token, res.cookies)
                 return self.updateToDB(self.idenCookie, self.token, newApp)
-            elif res.status_code == 201:
-                # self.token = self.get_token(res)
-                print(res.content)
-                # self.updateToDB(self.idenCookie, self.token, newApp)
+            elif res.status_code == 201 and res.content != None:
+                title = self.getTitle(res)
+                print(title)
+                self.token = self.get_token(res)
+                print(self.token, res.cookies)
+                return self.updateToDB(self.idenCookie, self.token, newApp)
                 pass
             else :
                 pass
