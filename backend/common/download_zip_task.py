@@ -52,7 +52,7 @@ BEARER_KEY = BEARER_KEY_2
 COOKIE_DATA = COOKIE_2
 
 @shared_task
-def doFshareFlow(code, server):
+def downloadZipFShare(code, server):
     if int(server) == 1:
         FILE_NAME = FILE_NAME_1
         BEARER_KEY = BEARER_KEY_1
@@ -65,7 +65,7 @@ def doFshareFlow(code, server):
         FILE_NAME = FILE_NAME_3
         BEARER_KEY = BEARER_KEY_3
         COOKIE_DATA = COOKIE_3
-    print("do Fshare Download Flow")
+    print("do downloadZipFShare Flow")
     # Opening JSON file
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # url_path = BASE_DIR + '/static/' + FILE_NAME

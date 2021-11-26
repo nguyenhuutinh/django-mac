@@ -23,10 +23,11 @@ import jsons
 import json
 from common.upload_task import doDownloadFlow
 
-from common.fshare_task import doFshareFlow
-from common.fshare_task2 import doFshareFlow2
-from common.fshare_task2 import heartBeating
-
+from common.download_zip_task import downloadZipFShare
+from common.download_direct_task import downloadDirectFshare
+from common.download_direct_task import heartBeating
+from common.file_info_task import fileNameTask
+from common.file_info_task import fileSizeTask
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -41,7 +42,7 @@ class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
 
 
-class RestViewSet(viewsets.ViewSet):
+class GoogleDriveViewSet(viewsets.ViewSet):
 
     # @action(
     #     detail=False,
@@ -77,8 +78,8 @@ class RestViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "file is not exist" }, status=400)
         print(file_slug)
-        task = doDownloadFlow.apply(kwargs={"file_slug":file_slug, "ip" : ip})
-        print("doDownloadFlow done", task)
+        task = upload_task.apply(kwargs={"file_slug":file_slug, "ip" : ip})
+        print("upload_task done", task)
         result = task.result
         if(type(result) == str and result.startswith("error")):
             return JsonResponse({"result": result }, status=400)
@@ -116,17 +117,18 @@ def get_client_ip(request):
 
 
 
-class AuthViewSet(viewsets.ViewSet):
+class FshareViewSet(viewsets.ViewSet):
     serializer_class = RestCaptchaSerializer
 
     @action(
         detail=False,
         methods=['post'],
         permission_classes=[AllowAny],
-        url_path='rest_check',
+        url_path='download_zip',
     )
     @csrf_exempt
-    def rest_check(self, request):
+    def download_zip(self, request):
+        print("download_zip")
         try:
             code = request.data['code']
             server = request.data['server']
@@ -134,7 +136,7 @@ class AuthViewSet(viewsets.ViewSet):
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
 
-        res = doFshareFlow.apply(kwargs={"code":code, "server": server})
+        res = downloadDirectFshare.apply(kwargs={"code":code, "server": server})
         print("res", res.result)
         if res :
             return Response(
@@ -183,7 +185,7 @@ class AuthViewSet(viewsets.ViewSet):
 
 
 
-        res = doFshareFlow2.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
+        res = downloadDirectFshare.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
         print("res", res.result)
         if res :
             return Response(
@@ -195,6 +197,34 @@ class AuthViewSet(viewsets.ViewSet):
                 {"result": "error"},
                 status=status.HTTP_400_BAD_REQUEST)
 
+    @action(
+    detail=False,
+    methods=['get'],
+    permission_classes=[AllowAny],
+    url_path='file_info',
+    )
+    @csrf_exempt
+    def file_info(self, request):
+        print("file_info", request)
+
+        try:
+            url = request.query_params.get('url', '')
+        except:
+            return JsonResponse({"error_message": "url parameter is required" }, status=400)
+        print("url", url)
+        fileName = fileNameTask.apply(kwargs={"server": 2,  'url': url})
+        fileSize = fileSizeTask.apply(kwargs={"server": 2,  'url': url})
+        if fileName and fileSize:
+            return Response(
+                {"result": {"fileName": fileName, "fileSize": fileSize}},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"result": "cannot get file name, file size"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
     def home(request):
         return render(request, "home.html")
 
@@ -203,3 +233,6 @@ class AuthViewSet(viewsets.ViewSet):
 def get_cache_key(captcha_key):
     cache_key = cache_template.format(key=captcha_key, version=VERSION.major)
     return cache_key
+
+
+

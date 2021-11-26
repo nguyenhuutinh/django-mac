@@ -1,6 +1,6 @@
-from .views import AuthViewSet, RestViewSet
+from .views import FshareViewSet, GoogleDriveViewSet
 
 routes = [
-    {'regex': r'rest', 'viewset': RestViewSet, 'basename': 'Rest'},
-     {'regex': r'auth', 'viewset': AuthViewSet, 'basename': 'Auth'},
+    {'regex': r'drive', 'viewset': GoogleDriveViewSet, 'basename': 'Rest'},
+     {'regex': r'fshare', 'viewset': FshareViewSet, 'basename': 'Download'},
 ]

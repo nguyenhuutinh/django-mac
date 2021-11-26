@@ -61,8 +61,8 @@ def checkVariable(server,password):
     else:
         return tokenInfo
 @shared_task
-def doFshareFlow2(code, server, password, token):
-    print("doFshareFlow2", server)
+def downloadDirectFshare(code, server, password, token):
+    print("downloadDirectFshare", server)
 
     # logging.basicConfig(level=logging.DEBUG)
     # requests_log = logging.getLogger("requests.packages.urllib3")

@@ -295,28 +295,41 @@ class FS:
         return folder_data
 
     def get_file_name(self, url):
+        global cookies
+        print("get file name", url)
         """
         Strip extra space out of file's name
         """
-        r = requests.get(url)
-        tree = html.fromstring(r.content)
-        file_name = tree.xpath(
-            '//*[@property="og:title"]'
-        )[0].get('content').split(' - Fshare')[0]
-        return file_name
-
+        r = requests.get(url, cookies=cookies)
+        if r.status_code == 200:
+            tree = html.fromstring(r.content)
+            file_name = tree.xpath(
+                '//*[@property="og:title"]'
+            )[0].get('content').split(' - Fshare')[0]
+            print(file_name)
+            return file_name
+        elif r.is_redirect:
+            return self.get_file_name(r.headers["Location"])
+        else:
+            return "error"
     def get_file_size(self, url):
+        global cookies
+        print("get file size", url)
         """
         Get file size. If not have, return Unknow
         """
-        r = requests.get(url)
-        tree = html.fromstring(r.content)
-        file_size = tree.xpath('//*[@class="size"]/text()')
-        if file_size:
-            return file_size[1].strip()
+        r = requests.get(url, cookies=cookies)
+        if r.status_code == 200:
+            tree = html.fromstring(r.content)
+            file_size = tree.xpath('//*[@class="size"]/text()')
+            if file_size:
+                return file_size[1].strip()
+            else:
+                return 'Unknown'
+        elif r.is_redirect:
+            return self.get_file_size(r.headers["Location"])
         else:
-            return 'Unknown'
-
+            return "Unknown"
     def get_folder_name(self, folder_url):
         """
         Get folder name (title)
@@ -340,8 +353,13 @@ class FS:
             return False
 
     def is_exist(self, url):
-
-        r = self.s.get(url, allow_redirects=False)
+        global cookies
+        print("is_exist", url)
+        r = self.s.get(url, allow_redirects=True, cookies=cookies)
+        if r.is_redirect:
+            print("is_redirect", r.headers["Location"])
+            r = self.s.get(r.headers["Location"], cookies=cookies, allow_redirects=False)
+        print("r", r.status_code)
         if r.ok:
             tree = html.fromstring(r.content)
             title = tree.xpath('//title/text()')[0]
@@ -350,7 +368,7 @@ class FS:
             else:
                 return True
         else:  # In case auto download is enable in account setting
-            return True
+            return False
 
     def log_out(self):
         self.s.get('https://www.fshare.vn/site/logout')
