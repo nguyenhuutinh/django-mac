@@ -294,42 +294,36 @@ class FS:
         ]
         return folder_data
 
-    def get_file_name(self, url):
+    def getUrl(self, url):
         global cookies
-        print("get file name", url)
+        print("get url", url)
         """
         Strip extra space out of file's name
         """
         r = requests.get(url, cookies=cookies)
         if r.status_code == 200:
-            tree = html.fromstring(r.content)
-            file_name = tree.xpath(
-                '//*[@property="og:title"]'
-            )[0].get('content').split(' - Fshare')[0]
-            print(file_name)
-            return file_name
+            return r
         elif r.is_redirect:
-            return self.get_file_name(r.headers["Location"])
+            return self.getUrl(r.headers["Location"])
         else:
             return "error"
-    def get_file_size(self, url):
-        global cookies
-        print("get file size", url)
-        """
-        Get file size. If not have, return Unknow
-        """
-        r = requests.get(url, cookies=cookies)
-        if r.status_code == 200:
-            tree = html.fromstring(r.content)
-            file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')[0]
-            if file_size and  len(file_size.split("|")) > 1:
-                return file_size.split("|")[1].strip()
-            else:
-                return 'Unknown'
-        elif r.is_redirect:
-            return self.get_file_size(r.headers["Location"])
+
+    def get_file_name(self, resp):
+        tree = html.fromstring(resp.content)
+        file_name = tree.xpath(
+            '//*[@property="og:title"]'
+        )[0].get('content').split(' - Fshare')[0]
+        if file_name:
+            return file_name
         else:
             return "Unknown"
+    def get_file_size(self, resp):
+        tree = html.fromstring(resp.content)
+        file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')[0]
+        if file_size and  len(file_size.split("|")) > 1:
+            return file_size.split("|")[1].strip()
+        else:
+            return 'Unknown'
     def get_folder_name(self, folder_url):
         """
         Get folder name (title)

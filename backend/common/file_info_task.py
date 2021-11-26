@@ -23,38 +23,26 @@ from common.fshare import FS
 
 
 
-def checkFileName(server, url):
+def checkFileInfo(server, url):
     fshareI  = FS(server)
     isExist = fshareI.is_exist(url)
-    print(isExist)
+    if isExist:
+        res = fshareI.getUrl(url)
+        if res:
+            fileName = fshareI.get_file_name(res)
+            fileSize = fshareI.get_file_size(res)
+            return {"file_name": fileName, "file_size":fileSize}
+        else:
+            pass
+    else:
+        pass
 
-    if isExist:
-        return fshareI.get_file_name(url)
-    else:
-        pass
-def checkFileSize(server, url):
-    fshareI  = FS(server)
-    isExist = fshareI.is_exist(url)
-    if isExist:
-        return fshareI.get_file_size(url)
-    else:
-        pass
 @shared_task
-def fileNameTask(server,url):
+def checkfileInfoTask(server,url):
     if "folder" in str(url) :
         raise Exception("this link is folder link")
     if "fshare.vn/file" in str(url) == False:
         raise Exception("this link is not valid link")
 
     print("file_name_info", server)
-    return checkFileName(server, url)
-
-@shared_task
-def fileSizeTask(server,url):
-    if "folder" in str(url) :
-        raise Exception("this link is folder link")
-    if "fshare.vn/file" in str(url) == False:
-        raise Exception("this link is not valid link")
-
-    print("file_name_info", server)
-    return checkFileSize(server, url)
+    return checkFileInfo(server, url)

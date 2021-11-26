@@ -26,8 +26,7 @@ from common.upload_task import doDownloadFlow
 from common.download_zip_task import downloadZipFShare
 from common.download_direct_task import downloadDirectFshare
 from common.download_direct_task import heartBeating
-from common.file_info_task import fileNameTask
-from common.file_info_task import fileSizeTask
+from common.file_info_task import checkfileInfoTask
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -212,12 +211,10 @@ class FshareViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "url parameter is required" }, status=400)
         print("url", url)
-        fileName = fileNameTask.apply(kwargs={"server": 2,  'url': url})
-        fileSize = fileSizeTask.apply(kwargs={"server": 2,  'url': url})
-        if fileName and fileSize:
-
+        res = checkfileInfoTask.apply(kwargs={"server": 2,  'url': url})
+        if res:
             return JsonResponse(
-                {"result": {"file_name": fileName.result, "file_size": fileSize.result}},
+                {"result": res.result},
                 status=status.HTTP_200_OK,
             )
         else:
