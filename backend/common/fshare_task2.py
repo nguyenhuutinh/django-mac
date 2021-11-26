@@ -42,10 +42,17 @@ def bypassword(server, filecode, password, token, app, passToken):
     fshareI  = FS(server)
     return fshareI.bypass(filecode, password, token, app, passToken)
 
-def checkVariable(server):
+def checkVariable(server,password):
     fshareI  = FS(server)
     tokenInfo = fshareI.readCookieDB()
-    if(tokenInfo == None):
+    if(password and password != ""):
+        res = doLoginAgain(server)
+        if res == None:
+            raise Exception("error login")
+        else:
+            return res
+
+    if(tokenInfo == None or password != None):
         res = doLoginAgain(server)
         if res == None:
             raise Exception("error login")
@@ -62,7 +69,7 @@ def doFshareFlow2(code, server, password, token):
     # requests_log.setLevel(logging.DEBUG)
     # requests_log.propagate = True
 
-    tokenInfo = checkVariable(server)
+    tokenInfo = checkVariable(server,password)
     if tokenInfo is None:
         raise Exception("token is empty")
 
