@@ -100,7 +100,7 @@ class FS:
             # self.cookies= r.cookies
 
             # if r.url != self.bypass_url.format(filecode, passToken):
-            self.token = passToken
+            self.token = token
             #     if r.cookies.get("fshare-app"):
             #         newApp = r.cookies.get("fshare-app")
             #     else :
