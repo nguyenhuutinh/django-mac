@@ -166,6 +166,7 @@ class AuthViewSet(viewsets.ViewSet):
 
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
         serial = RestCaptchaSerializer(data=data)
+        
         print(code, server, password, token, capchaKey, capchaValue,serial.is_valid())
         if serial.is_valid() == False:
             return Response(
