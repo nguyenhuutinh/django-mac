@@ -321,9 +321,9 @@ class FS:
         r = requests.get(url, cookies=cookies)
         if r.status_code == 200:
             tree = html.fromstring(r.content)
-            file_size = tree.xpath('//*[@class="size"]/text()')
-            if file_size:
-                return file_size[1].strip()
+            file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')[0]
+            if file_size and  len(file_size.split("|")) > 1:
+                return file_size.split("|")[1].strip()
             else:
                 return 'Unknown'
         elif r.is_redirect:

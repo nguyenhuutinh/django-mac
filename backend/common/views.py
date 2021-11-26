@@ -215,14 +215,13 @@ class FshareViewSet(viewsets.ViewSet):
         fileName = fileNameTask.apply(kwargs={"server": 2,  'url': url})
         fileSize = fileSizeTask.apply(kwargs={"server": 2,  'url': url})
         if fileName and fileSize:
-            resp = json.dumps({"result": {"fileName": fileName, "fileSize": fileSize}})
 
-            return Response(
-                resp,
+            return JsonResponse(
+                {"result": {"file_name": fileName.result, "file_size": fileSize.result}},
                 status=status.HTTP_200_OK,
             )
         else:
-            return Response(
+            return JsonResponse(
                 {"result": "cannot get file name, file size"},
                 status=status.HTTP_404_NOT_FOUND,
             )
