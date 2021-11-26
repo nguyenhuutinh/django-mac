@@ -91,7 +91,7 @@ class FS:
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
             print(url)
-            r = self.s.get(url, cookies = cookies, headers=headers_api)
+            r = self.s.get(url, cookies = cookies, headers=headers_api,allow_redirects=False)
             print(r.url)
             # print(r.status_code)
             # print(r.request.body)
@@ -120,7 +120,7 @@ class FS:
                 'DownloadPasswordForm[password]': password,
             }
 
-            res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api)
+            res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api,allow_redirects=False)
             # print(res.url)
             # print(res.request.headers)
 
