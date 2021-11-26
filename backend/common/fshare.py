@@ -59,11 +59,12 @@ class FS:
         """
         Get csrf token for POST requests.
         """
-        tree = html.fromstring(response.content)
+
         try:
+            tree = html.fromstring(response.content)
             token = tree.xpath('//*[@name="csrf-token"]')[0].get('content')
             return token
-        except IndexError:
+        except Exception:
             raise Exception('No token for url {}'.format(response.url))
 
     def getTitle(self, response):
@@ -74,7 +75,7 @@ class FS:
                 tree = html.fromstring(response.content)
                 token = tree.xpath('/html/head/title/text()')
                 return token
-            except IndexError:
+            except Exception:
                 raise Exception('No token for url {}'.format(response.url))
 
     def bypass(self, filecode, password, token, app, passToken):
@@ -132,10 +133,10 @@ class FS:
                 print(self.token, res.cookies)
                 return self.updateToDB(self.idenCookie, self.token, newApp)
             elif res.status_code == 201 and res.content != None:
-                # title = self.getTitle(res)
-                # print(title)
-                self.token = self.get_token(res)
-                print(self.token, res.cookies, res.content)
+                title = self.getTitle(res)
+                print(title)
+                # self.token = self.get_token(res)
+                # print(self.token, res.cookies, res.content)
                 return self.updateToDB(self.idenCookie, self.token, newApp)
                 # pass
             else :
