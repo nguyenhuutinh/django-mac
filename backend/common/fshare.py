@@ -109,11 +109,11 @@ class FS:
                 newApp = app
             print("new-token", self.token)
             print("new-app", newApp)
-            self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+            # self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
             self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
             headers_api = {
                 'User-Agent': str(USER_AGENT),
-                'Content-Type': 'application/x-www-form-urlencoded'
+                # 'Content-Type': 'application/x-www-form-urlencoded'
             }
             data = {
                 '_csrf-app': self.token,
