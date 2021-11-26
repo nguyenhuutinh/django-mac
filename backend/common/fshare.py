@@ -91,22 +91,22 @@ class FS:
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
             print(url)
-            r = self.s.get(url, cookies = cookies, headers=headers_api)
-            print(r.url)
+            # r = self.s.get(url, cookies = cookies, headers=headers_api)
+            # print(r.url)
             # print(r.status_code)
             # print(r.request.body)
             # print(r.request.headers)
             # print(r.cookies)
             # self.cookies= r.cookies
 
-            if r.url != self.bypass_url.format(filecode, passToken):
-                self.token = self.get_token(r)
-                if r.cookies.get("fshare-app"):
-                    newApp = r.cookies.get("fshare-app")
-                else :
-                    newApp = app
-            else :
-                newApp = app
+            # if r.url != self.bypass_url.format(filecode, passToken):
+            self.token = passToken
+            #     if r.cookies.get("fshare-app"):
+            #         newApp = r.cookies.get("fshare-app")
+            #     else :
+            #         newApp = app
+            # else :
+            newApp = app
             print("new-token", self.token)
             print("new-app", newApp)
             self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
@@ -120,7 +120,7 @@ class FS:
                 'DownloadPasswordForm[password]': password,
             }
 
-            res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api,allow_redirects=False)
+            res = self.s.post(url, data=data,cookies = cookies, headers=headers_api,allow_redirects=False)
             # print(res.url)
             # print(res.request.headers)
 
