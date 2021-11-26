@@ -174,7 +174,7 @@ class AuthViewSet(viewsets.ViewSet):
         isValidCaptcha = "{}.0".format(capchaValue) in key
         print(key, value)
         print(code, server, password, token)
-        print(capchaKey, capchaValue,serial.is_valid())
+        print(capchaKey, capchaValue,serial.is_valid(), isValidCaptcha)
         if isValidCaptcha == False:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
