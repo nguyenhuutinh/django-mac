@@ -323,8 +323,8 @@ class FS:
     def get_file_size(self, resp):
         tree = html.fromstring(resp.content)
         file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
-        if file_size and len(file_size) > 0 and  len(file_size.split("|")) > 1:
-            return file_size.split("|")[1].strip()
+        if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
+            return file_size[0].split("|")[1].strip()
         else:
             return 'Unknown'
     def get_folder_name(self, folder_url):

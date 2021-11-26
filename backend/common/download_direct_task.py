@@ -108,11 +108,7 @@ def downloadDirectFshare(code, server, password, token):
         try:
             print(resp.content)
             # print("get file response", resp.json())
-            response = resp.json().get("url")
-            if response:
-                return response
-            else :
-                return resp.json().get("errors")
+            return resp.json()
         except Exception:
             return resp.content
 
