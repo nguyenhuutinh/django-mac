@@ -78,7 +78,7 @@ def doFshareFlow2(code, server, password, token):
         if tokenInfo:
             cookie_share_app = getattr(tokenInfo,"cookie_share_app")
             cookie_csrf = getattr(tokenInfo,"cookie_csrf")
-            print("tokenInfo2222", cookie_csrf, cookie_share_app)
+            # print("tokenInfo2222", cookie_csrf, cookie_share_app)
 
     print("token info: ", cookie_csrf, cookie_share_app)
 
