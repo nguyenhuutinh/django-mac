@@ -52,6 +52,7 @@ CACHES={
 CORS_ALLOWED_ORIGINS = (
 # 'http://localhost:3000',  # for localhost (REACT Default)
 'https://ezyfshare.com', # for network
+'https://fsharevip.com',
 )
 CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
