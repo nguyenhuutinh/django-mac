@@ -71,7 +71,7 @@ def doFshareFlow2(code, server, password, token):
 
     if password and password != "" :
         if token == "" or token == None:
-            token = "123"
+            token = "1637929889"
         #     return "File có password cần gửi link đầy đủ. ví dụ: https://www.fshare.vn/file/X7TAOCTDJAJNA96RT?token=1637849239"
         tokenInfo = bypassword(server, code, password, cookie_csrf, cookie_share_app, token)
 

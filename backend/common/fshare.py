@@ -34,7 +34,7 @@ class FS:
             self.idenCookie = ID_COOKIE_3
         else :
             self.idenCookie = ID_COOKIE_2
-        print("id",int(server) == 1, self.idenCookie)
+        # print("id",int(server) == 1, self.idenCookie)
         # self.email = email
         # self.password = password
         self.s = requests.Session()
@@ -91,7 +91,7 @@ class FS:
             # print(passToken)
             url = self.bypass_url.format(filecode, passToken)
             print(url)
-            r = self.s.get(url, cookies = cookies, headers=headers_api,allow_redirects=False)
+            r = self.s.get(url, cookies = cookies, headers=headers_api)
             print(r.url)
             # print(r.status_code)
             # print(r.request.body)
