@@ -55,12 +55,12 @@ def checkVariable(server):
         return tokenInfo
 @shared_task
 def doFshareFlow2(code, server, password, token):
-    print("doFshareFlow2")
+    print("doFshareFlow2", server)
 
-    logging.basicConfig(level=logging.DEBUG)
-    requests_log = logging.getLogger("requests.packages.urllib3")
-    requests_log.setLevel(logging.DEBUG)
-    requests_log.propagate = True
+    # logging.basicConfig(level=logging.DEBUG)
+    # requests_log = logging.getLogger("requests.packages.urllib3")
+    # requests_log.setLevel(logging.DEBUG)
+    # requests_log.propagate = True
 
     tokenInfo = checkVariable(server)
     if tokenInfo is None:
@@ -115,13 +115,13 @@ def doFshareFlow2(code, server, password, token):
 @shared_task
 def heartBeating(server, csrf, app):
     print("heartBeating in acc " + str(server),csrf, app )
-    if server == 1:
+    if int(server) == 1:
         global startedHeartBeat1
         if startedHeartBeat1 == True:
             return
         startedHeartBeat1 = True
         heartbeat1(csrf, app)
-    elif server == 2:
+    elif int(server) == 2:
         global startedHeartBeat2
         if startedHeartBeat2 == True:
             return

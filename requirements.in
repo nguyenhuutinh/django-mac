@@ -24,3 +24,4 @@ httplib2<0.16.0
 jsons
 beautifulsoup4
 lxml
+django-cors-headers

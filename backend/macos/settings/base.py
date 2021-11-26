@@ -26,7 +26,11 @@ ALLOWED_HOSTS = []
 DATABASES = {
     "default": config("DATABASE_URL", cast=db_url),
 }
-
+CORS_ALLOWED_ORIGINS = (
+'http://localhost:3000',  # for localhost (REACT Default)
+'https://ezyfshare.com', # for network
+)
+CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -39,10 +43,14 @@ INSTALLED_APPS = [
     "import_export",
     "rest_framework",
     "common",
-    "users"
+    "users",
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     "debreach.middleware.RandomCommentMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",

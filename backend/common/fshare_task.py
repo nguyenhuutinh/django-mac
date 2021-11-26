@@ -53,11 +53,11 @@ COOKIE_DATA = COOKIE_2
 
 @shared_task
 def doFshareFlow(code, server):
-    if server == 1:
+    if int(server) == 1:
         FILE_NAME = FILE_NAME_1
         BEARER_KEY = BEARER_KEY_1
         COOKIE_DATA = COOKIE_1
-    elif server == 2:
+    elif int(server) == 2:
         FILE_NAME = FILE_NAME_2
         BEARER_KEY = BEARER_KEY_2
         COOKIE_DATA = COOKIE_2
@@ -108,13 +108,13 @@ def doFshareFlow(code, server):
 @shared_task
 def heartBeating(server):
     print("heartBeating in acc " + str(server))
-    if server == 1:
+    if int(server) == 1:
         global startedHeartBeat1
         if startedHeartBeat1 == True:
             return
         startedHeartBeat1 = True
         heartbeat1()
-    elif server == 2:
+    elif int(server) == 2:
         global startedHeartBeat2
         if startedHeartBeat2 == True:
             return

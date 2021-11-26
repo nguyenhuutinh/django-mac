@@ -16,7 +16,7 @@ ID_COOKIE_1 = "59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a
 ID_COOKIE_2 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
-ID_COOKIE_3 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
+ID_COOKIE_3 = "548b9be2965aa9f0702a974ab7f13b0d66558433de06d9ddc249ca3937d31fbea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17443112%2C%22Jfkh8PhRTiRiv-zqFqqqxrANIV9tzyj3%22%2C1637031972%5D%22%3B%7D"
 
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
@@ -28,12 +28,13 @@ class FS:
     premium download link.
     """
     def __init__(self, server):
-        if server == 1:
+        if int(server) == 1:
             self.idenCookie = ID_COOKIE_1
-        elif server == 3:
+        elif int(server) == 3:
             self.idenCookie = ID_COOKIE_3
         else :
             self.idenCookie = ID_COOKIE_2
+        print("id",int(server) == 1, self.idenCookie)
         # self.email = email
         # self.password = password
         self.s = requests.Session()
