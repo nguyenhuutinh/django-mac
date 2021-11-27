@@ -45,14 +45,14 @@ def bypassword(server, filecode, password, token, app, passToken):
 def checkVariable(server,password):
     fshareI  = FS(server)
     tokenInfo = fshareI.readCookieDB()
-    if(password and password != ""):
+    if(password == None or password == ""):
         res = doLoginAgain(server)
         if res == None:
             raise Exception("error login")
         else:
             return res
 
-    if(True):
+    if(tokenInfo == None):
         res = doLoginAgain(server)
         if res == None:
             raise Exception("error login")
