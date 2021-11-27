@@ -32,7 +32,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.cache import cache
-from common.captcha import RestCaptchaSerializer
+from common.api_captcha import RestCaptchaSerializer
 from macos.settings import base
 
 from common.file_info_task import checkaccountInfoTask
@@ -174,7 +174,7 @@ class FshareViewSet(viewsets.ViewSet):
 
 
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
-        serial = RestCaptchaSerializer(data=data)
+        serial = RestCaptchaSerializer(data)
         key = get_cache_key(capchaValue)
         value = cache.get(capchaKey)
         isValidCaptcha = "{}.0".format(capchaValue) in key
