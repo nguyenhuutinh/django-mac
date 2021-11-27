@@ -174,7 +174,7 @@ class FshareViewSet(viewsets.ViewSet):
 
 
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
-        serial = RestCaptchaSerializer(data)
+        serial = RestCaptchaSerializer(data=data)
         key = get_cache_key(capchaValue)
         value = cache.get(capchaKey)
         isValidCaptcha = "{}.0".format(capchaValue) in key
