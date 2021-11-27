@@ -29,8 +29,8 @@ DATABASES = {
 
 REST_CAPTCHA = {
     'CAPTCHA_CACHE': 'default',
-    'CAPTCHA_TIMEOUT': 30000,  # 5 minutes
-    'CAPTCHA_LENGTH': 2,
+    'CAPTCHA_TIMEOUT': 300,  # 5 minutes
+    'CAPTCHA_LENGTH': 4,
     'CAPTCHA_FONT_SIZE': 30,
 #     # 'CAPTCHA_IMAGE_SIZE': (200, 60),
     'CAPTCHA_LETTER_ROTATION': (-1, 1),
