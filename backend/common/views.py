@@ -75,7 +75,7 @@ class GoogleDriveViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "file is not exist" }, status=400)
         print(file_slug)
-        
+
         task = downloadGoogleDrive.apply(kwargs={"file_slug":file_slug, "ip" : ip})
         print("downloadGoogleDrive done", task)
         result = task.result
@@ -211,14 +211,14 @@ class FshareViewSet(viewsets.ViewSet):
             return JsonResponse({"error_message": "url parameter is required" }, status=400)
         print("url", url)
         res = checkfileInfoTask.apply(kwargs={"server": 2,  'url': url})
-        if res:
+        if res and res.result.get("errors") == None:
             return JsonResponse(
                 {"result": res.result},
                 status=status.HTTP_200_OK,
             )
         else:
             return JsonResponse(
-                {"result": "cannot get file name, file size"},
+                {"result": res.result},
                 status=status.HTTP_404_NOT_FOUND,
             )
 

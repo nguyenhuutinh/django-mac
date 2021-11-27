@@ -25,17 +25,21 @@ from common.fshare import FS
 
 def checkFileInfo(server, url):
     fshareI  = FS(server)
-    isExist = fshareI.is_exist(url)
-    if isExist:
-        res = fshareI.getUrl(url)
-        if res:
-            fileName = fshareI.get_file_name(res)
-            fileSize = fshareI.get_file_size(res)
-            return {"file_name": fileName, "file_size":fileSize}
-        else:
-            pass
+    res = fshareI.is_exist(url)
+    if res != False:
+        fileName = fshareI.get_file_name(res)
+        fileSize = fshareI.get_file_size(res)
+        passwordFile = fshareI.is_file_protected(res)
+        if fileName and fileSize:
+            return {"file_name": fileName, "file_size":fileSize, "password": passwordFile}
+        elif fileName :
+            return {"file_name": fileName, "file_size":'unknow', "password": passwordFile}
+        elif fileSize :
+            return {"file_name": "unknown", "file_size": fileSize, "password": passwordFile}
+        else :
+            return { "errors" : "không thể lấy thông tin file. vui lòng thử lại {} {}".format(fileName, fileSize)}
     else:
-        pass
+        return { "errors" : "file khong ton tai"}
 
 @shared_task
 def checkfileInfoTask(server,url):

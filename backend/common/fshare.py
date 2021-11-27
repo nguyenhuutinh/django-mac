@@ -315,18 +315,27 @@ class FS:
                 '//*[@property="og:title"]'
             )[0].get('content').split(' - Fshare')[0]
         except Exception:
-            return "Unknown"
+            pass
         if file_name:
             return file_name
         else:
-            return "Unknown"
+            pass
     def get_file_size(self, resp):
         tree = html.fromstring(resp.content)
         file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
+        print("file_size",file_size)
         if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
             return file_size[0].split("|")[1].strip()
         else:
-            return 'Unknown'
+            pass
+    def is_file_protected(self, resp):
+        tree = html.fromstring(resp.content)
+        password = tree.xpath('.//p[contains(text(),"Tập tin yêu cầu mật khẩu")]')
+        print("password",password)
+        if password and len(password) > 0:
+            return True
+        else:
+            return False
     def get_folder_name(self, folder_url):
         """
         Get folder name (title)
@@ -363,7 +372,7 @@ class FS:
             if title == 'Not Found - Fshare':
                 return False
             else:
-                return True
+                return r
         else:  # In case auto download is enable in account setting
             return False
 
