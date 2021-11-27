@@ -130,8 +130,12 @@ class FshareViewSet(viewsets.ViewSet):
     def download_zip(self, request):
         print("download_zip")
         try:
-            code = request.data['code']
-            server = request.data['server']
+            code = request.data.get('code')
+            server = request.data.get('server')
+            password = request.data.get('password')
+            token = request.data.get('token')
+            capchaKey = request.data.get('captcha_key')
+            capchaValue = request.data.get('captcha_value')
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
@@ -172,12 +176,12 @@ class FshareViewSet(viewsets.ViewSet):
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
         serial = RestCaptchaSerializer(data=data)
         key = get_cache_key(capchaValue)
-        value = cache.get(key)
+        value = cache.get(capchaKey)
         isValidCaptcha = "{}.0".format(capchaValue) in key
-        print(key, value)
+        # print(key, value)
         print(code, server, password, token)
         print(capchaKey, capchaValue,serial.is_valid(), isValidCaptcha)
-        if isValidCaptcha == False:
+        if serial.is_valid() == False:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                             status=status.HTTP_401_UNAUTHORIZED)
