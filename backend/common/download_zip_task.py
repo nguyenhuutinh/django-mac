@@ -81,6 +81,7 @@ def downloadZipFShare(code, server, password, token):
         'Authorization': 'Bearer ' + cookie_share_app,
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+        'x-csrf-token': cookie_csrf,
         # 'Cookie': COOKIE_DATA
     }
 
