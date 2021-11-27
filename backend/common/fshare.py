@@ -328,6 +328,8 @@ class FS:
         print("file_size",file_size)
         if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
             return file_size[0].split("|")[1].strip()
+        if file_size and len(file_size) > 0 and  len(file_size[1].split("|")) > 1:
+            return file_size[1].split("|")[1].strip()
         else:
             pass
     def is_file_protected(self, resp):
