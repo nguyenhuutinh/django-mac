@@ -323,6 +323,8 @@ class FS:
     def get_file_size(self, resp):
         tree = html.fromstring(resp.content)
         file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
+        if(len(file_size) == 0):
+            file_size = tree.xpath('//*[@class="full-width event-cus tool-tip mdc-button-primary mdc-button mdc-button--raised mdc-ripple-upgraded down-s-btn-cus"]/a/text()')
         print("file_size",file_size)
         if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
             return file_size[0].split("|")[1].strip()
