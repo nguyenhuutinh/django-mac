@@ -52,7 +52,7 @@ def checkVariable(server,password):
         else:
             return res
 
-    if(tokenInfo == None or password != None):
+    if(True):
         res = doLoginAgain(server)
         if res == None:
             raise Exception("error login")

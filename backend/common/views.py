@@ -35,6 +35,8 @@ from django.core.cache import cache
 from common.captcha import RestCaptchaSerializer
 from macos.settings import base
 
+from common.file_info_task import checkaccountInfoTask
+
 cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
 class IndexView(generic.TemplateView):
@@ -221,7 +223,32 @@ class FshareViewSet(viewsets.ViewSet):
                 {"result": res.result},
                 status=status.HTTP_404_NOT_FOUND,
             )
+    @action(
+    detail=False,
+    methods=['get'],
+    permission_classes=[AllowAny],
+    url_path='account_info',
+    )
+    @csrf_exempt
+    def account_info(self, request):
+        print("account_info", request)
 
+        try:
+            account = request.query_params.get('account', '')
+        except:
+            return JsonResponse({"error_message": "url parameter is required" }, status=400)
+        print("account", account)
+        res = checkaccountInfoTask.apply(kwargs={"server": account})
+        if res and res.result.get("errors") == None:
+            return JsonResponse(
+                {"result": res.result},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return JsonResponse(
+                {"result": res.result},
+                status=status.HTTP_404_NOT_FOUND,
+            )
     def home(request):
         return render(request, "home.html")
 

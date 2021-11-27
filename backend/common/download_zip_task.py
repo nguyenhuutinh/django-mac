@@ -53,18 +53,7 @@ COOKIE_DATA = COOKIE_2
 
 @shared_task
 def downloadZipFShare(code, server):
-    if int(server) == 1:
-        FILE_NAME = FILE_NAME_1
-        BEARER_KEY = BEARER_KEY_1
-        COOKIE_DATA = COOKIE_1
-    elif int(server) == 2:
-        FILE_NAME = FILE_NAME_2
-        BEARER_KEY = BEARER_KEY_2
-        COOKIE_DATA = COOKIE_2
-    else:
-        FILE_NAME = FILE_NAME_3
-        BEARER_KEY = BEARER_KEY_3
-        COOKIE_DATA = COOKIE_3
+
     print("do downloadZipFShare Flow")
     # Opening JSON file
     # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -104,6 +93,7 @@ def downloadZipFShare(code, server):
     print(resp.json())
 
     return resp.json()
+
 
 @shared_task
 def heartBeating(server):

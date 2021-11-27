@@ -10,13 +10,13 @@ import os
 import requests
 from common.models import TokenInfo
 
-ID_COOKIE_1 = "5ba124125f95abc3b805188881c0b709afe96434604f447047903634592ceb3ea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6587903%2C%22rghLegLZW_YCCCgGjwPhk2FF_Fft7vtU%22%2C1638086311%5D%22%3B%7D;"
+ID_COOKIE_3 = "5ba124125f95abc3b805188881c0b709afe96434604f447047903634592ceb3ea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6587903%2C%22rghLegLZW_YCCCgGjwPhk2FF_Fft7vtU%22%2C1638086311%5D%22%3B%7D;"
 
 
 ID_COOKIE_2 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
-ID_COOKIE_3 = "548b9be2965aa9f0702a974ab7f13b0d66558433de06d9ddc249ca3937d31fbea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17443112%2C%22Jfkh8PhRTiRiv-zqFqqqxrANIV9tzyj3%22%2C1637031972%5D%22%3B%7D"
+ID_COOKIE_1 = "548b9be2965aa9f0702a974ab7f13b0d66558433de06d9ddc249ca3937d31fbea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17443112%2C%22Jfkh8PhRTiRiv-zqFqqqxrANIV9tzyj3%22%2C1637031972%5D%22%3B%7D"
 
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
@@ -472,3 +472,24 @@ class FS:
             except Exception:
                 pass
         data.close()
+
+    def checkAccountStorage(self, server):
+        global cookies
+        print("fs getAccountStorage")
+        """
+        Strip extra space out of file's name
+        """
+        self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+        r1 = self.s.get("https://www.fshare.vn/account/inforesource", cookies=cookies,  allow_redirects=False)
+
+        if r1.status_code == 200:
+            tree = html.fromstring(r1.content)
+            content = tree.xpath('//*[@id="down-traffic-profile"]/div/div/div[@class="account-storage"]/span')
+            used = ""
+            available = ""
+            if(len(content) == 2):
+                used = content[0].text.replace("Sử dụng:","").strip()
+                available = content[1].text.replace("Còn khả dụng:","").strip()
+            return {"used": used, "available" : available}
+        else:
+            return "error"

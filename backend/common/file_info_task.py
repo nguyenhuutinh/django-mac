@@ -30,16 +30,18 @@ def checkFileInfo(server, url):
         fileName = fshareI.get_file_name(res)
         fileSize = fshareI.get_file_size(res)
         passwordFile = fshareI.is_file_protected(res)
-        if fileName and fileSize:
+        if passwordFile:
+            return {"file_name": "unknown", "file_size":fileSize, "password": passwordFile}
+        elif fileName and fileSize:
             return {"file_name": fileName, "file_size":fileSize, "password": passwordFile}
         elif fileName :
-            return {"file_name": fileName, "file_size":'unknow', "password": passwordFile}
+            return {"file_name": fileName, "file_size":'unknown', "password": passwordFile}
         elif fileSize :
             return {"file_name": "unknown", "file_size": fileSize, "password": passwordFile}
         else :
             return { "errors" : "không thể lấy thông tin file. vui lòng thử lại {} {}".format(fileName, fileSize)}
     else:
-        return { "errors" : "file khong ton tai"}
+        return { "errors" : "File không tồn tại"}
 
 @shared_task
 def checkfileInfoTask(server,url):
@@ -49,4 +51,22 @@ def checkfileInfoTask(server,url):
         raise Exception("this link is not valid link")
 
     print("file_name_info", server)
+
     return checkFileInfo(server, url)
+
+
+@shared_task
+def checkaccountInfoTask(server):
+    print("checkaccountInfoTask", server)
+
+    return checkAccountInfo(server)
+
+
+
+def checkAccountInfo(server):
+    fshareI  = FS(server)
+    res = fshareI.checkAccountStorage(server)
+    if res != False:
+        return {"used": res.get("used"), "avaiable": res.get("available")}
+    else:
+        return { "errors" : "Lỗi"}
