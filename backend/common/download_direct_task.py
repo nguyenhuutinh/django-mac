@@ -242,11 +242,11 @@ def heartbeat2(csrf, app):
         'Cookie':'fshare-app=' + app,
         'User-Agent': str(USER_AGENT)
     }
-    print(headers_api)
+    # print(headers_api)
     resp = requests.get('https://www.fshare.vn/site/motion-auth',  headers=headers_api)
     isSuccess = resp.json().get("success")
-    print("heartbeat2 result",resp.status_code, resp.content)
-    print(resp.json())
+    # print("heartbeat2 result",resp.status_code, resp.content)
+    print(resp.content)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
