@@ -181,7 +181,7 @@ class FshareViewSet(viewsets.ViewSet):
         # print(key, value)
         print(code, server, password, token)
         print(capchaKey, capchaValue,serial.is_valid(), isValidCaptcha)
-        if serial.is_valid() == False:
+        if isValidCaptcha == False:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                             status=status.HTTP_401_UNAUTHORIZED)
