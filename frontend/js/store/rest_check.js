@@ -15,7 +15,7 @@ export const creators = {
       try {
         const body = { file_slug: file_slug};
         // console.log("fetchRestCheck", body)
-        const res = await api.post('/api/rest/run-task/', body);
+        const res = await api.post('/api/drive/download_direct/', body);
         // console.log("fetchRestCheck", res.data)
         if(res.status == 200){
           dispatch({ type: types.FETCH_SUCCESS, data: res.data });

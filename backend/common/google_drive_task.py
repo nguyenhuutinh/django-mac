@@ -74,7 +74,7 @@ def checkIfFileIsExist(fileName, fileId, folderId):
     return
 
 @shared_task
-def doDownloadFlow(file_slug, ip):
+def downloadGoogleDrive(file_slug, ip):
     print("do Download Flow")
     file_name = resolveFileSlug(file_slug)
 

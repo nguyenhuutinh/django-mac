@@ -16,16 +16,16 @@ import requests
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
 
-from common.upload_task import upload_task
+from common.google_drive_task import downloadGoogleDrive
 
-from common.upload_task import download_task
+
 import jsons
 import json
-from common.upload_task import doDownloadFlow
 
-from common.download_zip_task import downloadZipFShare
+
+
 from common.download_direct_task import downloadDirectFshare
-from common.download_direct_task import heartBeating
+
 from common.file_info_task import checkfileInfoTask
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -63,22 +63,21 @@ class GoogleDriveViewSet(viewsets.ViewSet):
         detail=False,
         methods=['post'],
         permission_classes=[AllowAny],
-        url_path='run-task',
+        url_path='download_direct',
     )
     @csrf_exempt
-    def run_task(self, request):
+    def download_direct(self, request):
         ip = get_client_ip(request)
         print(ip)
-        body_unicode = request.body.decode('utf-8')
-        body = jsons.loads(body_unicode)
 
         try:
-            file_slug = body['file_slug']
+            file_slug = request.data['file_slug']
         except:
             return JsonResponse({"error_message": "file is not exist" }, status=400)
         print(file_slug)
-        task = upload_task.apply(kwargs={"file_slug":file_slug, "ip" : ip})
-        print("upload_task done", task)
+        
+        task = downloadGoogleDrive.apply(kwargs={"file_slug":file_slug, "ip" : ip})
+        print("downloadGoogleDrive done", task)
         result = task.result
         if(type(result) == str and result.startswith("error")):
             return JsonResponse({"result": result }, status=400)

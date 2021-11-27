@@ -17,10 +17,10 @@ const App = (props) => (
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route
-            path="/download/:topicId"
-            element={<Download name="Sara" location={window.location} />}
+            path="/drive/:topicId"
+            element={<Download location={window.location} />}
           ></Route>
-          <Route path="/fshare" element={<Fshare name="Sara" location={window.location} />}></Route>
+          <Route path="/fshare" element={<Fshare  location={window.location} />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

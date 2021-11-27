@@ -12,7 +12,7 @@ const Download = (props) => {
 
   useEffect(() => {
     var {location} = props
-    var file_slug = location.pathname.replaceAll("/download/","")
+    var file_slug = location.pathname.replaceAll("/drive/","")
     showLoading(true)
     const action = creators.fetchRestCheck(file_slug);
     dispatch(action);
