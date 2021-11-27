@@ -474,13 +474,15 @@ class FS:
         data.close()
 
     def checkAccountStorage(self, server):
+        token = self.readCookieDB()
         global cookies
         print("fs getAccountStorage")
         """
         Strip extra space out of file's name
         """
         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-        r1 = self.s.get("https://www.fshare.vn/account/inforesource", cookies=cookies,  allow_redirects=False)
+        self.s.cookies.set("share-app", token.cookie_share_app)
+        r1 = self.s.get("https://www.fshare.vn/account/inforesource",  allow_redirects=False)
 
         if r1.status_code == 200:
             tree = html.fromstring(r1.content)
