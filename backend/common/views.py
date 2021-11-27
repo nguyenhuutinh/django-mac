@@ -25,6 +25,7 @@ import json
 
 
 from common.download_direct_task import downloadDirectFshare
+from common.download_zip_task import downloadZipFShare
 
 from common.file_info_task import checkfileInfoTask
 from rest_framework import viewsets, status
@@ -139,12 +140,22 @@ class FshareViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
+        data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
+        serial = RestCaptchaSerializer(data=data)
+        key = get_cache_key(capchaValue)
+        value = cache.get(capchaKey)
+        isValidCaptcha = "{}.0".format(capchaValue) in key
 
-        res = downloadDirectFshare.apply(kwargs={"code":code, "server": server})
+        if isValidCaptcha == False:
+                    return Response(
+                                    {"result": "Captcha hết hạn hoặc không đúng. vui lòng thử lại"},
+                                    status=status.HTTP_401_UNAUTHORIZED)
+
+        res = downloadZipFShare.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
         print("res", res.result)
         if res :
             return Response(
-                {"result": res.result},
+                {"result": {"url":res.result}},
                 status=status.HTTP_200_OK,
             )
         else:
@@ -180,7 +191,7 @@ class FshareViewSet(viewsets.ViewSet):
         isValidCaptcha = "{}.0".format(capchaValue) in key
         # print(key, value)
         print(code, server, password, token)
-        print(capchaKey, capchaValue,serial.is_valid(), isValidCaptcha)
+        print(capchaKey, capchaValue,serial.is_valid(), serial.validated_data, isValidCaptcha)
         if isValidCaptcha == False:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
