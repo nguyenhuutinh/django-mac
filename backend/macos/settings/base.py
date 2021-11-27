@@ -17,7 +17,7 @@ SITE_ID = 1
 
 DEBUG = True
 
-ADMINS = (("Admin", "foo@example.com"),)
+ADMINS = (("Admin", "huutinh.baoloc@gmail.com"),)
 
 AUTH_USER_MODEL = "users.User"
 
@@ -29,7 +29,7 @@ DATABASES = {
 
 REST_CAPTCHA = {
     'CAPTCHA_CACHE': 'default',
-    'CAPTCHA_TIMEOUT': 3000000,  # 5 minutes
+    'CAPTCHA_TIMEOUT': 30000,  # 5 minutes
     'CAPTCHA_LENGTH': 2,
     'CAPTCHA_FONT_SIZE': 30,
 #     # 'CAPTCHA_IMAGE_SIZE': (200, 60),
