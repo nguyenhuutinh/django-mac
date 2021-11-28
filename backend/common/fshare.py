@@ -302,7 +302,7 @@ class FS:
         """
         Strip extra space out of file's name
         """
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, cookies=cookies, allow_redirects=True)
         if r.status_code == 200:
             return r
         elif r.is_redirect:
@@ -381,6 +381,7 @@ class FS:
             if title == 'Not Found - Fshare':
                 return False
             else:
+                # print("r", r.content)
                 return r
         else:  # In case auto download is enable in account setting
             return False
