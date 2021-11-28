@@ -143,12 +143,15 @@ class FshareViewSet(viewsets.ViewSet):
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
         print(code, server)
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
-        serial = RestCaptchaSerializer(data=data)
-        key = get_cache_key(capchaValue)
-        value = cache.get(capchaKey)
-        isValidCaptcha = "{}.0".format(capchaValue) in key
+        serial = RestCaptchaSerializer()
+        # print("ccc")
+        isValid = None
+        try:
+            isValid  = serial.validate(data)
+        except Exception as e:
+            print(e)
 
-        if isValidCaptcha == False:
+        if isValid == None:
                     return Response(
                                     {"result": "Captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                                     status=status.HTTP_401_UNAUTHORIZED)
@@ -178,26 +181,37 @@ class FshareViewSet(viewsets.ViewSet):
 
         print("download_direct for ip: ", ip)
         try:
+            print("aa")
             code = request.data.get('code')
             server = request.data.get('server')
             password = request.data.get('password')
             token = request.data.get('token')
             capchaKey = request.data.get('captcha_key')
             capchaValue = request.data.get('captcha_value')
-        except:
+        except Exception as e:
+            print(e)
             return JsonResponse({"error_message": "fshare code is not exist" }, status=400)
 
-
+        # print("bbb")
 
         data = dict(captcha_key=capchaKey, captcha_value= capchaValue)
-        serial = RestCaptchaSerializer(data=data)
-        key = get_cache_key(capchaValue)
-        value = cache.get(capchaKey)
-        isValidCaptcha = "{}.0".format(capchaValue) in key
+        serial = RestCaptchaSerializer()
+        # print("ccc")
+        isValid = None
+        try:
+            isValid  = serial.validate(data)
+        except Exception as e:
+            print(e)
+
+        # print("ccc")
+        print(isValid)
+        # key = get_cache_key(capchaValue)
+        # value = cache.get(capchaKey)
+        # isValidCaptcha = "{}.0".format(capchaValue) in key
         # print(key, value)
         print(code, server, password, token)
-        print(capchaKey, capchaValue,serial.is_valid(), serial.validated_data, isValidCaptcha)
-        if isValidCaptcha == False:
+        # print(capchaKey, capchaValue,serial.is_valid(), serial.validated_data, isValidCaptcha)
+        if isValid == None:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                             status=status.HTTP_401_UNAUTHORIZED)

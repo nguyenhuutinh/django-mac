@@ -310,6 +310,7 @@ class FS:
 
     def get_file_name(self, resp):
         tree = html.fromstring(resp.content)
+        file_name = None
         try:
             file_name = tree.xpath(
                 '//*[@property="og:title"]'
