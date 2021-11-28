@@ -296,11 +296,13 @@ class FS:
 
     def getUrl(self, url):
         global cookies
+        self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+
         print("get url", url)
         """
         Strip extra space out of file's name
         """
-        r = requests.get(url, cookies=cookies, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True)
         if r.status_code == 200:
             return r
         elif r.is_redirect:
