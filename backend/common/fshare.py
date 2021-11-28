@@ -300,7 +300,7 @@ class FS:
         """
         Strip extra space out of file's name
         """
-        r = requests.get(url, cookies=cookies, allow_redirects=False)
+        r = requests.get(url, cookies=cookies, allow_redirects=True)
         if r.status_code == 200:
             return r
         elif r.is_redirect:
