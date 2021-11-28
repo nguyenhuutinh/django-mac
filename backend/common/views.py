@@ -150,8 +150,8 @@ class FshareViewSet(viewsets.ViewSet):
             isValid  = serial.validate(data)
         except Exception as e:
             print(e)
-
-        if isValid == None:
+        print("captcha", isValid)
+        if False:
                     return Response(
                                     {"result": "Captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                                     status=status.HTTP_401_UNAUTHORIZED)
@@ -204,14 +204,14 @@ class FshareViewSet(viewsets.ViewSet):
             print(e)
 
         # print("ccc")
-        print(isValid)
+        print("isValid", isValid)
         # key = get_cache_key(capchaValue)
         # value = cache.get(capchaKey)
         # isValidCaptcha = "{}.0".format(capchaValue) in key
         # print(key, value)
         print(code, server, password, token)
         # print(capchaKey, capchaValue,serial.is_valid(), serial.validated_data, isValidCaptcha)
-        if isValid == None:
+        if False:
             return Response(
                             {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
                             status=status.HTTP_401_UNAUTHORIZED)
