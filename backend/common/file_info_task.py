@@ -39,7 +39,7 @@ def checkFileInfo(server, url):
         elif fileSize :
             return {"file_name": "unknown", "file_size": fileSize, "password": passwordFile}
         else :
-            return { "errors" : "không thể lấy thông tin file. vui lòng thử lại {} {}".format(fileName, fileSize)}
+            return { "errors" : "Không thể lấy thông tin file. vui lòng thử lại"}
     else:
         return { "errors" : "File không tồn tại"}
 
