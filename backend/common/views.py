@@ -71,7 +71,7 @@ class GoogleDriveViewSet(viewsets.ViewSet):
     @csrf_exempt
     def download_direct(self, request):
         ip = get_client_ip(request)
-        print(ip)
+        print("google download_direct for ip: ", ip)
 
         try:
             file_slug = request.data['file_slug']
@@ -129,7 +129,9 @@ class FshareViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def download_zip(self, request):
-        print("download_zip")
+        ip = get_client_ip(request)
+
+        print("download_zip for ip: ", ip)
         try:
             code = request.data.get('code')
             server = request.data.get('server')
@@ -176,7 +178,9 @@ class FshareViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def download_direct(self, request):
-        print("download_direct")
+        ip = get_client_ip(request)
+
+        print("download_direct for ip: ", ip)
         try:
             code = request.data.get('code')
             server = request.data.get('server')
