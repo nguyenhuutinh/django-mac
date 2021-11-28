@@ -12,7 +12,7 @@ import requests
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
-
+from urllib.parse import urljoin, urlparse
 from celery import shared_task
 from django.conf import settings
 from datetime import datetime, timedelta
@@ -24,6 +24,8 @@ from common.fshare import FS
 
 
 def checkFileInfo(server, url):
+    url = urljoin(url, urlparse(url).path)
+    print(url)
     fshareI  = FS(server)
     res = fshareI.is_exist(url)
     if res != False:
