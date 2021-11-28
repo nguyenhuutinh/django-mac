@@ -297,7 +297,7 @@ class FS:
     def getUrl(self, url):
         global cookies
         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-
+        self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
         print("get url", url)
         """
         Strip extra space out of file's name
@@ -367,11 +367,13 @@ class FS:
 
     def is_exist(self, url):
         global cookies
-        print("is_exist", url)
-        r = self.s.get(url, allow_redirects=True, cookies=cookies)
+        # print("is_exist", url)
+        self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+        self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
+        r = self.s.get(url, allow_redirects=True)
         if r.is_redirect:
             print("is_redirect", r.headers["Location"])
-            r = self.s.get(r.headers["Location"], cookies=cookies, allow_redirects=False)
+            r = self.s.get(r.headers["Location"], allow_redirects=True)
         print("r", r.status_code)
         if r.ok:
             tree = html.fromstring(r.content)
