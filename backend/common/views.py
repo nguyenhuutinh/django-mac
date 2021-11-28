@@ -155,9 +155,13 @@ class FshareViewSet(viewsets.ViewSet):
 
         res = downloadZipFShare.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
         print("res", res.result)
-        if res.result and res.result["message"]:
+        if res.result and "message" in res.result:
                 return Response(
                     {"result": {"errors": res.result["message"]}},
+                    status=status.HTTP_400_BAD_REQUEST)
+        elif res.result and "errors" in res.result:
+                return Response(
+                    {"result": {"errors": res.result["errors"]}},
                     status=status.HTTP_400_BAD_REQUEST)
 
         elif res.result:
