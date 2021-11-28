@@ -160,7 +160,7 @@ class FshareViewSet(viewsets.ViewSet):
                     {"result": {"errors": res.result["message"]}},
                     status=status.HTTP_400_BAD_REQUEST)
 
-        elif res:
+        elif res.result:
             return Response(
                 {"result": {"url":res.result}},
                 status=status.HTTP_200_OK,
