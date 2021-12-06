@@ -151,10 +151,10 @@ class FshareViewSet(viewsets.ViewSet):
         except Exception as e:
             print(e)
         print("captcha", isValid)
-        if isValid == None:
-                    return Response(
-                                    {"result": "Captcha hết hạn hoặc không đúng. vui lòng thử lại"},
-                                    status=status.HTTP_401_UNAUTHORIZED)
+        # if isValid == None:
+        #             return Response(
+        #                             {"result": "Captcha hết hạn hoặc không đúng. vui lòng thử lại"},
+        #                             status=status.HTTP_401_UNAUTHORIZED)
 
         res = downloadZipFShare.apply(kwargs={ "code":code, "server": server, "password" : password, 'token': token})
         print("res", res.result)
@@ -211,10 +211,10 @@ class FshareViewSet(viewsets.ViewSet):
         # print(key, value)
         print(code, server, password, token)
         # print(capchaKey, capchaValue,serial.is_valid(), serial.validated_data, isValidCaptcha)
-        if isValid == None:
-            return Response(
-                            {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
-                            status=status.HTTP_401_UNAUTHORIZED)
+        # if isValid == None:
+        #     return Response(
+        #                     {"result": "captcha hết hạn hoặc không đúng. vui lòng thử lại"},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
 
 
 
