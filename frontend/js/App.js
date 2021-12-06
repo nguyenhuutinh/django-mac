@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Home from './pages/Home';
 import Download from './pages/Download.js';
 import Fshare from './pages/Fshare.js';
+import Ads from './pages/Ads.js';
 import configureStore from './store';
 import SentryBoundary from './utils/SentryBoundary';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -21,6 +22,7 @@ const App = (props) => (
             element={<Download location={window.location} />}
           ></Route>
           <Route path="/fshare" element={<Fshare  location={window.location} />}></Route>
+          <Route path="/ads" element={<Ads  location={window.location} />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

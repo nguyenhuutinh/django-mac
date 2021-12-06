@@ -7,7 +7,7 @@ from django.utils.timezone import now
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
-from rest_captcha import VERSION
+
 
 import os
 import re
@@ -17,10 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
 
 from common.google_drive_task import downloadGoogleDrive
+from common.ads_shorten_task import shorten
 
-
-import jsons
-import json
 
 
 
@@ -42,6 +40,63 @@ cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
+
+
+
+class AdsViewSet(viewsets.ViewSet):
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[AllowAny],
+        url_path='shorten',
+    )
+    @csrf_exempt
+    def shorten(self, request):
+
+
+        try:
+            url = request.data['url']
+        except:
+            return JsonResponse({"error_message": "url is not exist" }, status=400)
+        print(url)
+
+        task = shorten.apply(kwargs={"url":url})
+        print("downloadGoogleDrive done", task)
+        result = task.result
+        if(type(result) == str and result.startswith("error")):
+            return JsonResponse({"result": result }, status=400)
+        else:
+            # task_result = AsyncResult(task.id)
+            # print(task_result.result)
+            downloadLink = task.result
+            # task_id = task.info["id"]
+            print("downloadLink")
+            print(downloadLink)
+            return JsonResponse({"result": downloadLink }, status=200)
+
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+    # @csrf_exempt
+    # def get_status(request, task_id):
+    #     task_result = AsyncResult(task_id)
+    #     result = {
+    #         "task_id": task_id,
+    #         "task_status": task_result.status,
+    #         "task_result": task_result..
+    #     }
+    #     return JsonResponse(result, status=200)
+
+
 
 
 class GoogleDriveViewSet(viewsets.ViewSet):

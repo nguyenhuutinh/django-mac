@@ -9,6 +9,26 @@ const types = {
 
 // Action creators
 export const creators = {
+  postShorten: (url) => {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_REQUESTED });
+      try {
+        const body = { url: url};
+        // console.log("fetchRestCheck", body)
+        const res = await api.post('/api/ads/shorten/', body);
+        console.log("postShorten", res.data)
+        if(res.status == 200){
+          dispatch({ type: types.FETCH_SUCCESS, data: res.data });
+        }else{
+          dispatch({ type: types.FETCH_ERROR, data: res.data });
+        }
+
+      } catch (error) {
+        // console.log( error.response.data)
+        dispatch({ type: types.FETCH_ERROR, data: error.response.data });
+      }
+    };
+  },
   fetchRestCheck: (file_slug) => {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_REQUESTED });
