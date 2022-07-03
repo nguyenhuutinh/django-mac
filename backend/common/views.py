@@ -8,7 +8,8 @@ import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 from werkzeug.utils import secure_filename
-
+import csv
+from io import StringIO
 
 import os
 import re
@@ -16,7 +17,9 @@ import requests
 
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
-
+from common.models import Campaign
+from common.models import UserFormInfo
+from django.db.models import Count
 from common.google_drive_task import downloadGoogleDrive
 from common.ads_shorten_task import shorten
 
@@ -199,9 +202,39 @@ class GoogleFormViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def auto_submit(self, request):
-        data = request.FILES.get('file')
-        filename = secure_filename(data.filename)
-        data.save("/temp/" + filename)
+        csv_file = request.FILES.get('file')
+
+        cName = request.data['campaign']
+        duplicates = Campaign.objects.filter(name=cName).exists()
+        if duplicates:
+            return JsonResponse({"error": f"{cName} đã tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
+
+        content = StringIO(csv_file.read().decode('utf-8-sig'))
+        csv_reader = csv.reader(content, delimiter=',', quoting=csv.QUOTE_NONE)
+
+
+
+
+        csv_rows = [[x.strip() for x in row] for row in csv_reader]
+        field_names = csv_rows[0]  # Get the header row
+        del csv_rows[0]
+        camp = Campaign.objects.create(
+                        name=cName,
+                        file_name=csv_file.name,
+                        total= len(csv_rows),
+                        sent= 0
+                    )
+        print(camp.id)
+        for index, row in enumerate(csv_rows):
+            data_dict = dict(zip(field_names, row))
+            print(data_dict)
+            UserFormInfo.objects.update_or_create(phone=row[1],
+                defaults=data_dict,
+                campaign_id= camp.id
+
+            )
+        # filename = secure_filename(data.filename)
+        # data.save("/temp/" + filename)
         return JsonResponse({"result": "hello" }, status=200)
 
 

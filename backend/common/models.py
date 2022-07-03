@@ -42,3 +42,35 @@ class TokenInfo(models.Model):
         return ret
     # class Meta:
     #     unique_together = ['file_id']
+class Campaign(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=1000 )
+    file_name = models.CharField(max_length=1000 )
+    total = models.IntegerField(default=0)
+    sent = models.IntegerField(default=0)
+    target_date = models.DateField(blank=True, null=True)
+    during_date = models.IntegerField(default=1)
+    created = AutoCreatedField(_("created"), db_index=True)
+    modified = AutoLastModifiedField(_("modified"), db_index=True)
+class UserFormInfo(models.Model):
+    # define department name and description columns, the id column will be added automatically.
+    auto_increment_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=1000 )
+    phone = models.CharField(max_length=1000)
+    email = models.CharField(max_length=1000)
+    age = models.CharField(max_length=1000)
+    sent = models.BooleanField(default=False)
+    sent_date = models.DateField(blank=True, null=True)
+    target_date = models.DateField(blank=True, null=True)
+    sent_time = models.TimeField(blank=True, null=True)
+    sent_status = models.CharField(max_length=1000)
+    created = AutoCreatedField(_("created"), db_index=True)
+    modified = AutoLastModifiedField(_("modified"), db_index=True)
+    campaign = models.ForeignKey(
+        "Campaign", on_delete=models.CASCADE)
+
+
+    # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
+    def __str__(self):
+        ret = self.name + ',' + self.phone + ',' + self.email + ',' + self.sent + ',' + str(self.modified)
+        return ret

@@ -5,6 +5,7 @@ django-model-utils
 django-webpack-loader>=1.0.0
 django-js-reverse
 werkzeug
+pandas
 django-import-export
 djangorestframework
 django-debreach
