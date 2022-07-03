@@ -4,6 +4,7 @@ celery-redbeat
 django-model-utils
 django-webpack-loader>=1.0.0
 django-js-reverse
+werkzeug
 django-import-export
 djangorestframework
 django-debreach
