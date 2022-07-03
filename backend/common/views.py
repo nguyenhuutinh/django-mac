@@ -1,8 +1,9 @@
+import random
 from django.views import generic
 from celery.result import AsyncResult
 from django.http import JsonResponse
 from django.shortcuts import render
-from datetime import datetime, timedelta
+from datetime import datetime,date, timedelta
 from django.utils.timezone import now
 import pprint
 from http.cookiejar import MozillaCookieJar
@@ -10,6 +11,16 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 import csv
 from io import StringIO
+from faker import Faker
+
+from common.google_form_submit import googleSubmitForm
+fake = Faker()
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+from time import sleep
+
+from datetime import timedelta
+from django.utils import timezone
 
 import os
 import re
@@ -178,22 +189,6 @@ def get_client_ip(request):
 
 class GoogleFormViewSet(viewsets.ViewSet):
 
-    # @action(
-    #     detail=False,
-    #     methods=['post'],
-    #     permission_classes=[AllowAny],
-    #     url_path='rest-check',
-    # )
-    # @csrf_exempt
-    # def rest_check(self, request):
-    #     print("ooo")
-    #     return Response(
-    #         {"result": "If you're seeing this, the REST API is working!"},
-    #         status=status.HTTP_200_OK,
-    #     )
-    # def home(request):
-    #     return render(request, "home.html")
-
     @action(
         detail=False,
         methods=['post'],
@@ -203,6 +198,11 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @csrf_exempt
     def auto_submit(self, request):
         csv_file = request.FILES.get('file')
+        planDate = request.data['plan_date']
+        if request.data.get("during_date"):
+            days = request.data['during_date']
+        else :
+            days = 1
 
         cName = request.data['campaign']
         duplicates = Campaign.objects.filter(name=cName).exists()
@@ -225,18 +225,41 @@ class GoogleFormViewSet(viewsets.ViewSet):
                         sent= 0
                     )
         print(camp.id)
+        # submitForm(690)
+        # return
+        scheduler = BackgroundScheduler()
+        scheduler.start()
+
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
             print(data_dict)
-            UserFormInfo.objects.update_or_create(phone=row[1],
-                defaults=data_dict,
-                campaign_id= camp.id
-
+            planDt = rotate_time(planDate, days)
+            trigger = CronTrigger(
+                year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
             )
+            obj, created = UserFormInfo.objects.update_or_create(phone=row[1],
+                defaults=data_dict,
+                campaign_id= camp.id,
+                target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
+            )
+            print(created, obj.auto_increment_id)
+            scheduler.add_job(
+                submitForm,
+                trigger=trigger,
+                args=[obj.auto_increment_id],
+                name="Submit Form",
+            )
+
+
         # filename = secure_filename(data.filename)
         # data.save("/temp/" + filename)
         return JsonResponse({"result": "hello" }, status=200)
 
+
+def submitForm(id):
+    print(id)
+    res = googleSubmitForm.apply(kwargs={ "id":id})
+    print(res)
 
 
 def get_client_ip(request):
@@ -435,5 +458,19 @@ def get_cache_key(captcha_key):
     cache_key = cache_template.format(key=captcha_key, version=VERSION.major)
     return cache_key
 
+
+def rotate_time(planDate, days):
+    newPlanDate = date.fromisoformat(planDate)
+    dt = datetime.combine(newPlanDate, datetime.min.time())
+    dt = dt.replace(hour=random.randint(7, 21), minute= random.randint(11, 54))
+    # dt = dt.replace(hour=1, minute= 57)
+    if days <= 1:
+        endDate = '+10h'
+    else:
+        endDate = f"+{10*days}h"
+    print(endDate)
+    result = fake.date_time_between(start_date= dt, end_date= endDate)
+    print(result)
+    return result
 
 

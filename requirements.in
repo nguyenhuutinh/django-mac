@@ -6,6 +6,8 @@ django-webpack-loader>=1.0.0
 django-js-reverse
 werkzeug
 pandas
+Faker
+apscheduler
 django-import-export
 djangorestframework
 django-debreach

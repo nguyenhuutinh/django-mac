@@ -59,9 +59,10 @@ class UserFormInfo(models.Model):
     phone = models.CharField(max_length=1000)
     email = models.CharField(max_length=1000)
     age = models.CharField(max_length=1000)
+    gender = models.CharField(max_length=1000)
     sent = models.BooleanField(default=False)
     sent_date = models.DateField(blank=True, null=True)
-    target_date = models.DateField(blank=True, null=True)
+    target_date = models.DateTimeField(blank=True, null=True)
     sent_time = models.TimeField(blank=True, null=True)
     sent_status = models.CharField(max_length=1000)
     created = AutoCreatedField(_("created"), db_index=True)
@@ -71,6 +72,6 @@ class UserFormInfo(models.Model):
 
 
     # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
-    def __str__(self):
-        ret = self.name + ',' + self.phone + ',' + self.email + ',' + self.sent + ',' + str(self.modified)
-        return ret
+    # def __str__(self):
+    #     ret = self.name + ',' + self.phone + ',' + self.email  + ',' + str(self.modified)
+    #     return ret
