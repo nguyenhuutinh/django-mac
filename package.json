@@ -5,6 +5,9 @@
   "description": "macos frontend.",
   "main": "index.js",
   "prettier": "eslint-config-vinta/prettier",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "test": "jest",
     "test:watch": "npm test -- --watch",
