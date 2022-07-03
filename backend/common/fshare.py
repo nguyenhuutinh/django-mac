@@ -487,9 +487,11 @@ class FS:
         Strip extra space out of file's name
         """
         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-        self.s.cookies.set("share-app", token.cookie_share_app)
+        if(token != None and token.cookie_share_app):
+            self.s.cookies.set("share-app", token.cookie_share_app)
         r1 = self.s.get("https://www.fshare.vn/account/inforesource",  allow_redirects=False)
-
+        print(r1.status_code)
+        # return {"error":"error"}
         if r1.status_code == 200:
             tree = html.fromstring(r1.content)
             content = tree.xpath('//*[@id="down-traffic-profile"]/div/div/div[@class="account-storage"]/span')
@@ -500,4 +502,4 @@ class FS:
                 available = content[1].text.replace("Còn khả dụng:","").strip()
             return {"used": used, "available" : available}
         else:
-            return "error"
+            return {"error":"error"}

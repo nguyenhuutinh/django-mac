@@ -7,6 +7,7 @@ from django.utils.timezone import now
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
+from werkzeug.utils import secure_filename
 
 
 import os
@@ -169,6 +170,60 @@ def get_client_ip(request):
     #     }
     #     return JsonResponse(result, status=200)
 
+
+
+
+class GoogleFormViewSet(viewsets.ViewSet):
+
+    # @action(
+    #     detail=False,
+    #     methods=['post'],
+    #     permission_classes=[AllowAny],
+    #     url_path='rest-check',
+    # )
+    # @csrf_exempt
+    # def rest_check(self, request):
+    #     print("ooo")
+    #     return Response(
+    #         {"result": "If you're seeing this, the REST API is working!"},
+    #         status=status.HTTP_200_OK,
+    #     )
+    # def home(request):
+    #     return render(request, "home.html")
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[AllowAny],
+        url_path='auto-submit',
+    )
+    @csrf_exempt
+    def auto_submit(self, request):
+        data = request.FILES.get('file')
+        filename = secure_filename(data.filename)
+        data.save("/temp/" + filename)
+        return JsonResponse({"result": "hello" }, status=200)
+
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+    # @csrf_exempt
+    # def get_status(request, task_id):
+    #     task_result = AsyncResult(task_id)
+    #     result = {
+    #         "task_id": task_id,
+    #         "task_status": task_result.status,
+    #         "task_result": task_result..
+    #     }
+    #     return JsonResponse(result, status=200)
 
 
 

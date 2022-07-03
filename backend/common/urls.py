@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('drive/<str:file_name>', views.IndexView.as_view(), name='index'),
     path('fshare', views.IndexView.as_view(), name='index'),
+    path('google-form', views.IndexView.as_view(), name='index'),
     path('ads', views.IndexView.as_view(), name='index'),
 
 ]
