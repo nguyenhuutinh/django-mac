@@ -465,6 +465,7 @@ def rotate_time(planDate, days):
         endDate = '+10h'
     else:
         endDate = f"+{10*days}h"
+    print(datetime.now())
     print(dt)
     print(endDate)
     result = fake.date_time_between(start_date= dt, end_date= endDate)
