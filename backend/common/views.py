@@ -1,7 +1,7 @@
 import random
 from django.views import generic
 from celery.result import AsyncResult
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from datetime import datetime,date, timedelta
 from django.utils.timezone import now
@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import csv
 from io import StringIO
 from faker import Faker
+from django.core import serializers
 
 from common.google_form_submit import googleSubmitForm
 fake = Faker()
@@ -253,35 +254,31 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
         # filename = secure_filename(data.filename)
         # data.save("/temp/" + filename)
-        return JsonResponse({"result": "hello" }, status=200)
+        return JsonResponse({"success": True, "campaign_id" : camp.id }, status=200)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[AllowAny],
+        url_path='campaign-detail',
+    )
+    @csrf_exempt
+    def campaignDetail(self, request):
+        try:
+            id = request.query_params.get('id', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
+        data = Campaign.objects.filter(id= id).order_by('id')
+        print(data)
+        campaign = serializers.serialize('json', data)
+        print(campaign)
+        return HttpResponse(campaign, content_type="application/json")
 
 
 def submitForm(id):
     print(id)
     res = googleSubmitForm.apply(kwargs={ "id":id})
     print(res)
-
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-
-    # @csrf_exempt
-    # def get_status(request, task_id):
-    #     task_result = AsyncResult(task_id)
-    #     result = {
-    #         "task_id": task_id,
-    #         "task_status": task_result.status,
-    #         "task_result": task_result..
-    #     }
-    #     return JsonResponse(result, status=200)
-
-
 
 
 class FshareViewSet(viewsets.ViewSet):
