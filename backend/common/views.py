@@ -268,7 +268,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             id = request.query_params.get('id', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
-        data = Campaign.objects.filter(id= id).order_by('id')
+        data = UserFormInfo.objects.filter(campaign_id= id).order_by('auto_increment_id').select_related("campaign")
         print(data)
         campaign = serializers.serialize('json', data)
         print(campaign)
