@@ -33,25 +33,25 @@ from celery.result import AsyncResult
 from common.models import Campaign
 from common.models import UserFormInfo
 from django.db.models import Count
-from common.google_drive_task import downloadGoogleDrive
-from common.ads_shorten_task import shorten
+# from common.google_drive_task import downloadGoogleDrive
+# from common.ads_shorten_task import shorten
 
 
 
 
-from common.download_direct_task import downloadDirectFshare
-from common.download_zip_task import downloadZipFShare
+# from common.download_direct_task import downloadDirectFshare
+# from common.download_zip_task import downloadZipFShare
 
-from common.file_info_task import checkfileInfoTask
+# from common.file_info_task import checkfileInfoTask
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.cache import cache
-from common.api_captcha import RestCaptchaSerializer
+# from common.api_captcha import RestCaptchaSerializer
 from macos.settings import base
 
-from common.file_info_task import checkaccountInfoTask
+# from common.file_info_task import checkaccountInfoTask
 
 cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
@@ -60,47 +60,47 @@ class IndexView(generic.TemplateView):
 
 
 
-class AdsViewSet(viewsets.ViewSet):
+# class AdsViewSet(viewsets.ViewSet):
 
-    @action(
-        detail=False,
-        methods=['post'],
-        permission_classes=[AllowAny],
-        url_path='shorten',
-    )
-    @csrf_exempt
-    def shorten(self, request):
-
-
-        try:
-            url = request.data['url']
-        except:
-            return JsonResponse({"error_message": "url is not exist" }, status=400)
-        print(url)
-
-        task = shorten.apply(kwargs={"url":url})
-        print("downloadGoogleDrive done", task)
-        result = task.result
-        if(type(result) == str and result.startswith("error")):
-            return JsonResponse({"result": result }, status=400)
-        else:
-            # task_result = AsyncResult(task.id)
-            # print(task_result.result)
-            downloadLink = task.result
-            # task_id = task.info["id"]
-            print("downloadLink")
-            print(downloadLink)
-            return JsonResponse({"result": downloadLink }, status=200)
+#     @action(
+#         detail=False,
+#         methods=['post'],
+#         permission_classes=[AllowAny],
+#         url_path='shorten',
+#     )
+#     @csrf_exempt
+#     def shorten(self, request):
 
 
+#         try:
+#             url = request.data['url']
+#         except:
+#             return JsonResponse({"error_message": "url is not exist" }, status=400)
+#         print(url)
 
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+#         task = shorten.apply(kwargs={"url":url})
+#         print("downloadGoogleDrive done", task)
+#         result = task.result
+#         if(type(result) == str and result.startswith("error")):
+#             return JsonResponse({"result": result }, status=400)
+#         else:
+#             # task_result = AsyncResult(task.id)
+#             # print(task_result.result)
+#             downloadLink = task.result
+#             # task_id = task.info["id"]
+#             print("downloadLink")
+#             print(downloadLink)
+#             return JsonResponse({"result": downloadLink }, status=200)
+
+
+
+# def get_client_ip(request):
+#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+#     if x_forwarded_for:
+#         ip = x_forwarded_for.split(',')[0]
+#     else:
+#         ip = request.META.get('REMOTE_ADDR')
+#     return ip
 
 
     # @csrf_exempt

@@ -25,7 +25,7 @@ import httplib2
 import requests
 import celery
 from celery import shared_task
-from common.fshare import FS
+# from common.fshare import FS
 from common.models import TokenInfo, UserFormInfo
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
