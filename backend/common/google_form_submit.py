@@ -36,7 +36,7 @@ from celery import Celery
 
 app = Celery("macos")
 
-@app.task
+@app.task(name='post_scheduled_updates')
 def post_scheduled_updates():
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
