@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.core import management
+from common.google_form_submit import googleSubmitForm
 from common.models import UserFormInfo
 
 from macos import celery_app
@@ -18,5 +19,5 @@ def updateForms():
         target_date__lte= datetime.now()
     )
     print("scheduled_posts")
-    # for form in scheduled_posts:
-    #     googleSubmitForm(form.auto_increment_id)
+    for form in scheduled_posts:
+        googleSubmitForm(form.auto_increment_id)
