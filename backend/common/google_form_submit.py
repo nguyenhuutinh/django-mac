@@ -32,11 +32,10 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from oauth2client import client, file, tools
 from oauth2client.file import Storage
 from celery import current_task
-from celery import Celery
+from macos import celery_app
 
-app = Celery("macos")
 
-@app.task(name='post_scheduled_updates')
+@celery_app.task
 def post_scheduled_updates():
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
