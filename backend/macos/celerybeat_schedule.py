@@ -4,5 +4,5 @@ from celery.schedules import crontab  # pylint:disable=import-error,no-name-in-m
 
 CELERY_BEAT_SCHEDULE = {
     # Internal tasks
-    "form-every-30-seconds": {"schedule": 30.0, "task": "tasks.post_scheduled_updates"},
+    "form-every-30-seconds": {"schedule": 180.0, "task": "tasks.post_scheduled_updates"},
 }
