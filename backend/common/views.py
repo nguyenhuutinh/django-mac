@@ -367,7 +367,8 @@ class IndexView(generic.TemplateView):
 def rotate_time(planDate, days):
     newPlanDate = date.fromisoformat(planDate)
     dt = datetime.combine(newPlanDate, datetime.min.time())
-    dt = dt.replace(hour=random.randint(0, 0), minute= random.randint(35, 59))
+    now = datetime.datetime.now()
+    dt = dt.replace(hour= now.hour, minute= random.randint(now.minute + 2, 59))
     # print(dt)
     # if days <= 1:
     #     endDate = '+10h'
