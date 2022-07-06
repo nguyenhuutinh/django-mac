@@ -60,11 +60,16 @@ class UserFormInfo(models.Model):
     email = models.CharField(max_length=1000)
     age = models.CharField(max_length=1000)
     gender = models.CharField(max_length=1000)
+    lucky_number = models.CharField(max_length=1000, default="")
     sent = models.BooleanField(default=False)
-    sent_date = models.DateField(blank=True, null=True)
+
     target_date = models.DateTimeField(blank=True, null=True)
+
+    sent_date = models.DateField(blank=True, null=True)
+    sent_date_time = models.DateTimeField(blank=True, null=True)
     sent_time = models.TimeField(blank=True, null=True)
     sent_status = models.CharField(max_length=1000)
+
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     campaign = models.ForeignKey(

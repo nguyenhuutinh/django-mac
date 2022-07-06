@@ -6,7 +6,7 @@ from django.apps import apps
 from celery import Celery
 from decouple import config
 
-from .celerybeat_schedule import CELERYBEAT_SCHEDULE
+from .celerybeat_schedule import CELERY_BEAT_SCHEDULE
 
 settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
 if settings_module is None:
@@ -18,7 +18,10 @@ if settings_module is None:
     sys.exit(1)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
-app = Celery("macos_tasks")
+app = Celery("macos")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])
-app.conf.update(CELERYBEAT_SCHEDULE=CELERYBEAT_SCHEDULE)
+app.conf.beat_schedule = {
+    "form-every-30-seconds": {"schedule": 30.0, "task": "tasks.post_scheduled_updates"},
+}
+print("hell")

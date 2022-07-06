@@ -23,6 +23,7 @@ from django.utils.timezone import now
 
 import httplib2
 import requests
+import celery
 from celery import shared_task
 from common.fshare import FS
 from common.models import TokenInfo, UserFormInfo
@@ -30,7 +31,21 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from oauth2client import client, file, tools
 from oauth2client.file import Storage
+from celery import current_task
+from celery import Celery
 
+app = Celery("macos")
+
+@app.task
+def post_scheduled_updates():
+    scheduled_posts = UserFormInfo.objects.filter(
+        sent=False,
+        # target_date__gt= current_task.sent_date_time, #with the 'sent' flag, you may or may not want this
+        target_date__lte= datetime.now()
+    )
+    print("scheduled_posts")
+    # for form in scheduled_posts:
+    #     googleSubmitForm(form.auto_increment_id)
 
 @shared_task
 def googleSubmitForm(id):
@@ -41,7 +56,7 @@ def googleSubmitForm(id):
     if userFormInfo is None:
         raise Exception("user is empty")
 
-    payload=f'entry.1000020={urllib.parse.quote(userFormInfo.name)}&entry.1000025={userFormInfo.email}&entry.1000022={userFormInfo.phone}&entry.1000023={userFormInfo.age}&entry.1000026={userFormInfo.gender}&partialResponse=[null,null,"1417810996140243231"]&pageHistory=0&fbzx=1417810996140243231&fvv=1'
+    payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.gender)}&entry.306010364={urllib.parse.quote(userFormInfo.age)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'
 
     print(payload)
     headers = {
@@ -53,13 +68,13 @@ def googleSubmitForm(id):
 
     }
 
-    resp = requests.post('https://docs.google.com/forms/u/0/d/e/1FAIpQLSc8F3V4GQLrsGGVaJum-RKMxKlUePbhXNl9GSVAlLGPzsnH8w/formResponse', data=payload.encode("utf-8"), headers=headers)
+    resp = requests.post('https://docs.google.com/forms/u/0/d/e/1FAIpQLSePhwWx1wb56QYDKR8cWlAMcq52bbkHakSeAjXi1b2KWM45PA/formResponse', data=payload.encode("utf-8"), headers=headers)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
 
     print('submitted with result', resp.status_code)
-    UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_time= datetime.now())
+    UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_date_time= datetime.now(), sent_time= datetime.now())
 
     # print(resp.headers)
     # print(resp.content)

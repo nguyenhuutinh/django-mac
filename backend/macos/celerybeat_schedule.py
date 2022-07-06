@@ -1,7 +1,8 @@
+from datetime import timedelta
 from celery.schedules import crontab  # pylint:disable=import-error,no-name-in-module
 
 
-CELERYBEAT_SCHEDULE = {
+CELERY_BEAT_SCHEDULE = {
     # Internal tasks
-    "clearsessions": {"schedule": crontab(hour=3, minute=0), "task": "users.tasks.clearsessions"},
+    "form-every-30-seconds": {"schedule": 30.0, "task": "tasks.post_scheduled_updates"},
 }
