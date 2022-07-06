@@ -13,7 +13,7 @@ import csv
 from io import StringIO
 from faker import Faker
 from django.core import serializers
-from common.google_form_submit import post_scheduled_updates
+from users.tasks import updateForms
 
 from common.google_form_submit import googleSubmitForm
 fake = Faker()
@@ -446,7 +446,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             #     name="Submit Form",
             # )
 
-        post_scheduled_updates.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
+        updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
         # filename = secure_filename(data.filename)
         # data.save("/temp/" + filename)
         return JsonResponse({"success": True, "campaign_id" : camp.id }, status=200)
