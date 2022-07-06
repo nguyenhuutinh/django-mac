@@ -41,13 +41,13 @@ def googleSubmitForm(id):
 
     print("do submitForm Flow", id)
     userFormInfo = UserFormInfo.objects.get(auto_increment_id=id)
-    print(userFormInfo)
+    # print(userFormInfo)
     if userFormInfo is None:
         raise Exception("user is empty")
 
     payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.gender)}&entry.306010364={urllib.parse.quote(userFormInfo.age)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'
 
-    print(payload)
+    # print(payload)
     headers = {
         'User-Agent':'PostmanRuntime/7.29.0',
         'X-Appengine-Default-Namespace':'gmail.com',
@@ -62,7 +62,7 @@ def googleSubmitForm(id):
     # print(resp.request.body)
     # print(resp.request.headers)
 
-    print('submitted with result', resp.status_code)
+    print(f'submitted form {userFormInfo.name} - {userFormInfo.phone} with result ', resp.status_code)
     UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_date_time= datetime.now(), sent_time= datetime.now())
 
     # print(resp.headers)
