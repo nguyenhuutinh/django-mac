@@ -368,7 +368,13 @@ def rotate_time(planDate, days):
     newPlanDate = date.fromisoformat(planDate)
     dt = datetime.combine(newPlanDate, datetime.min.time())
     now = datetime.now()
-    dt = dt.replace(hour= now.hour, minute= random.randint(now.minute + 2, 59))
+    minMinute = now.minute + 2
+    minHour = now.hour
+    if now.minute >= 57:
+        minHour = now.hour + 1
+        minMinute =  1
+
+    dt = dt.replace(hour= random.randint(minHour, 21), minute= random.randint(minMinute + 2, 59))
     # print(dt)
     # if days <= 1:
     #     endDate = '+10h'

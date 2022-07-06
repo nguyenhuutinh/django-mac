@@ -15,9 +15,7 @@ def clearsessions():
 def updateForms():
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
-        # target_date__gt= current_task.sent_date_time, #with the 'sent' flag, you may or may not want this
         target_date__lte= datetime.now()
     )
-    print("scheduled_posts")
     for form in scheduled_posts:
-        googleSubmitForm(form.auto_increment_id)
+        googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, eta= datetime.now() + datetime.timedelta(seconds=1*60))
