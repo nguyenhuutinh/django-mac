@@ -436,7 +436,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
-            print(data_dict)
+            # print(data_dict)
             planDt = rotate_time(camp.start_date, camp.end_date)
             # trigger = CronTrigger(
             #     year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
