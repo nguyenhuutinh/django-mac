@@ -18,7 +18,7 @@ def updateForms():
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
         target_date__lte= datetime.now()
-    )
+    ).order_by('auto_increment_id')
     # print(scheduled_posts , datetime.now() + timedelta(seconds=1*10))
     if scheduled_posts != None and len(scheduled_posts) > 0 :
         formList = scheduled_posts
@@ -26,4 +26,4 @@ def updateForms():
             formList = scheduled_posts[:5]
             print(len(formList))
         for form in formList:
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(5,30))
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(5, 30))

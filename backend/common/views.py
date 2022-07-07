@@ -373,12 +373,8 @@ class IndexView(generic.TemplateView):
 def rotate_time(startDate, endDate):
     # newPlanDate = date.fromisoformat(startDate)
     # dt = datetime.combine(newPlanDate, datetime.min.time())
-    now = datetime.now()
-    minMinute = now.minute + 2
-    minHour = now.hour
-    if now.minute >= 57:
-        minHour = now.hour + 1
-        minMinute =  1
+
+
 
 
     print(startDate)
@@ -389,6 +385,18 @@ def rotate_time(startDate, endDate):
     #     endDate = f"+{10*days}h"
 
     result = fake.date_time_between(start_date= startDate, end_date= endDate)
+    sameDate = result.date() == datetime.today().date()
+    now = datetime.now()
+
+    minMinute = now.minute + 2
+    minHour = now.hour
+    if now.minute >= 57:
+        minHour = now.hour + 1
+        minMinute =  1
+
+    if sameDate == False:
+        minHour = 7
+        minMinute = 1
     result = result.replace(hour= random.randint(minHour, 21), minute= random.randint(minMinute + 2, 59))
     print(result)
     return result
