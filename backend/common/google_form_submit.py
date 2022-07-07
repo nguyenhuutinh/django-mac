@@ -62,7 +62,7 @@ def googleSubmitForm(id):
     # print(resp.request.body)
     # print(resp.request.headers)
 
-    print(f'submitted form {userFormInfo.name} - {userFormInfo.phone} with result ', resp.status_code)
+    print(f'submitted form {userFormInfo.name} - {userFormInfo.phone} with result ', )
     UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_date_time= datetime.now(), sent_time= datetime.now())
 
     # print(resp.headers)

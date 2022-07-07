@@ -13,6 +13,7 @@ def clearsessions():
 
 @celery_app.task
 def updateForms():
+    print("scheduled_posts")
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
         target_date__lte= datetime.now()
