@@ -390,6 +390,9 @@ def rotate_time(startDate, endDate):
 
     minMinute = now.minute + 2
     minHour = now.hour
+
+    maxHour = 23
+
     if now.minute >= 57:
         minHour = now.hour + 1
         minMinute =  1
@@ -397,7 +400,7 @@ def rotate_time(startDate, endDate):
     if sameDate == False:
         minHour = 7
         minMinute = 1
-    result = result.replace(hour= random.randint(minHour, 21), minute= random.randint(minMinute + 2, 59))
+    result = result.replace(hour= random.randint(minHour, maxHour), minute= random.randint(minMinute + 2, 59))
     print(result)
     return result
 
