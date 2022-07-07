@@ -1,18 +1,24 @@
+import json
 import random
+import sys
 from django.views import generic
 from celery.result import AsyncResult
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from datetime import datetime,date, timedelta
+from datetime import datetime,date, timedelta, time
 from django.utils.timezone import now
+from dateutil import tz, parser
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 from werkzeug.utils import secure_filename
 import csv
+
+
 from io import StringIO
 from faker import Faker
 from django.core import serializers
+from common.models import CampaignSerializer
 from users.tasks import updateForms
 
 from common.google_form_submit import googleSubmitForm
@@ -364,9 +370,9 @@ class IndexView(generic.TemplateView):
 #     return cache_key
 
 
-def rotate_time(planDate, days):
-    newPlanDate = date.fromisoformat(planDate)
-    dt = datetime.combine(newPlanDate, datetime.min.time())
+def rotate_time(startDate, endDate):
+    # newPlanDate = date.fromisoformat(startDate)
+    # dt = datetime.combine(newPlanDate, datetime.min.time())
     now = datetime.now()
     minMinute = now.minute + 2
     minHour = now.hour
@@ -374,14 +380,16 @@ def rotate_time(planDate, days):
         minHour = now.hour + 1
         minMinute =  1
 
-    dt = dt.replace(hour= random.randint(minHour, 21), minute= random.randint(minMinute + 2, 59))
-    # print(dt)
+
+    print(startDate)
+    print(endDate)
     # if days <= 1:
     #     endDate = '+10h'
     # else:
     #     endDate = f"+{10*days}h"
 
-    result = fake.date_time_between(start_date= dt, end_date= dt)
+    result = fake.date_time_between(start_date= startDate, end_date= endDate)
+    result = result.replace(hour= random.randint(minHour, 21), minute= random.randint(minMinute + 2, 59))
     print(result)
     return result
 
@@ -398,16 +406,13 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @csrf_exempt
     def auto_submit(self, request):
         csv_file = request.FILES.get('file')
-        planDate = request.data['plan_date']
-        if request.data.get("during_date"):
-            days = request.data['during_date']
-        else :
-            days = 1
 
-        cName = request.data['campaign']
-        duplicates = Campaign.objects.filter(name=cName).exists()
-        if duplicates:
-            return JsonResponse({"error": f"{cName} đã tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
+
+
+        campaignId = request.data['campaign_id']
+        duplicates = Campaign.objects.filter(id=campaignId).exists()
+        if duplicates == None:
+            return JsonResponse({"error": f"{campaignId} ko tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
 
         content = StringIO(csv_file.read().decode('utf-8-sig'))
         csv_reader = csv.reader(content, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -418,30 +423,26 @@ class GoogleFormViewSet(viewsets.ViewSet):
         csv_rows = [[x.strip() for x in row] for row in csv_reader]
         field_names = csv_rows[0]  # Get the header row
         del csv_rows[0]
-        camp = Campaign.objects.create(
-                        name=cName,
-                        file_name=csv_file.name,
-                        total= len(csv_rows),
-                        sent= 0
-                    )
+        camp = Campaign.objects.get(id=campaignId)
+
+        camp.file_name=csv_file.name
+        camp.status = "processed"
+        camp.save()
         # print(camp.id)
         # submitForm(690)
         # return
-        scheduler = BackgroundScheduler()
-        scheduler.start()
+        # scheduler = BackgroundScheduler()
+        # scheduler.start()
 
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
-            # print(data_dict)
-            planDt = rotate_time(planDate, days)
-            trigger = CronTrigger(
-                year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
-            )
-            obj, created = UserFormInfo.objects.update_or_create(phone=row[1],
-                defaults = data_dict,
-                age = 'Tùy chọn 1',
-                gender = 'Tùy chọn 1',
-                lucky_number = f'{random.randint(0, 9999)}',
+            print(data_dict)
+            planDt = rotate_time(camp.start_date, camp.end_date)
+            # trigger = CronTrigger(
+            #     year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
+            # )
+            UserFormInfo.objects.create(
+                **data_dict,
                 campaign_id = camp.id,
                 target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
             )
@@ -470,12 +471,78 @@ class GoogleFormViewSet(viewsets.ViewSet):
             id = request.query_params.get('id', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
+        data = Campaign.objects.get(id= id)
+        # print(data)
+        campaign = CampaignSerializer(instance=data).data
+
+        # print(campaign)
+        json_object = json.dumps(campaign)
+
+        return HttpResponse(json_object, content_type="application/json")
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[AllowAny],
+        url_path='form-list',
+    )
+    @csrf_exempt
+    def formList(self, request):
+        try:
+            id = request.query_params.get('campaign-id', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
         data = UserFormInfo.objects.filter(campaign_id= id).order_by('target_date').select_related("campaign")
         # print(data)
         campaign = serializers.serialize('json', data)
         # print(campaign)
         return HttpResponse(campaign, content_type="application/json")
 
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[AllowAny],
+        url_path='campaign-list',
+    )
+    @csrf_exempt
+    def campaignList(self, request):
+        data = Campaign.objects.all().order_by('-created')
+        # print(data)
+        campaign = serializers.serialize('json', data)
+        # print(campaign)
+        return HttpResponse(campaign, content_type="application/json")
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[AllowAny],
+        url_path='add-campaign',
+    )
+    @csrf_exempt
+    def add_new_campaign(self, request):
+        default_date = datetime.combine(datetime.now(),
+                                time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+        # try:
+        name = request.data['name']
+        # print(name)
+        startDate = request.data.get("start_date")
+        # print(startDate)
+        convertedSD = parser.parse(startDate, default =default_date)
+        # print(convertedSD)
+        endDate = request.data.get("end_date")
+        convertedED = parser.parse(endDate, default =default_date)
+        # print(convertedED)
+        record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED)
+
+        campaign = Campaign.objects.filter(id=record.id)
+
+        # campaign = json.dumps(record.__dict__)
+        converted = serializers.serialize('json', campaign)
+
+        # print(converted)
+        return HttpResponse(converted, content_type="application/json")
+        # except:
+        #     print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
+        #     return JsonResponse({"error_message": "id parameter is required" }, status=400)
 
 def submitForm(id):
     # print(id)

@@ -45,7 +45,7 @@ def googleSubmitForm(id):
     if userFormInfo is None:
         raise Exception("user is empty")
 
-    payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.gender)}&entry.306010364={urllib.parse.quote(userFormInfo.age)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'
+    payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.age)}&entry.306010364={urllib.parse.quote(userFormInfo.gender)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'
 
     # print(payload)
     headers = {

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from rest_framework import serializers
 
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
@@ -45,13 +46,17 @@ class TokenInfo(models.Model):
 class Campaign(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=1000 )
-    file_name = models.CharField(max_length=1000 )
-    total = models.IntegerField(default=0)
-    sent = models.IntegerField(default=0)
-    target_date = models.DateField(blank=True, null=True)
-    during_date = models.IntegerField(default=1)
+    file_name = models.CharField(max_length=1000, default="" )
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
+    status = models.CharField(max_length=1000, default="")
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
+class CampaignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campaign
+        fields = '__all__'
+
 class UserFormInfo(models.Model):
     # define department name and description columns, the id column will be added automatically.
     auto_increment_id = models.AutoField(primary_key=True)
