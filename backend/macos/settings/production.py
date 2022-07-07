@@ -5,6 +5,14 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *  # noqa
 
 
+CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://:p2b51ec2fe469a3d410b73b081205b3d682a28376c0a96fde4617aa3bdb9d3440@ec2-99-80-110-36.eu-west-1.compute.amazonaws.com:14879'
+    }
+}
+
+
 DEBUG = False
 
 SECRET_KEY = config("SECRET_KEY")
