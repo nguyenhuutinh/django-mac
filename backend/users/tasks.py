@@ -17,6 +17,7 @@ def updateForms():
         sent=False,
         target_date__lte= datetime.now()
     )
+    print(scheduled_posts)
     if scheduled_posts != None and len(scheduled_posts) > 0 :
         formList = scheduled_posts
         if len(scheduled_posts) > 0 :
