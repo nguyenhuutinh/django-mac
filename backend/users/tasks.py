@@ -24,4 +24,4 @@ def updateForms():
         if len(scheduled_posts) > 0 :
             formList = scheduled_posts[:10]
         for form in formList:
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, eta= datetime.now() + timedelta(seconds=1*10))
+            googleSubmitForm.apply_async((form.auto_increment_id), countdown = 10)
