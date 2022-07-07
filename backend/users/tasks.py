@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from random import random
+import random
 from django.core import management
 from common.google_form_submit import googleSubmitForm
 from common.models import UserFormInfo
