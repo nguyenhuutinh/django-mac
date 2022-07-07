@@ -34,7 +34,7 @@ dill==0.3.5.1
     # via pylint
 distlib==0.3.4
     # via virtualenv
-django==4.0.5
+django==4.0.6
     # via
     #   -r dev-requirements.in
     #   model-bakery
@@ -162,7 +162,7 @@ tomli==2.0.1
     # via
     #   black
     #   pylint
-tomlkit==0.11.0
+tomlkit==0.11.1
     # via pylint
 typing-extensions==4.3.0
     # via

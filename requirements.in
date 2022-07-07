@@ -29,4 +29,5 @@ jsons
 beautifulsoup4
 lxml
 django-cors-headers
-django-rest-captcha
+#django-rest-captcha
+django-redis
