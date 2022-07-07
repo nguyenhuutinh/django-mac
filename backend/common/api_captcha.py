@@ -1,5 +1,5 @@
 
-from rest_captcha.serializers import RestCaptchaSerializer
+# from rest_captcha.serializers import RestCaptchaSerializer
 
-class RestCaptchaSerializer(RestCaptchaSerializer):
-    pass
+# class RestCaptchaSerializer(RestCaptchaSerializer):
+#     pass

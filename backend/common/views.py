@@ -59,7 +59,7 @@ from macos.settings import base
 
 # from common.file_info_task import checkaccountInfoTask
 
-cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
+# cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'

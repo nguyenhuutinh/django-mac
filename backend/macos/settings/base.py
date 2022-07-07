@@ -27,20 +27,20 @@ DATABASES = {
     "default": config("DATABASE_URL", cast=db_url),
 }
 
-REST_CAPTCHA = {
-    'CAPTCHA_CACHE': 'default',
-    'CAPTCHA_TIMEOUT': 60,  # 5 minutes
-    'CAPTCHA_LENGTH': 4,
-    'CAPTCHA_FONT_SIZE': 30,
-    'CAPTCHA_IMAGE_SIZE': (200, 60),
-    'CAPTCHA_LETTER_ROTATION': (-1, 1),
-    'CAPTCHA_FOREGROUND_COLOR': '#cd1417',
-    'CAPTCHA_BACKGROUND_COLOR': '#ffffff',
-#     # 'CAPTCHA_FONT_PATH': FONT_PATH,
-    'CAPTCHA_CACHE_KEY': 'rest_captcha_{key}.{version}',
-    'FILTER_FUNCTION': 'rest_captcha.captcha.filter_default',
-    'NOISE_FUNCTION': 'rest_captcha.captcha.noise_default'
-}
+# REST_CAPTCHA = {
+#     'CAPTCHA_CACHE': 'default',
+#     'CAPTCHA_TIMEOUT': 60,  # 5 minutes
+#     'CAPTCHA_LENGTH': 4,
+#     'CAPTCHA_FONT_SIZE': 30,
+#     'CAPTCHA_IMAGE_SIZE': (200, 60),
+#     'CAPTCHA_LETTER_ROTATION': (-1, 1),
+#     'CAPTCHA_FOREGROUND_COLOR': '#cd1417',
+#     'CAPTCHA_BACKGROUND_COLOR': '#ffffff',
+# #     # 'CAPTCHA_FONT_PATH': FONT_PATH,
+#     'CAPTCHA_CACHE_KEY': 'rest_captcha_{key}.{version}',
+#     'FILTER_FUNCTION': 'rest_captcha.captcha.filter_default',
+#     'NOISE_FUNCTION': 'rest_captcha.captcha.noise_default'
+# }
 
 CACHES={
     'default': {
@@ -56,7 +56,7 @@ CORS_ALLOWED_ORIGINS = (
 )
 CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
-    'rest_captcha',
+    # 'rest_captcha',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
