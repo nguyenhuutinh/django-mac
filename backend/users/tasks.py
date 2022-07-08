@@ -26,4 +26,4 @@ def updateForms():
             formList = scheduled_posts[:5]
             print(len(formList))
         for form in formList:
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(5, 30))
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(3, 15))
