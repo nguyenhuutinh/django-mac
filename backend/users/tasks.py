@@ -17,7 +17,7 @@ def updateForms():
     print("scheduled_posts")
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
-        target_date__lte= datetime.now()
+        target_date__lt = datetime.now()
     ).order_by('auto_increment_id')
     # print(scheduled_posts , datetime.now() + timedelta(seconds=1*10))
     if scheduled_posts != None and len(scheduled_posts) > 0 :

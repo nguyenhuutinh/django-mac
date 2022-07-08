@@ -370,40 +370,48 @@ class IndexView(generic.TemplateView):
 #     return cache_key
 
 
-def rotate_time(startDate, endDate):
-    # newPlanDate = date.fromisoformat(startDate)
-    # dt = datetime.combine(newPlanDate, datetime.min.time())
+# def rotate_time(startDate, endDate):
+#     # newPlanDate = date.fromisoformat(startDate)
+#     # dt = datetime.combine(newPlanDate, datetime.min.time())
 
 
 
 
-    print(startDate)
-    print(endDate)
-    # if days <= 1:
-    #     endDate = '+10h'
-    # else:
-    #     endDate = f"+{10*days}h"
+#     print(startDate)
+#     print(endDate)
+#     # if days <= 1:
+#     #     endDate = '+10h'
+#     # else:
+#     #     endDate = f"+{10*days}h"
 
-    result = fake.date_time_between(start_date= startDate, end_date= endDate)
-    sameDate = result.date() == datetime.today().date()
-    now = datetime.now()
+#     result = fake.date_time_between(start_date= startDate, end_date= endDate)
+#     sameDate = result.date() == datetime.today().date()
+#     now = datetime.now()
 
-    minMinute = now.minute + 2
-    minHour = now.hour
+#     minMinute = now.minute + 2
+#     minHour = now.hour
 
-    maxHour = 23
+#     maxHour = 23
 
-    if now.minute >= 57:
-        minHour = now.hour + 1
-        minMinute =  1
+#     if now.minute >= 57:
+#         minHour = now.hour + 1
+#         minMinute =  1
 
-    if sameDate == False:
-        minHour = 7
-        minMinute = 1
-    result = result.replace(hour= random.randint(minHour, maxHour), minute= random.randint(minMinute + 2, 59))
-    print(result)
-    return result
-
+#     if sameDate == False:
+#         minHour = 7
+#         minMinute = 1
+#     result = result.replace(hour= random.randint(minHour, maxHour), minute= random.randint(minMinute + 2, 59))
+#     print(result)
+#     return result
+def randomtimes(stime, etime, n):
+    # frmt = '%d-%m-%Y %H:%M:%S'
+    # stime = datetime.strptime(stime, frmt)
+    # etime = datetime.strptime(etime, frmt)
+    td = etime - stime
+    timeRange = [random.random() * td + stime for _ in range(n)]
+    # print(timeRange)
+    timeRange.sort()
+    return timeRange
 
 
 class GoogleFormViewSet(viewsets.ViewSet):
@@ -444,11 +452,12 @@ class GoogleFormViewSet(viewsets.ViewSet):
         # return
         # scheduler = BackgroundScheduler()
         # scheduler.start()
-
+        timeRange = randomtimes( camp.start_date, camp.end_date, len(csv_rows))
+        # timeRange.pop()
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
             # print(data_dict)
-            planDt = rotate_time(camp.start_date, camp.end_date)
+            planDt = timeRange.pop(0)
             # trigger = CronTrigger(
             #     year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
             # )
@@ -457,17 +466,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
                 campaign_id = camp.id,
                 target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
             )
-            # print(created, obj.auto_increment_id)
-            # scheduler.add_job(
-            #     submitForm,
-            #     trigger=trigger,
-            #     args=[obj.auto_increment_id],
-            #     name="Submit Form",
-            # )
 
         updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
-        # filename = secure_filename(data.filename)
-        # data.save("/temp/" + filename)
         return JsonResponse({"success": True, "campaign_id" : camp.id }, status=200)
 
     @action(
@@ -555,8 +555,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
         #     print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
         #     return JsonResponse({"error_message": "id parameter is required" }, status=400)
 
-def submitForm(id):
+# def submitForm(id):
     # print(id)
-    res = googleSubmitForm.apply(kwargs={ "id":id})
+    # res = googleSubmitForm.apply(kwargs={ "id":id})
     # print(res)
 

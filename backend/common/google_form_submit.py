@@ -40,7 +40,7 @@ from macos import celery_app
 def googleSubmitForm(id):
 
     print("do submitForm Flow", id)
-    userFormInfo = UserFormInfo.objects.get(auto_increment_id=id)
+    userFormInfo = UserFormInfo.objects.get(auto_increment_id=id, target_date__lt = datetime.now())
     # print(userFormInfo)
     if userFormInfo is None:
         raise Exception("user is empty")
