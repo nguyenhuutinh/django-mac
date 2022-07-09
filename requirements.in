@@ -31,4 +31,3 @@ lxml
 django-cors-headers
 #django-rest-captcha
 django-redis
-bearer-auth
