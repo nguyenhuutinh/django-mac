@@ -45,13 +45,13 @@ class IndexedTimeStampedModel(models.Model):
     #     unique_together = ['file_id']
 class Campaign(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=1000 )
-    file_name = models.CharField(max_length=1000, default="" )
+    name = models.CharField(max_length=200 )
+    file_name = models.CharField(max_length=300, default="" )
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
-    status = models.CharField(max_length=1000, default="")
+    status = models.CharField(max_length=50, default="")
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
 
@@ -72,12 +72,13 @@ class CampaignSerializer(serializers.ModelSerializer):
 class UserFormInfo(models.Model):
     # define department name and description columns, the id column will be added automatically.
     auto_increment_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=1000 )
-    phone = models.CharField(max_length=1000)
-    email = models.CharField(max_length=1000)
-    age = models.CharField(max_length=1000)
-    gender = models.CharField(max_length=1000)
-    lucky_number = models.CharField(max_length=1000, default="")
+    name = models.CharField(max_length=200 )
+    phone = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    age = models.CharField(max_length=100)
+    gender = models.CharField(max_length=100)
+    status = models.CharField(max_length=100,default="")
+    lucky_number = models.CharField(max_length=20, default="")
     sent = models.BooleanField(default=False)
 
     target_date = models.DateTimeField(blank=True, null=True)
@@ -85,7 +86,7 @@ class UserFormInfo(models.Model):
     sent_date = models.DateField(blank=True, null=True)
     sent_date_time = models.DateTimeField(blank=True, null=True)
     sent_time = models.TimeField(blank=True, null=True)
-    sent_status = models.CharField(max_length=1000)
+    sent_status = models.CharField(max_length=50)
 
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
