@@ -475,14 +475,15 @@ class GoogleFormViewSet(viewsets.ViewSet):
                     target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
                 )
                 del csv_rows[index]
+
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
             # print(data_dict)
             planDt = timeRange.pop(0)
             UserFormInfo.objects.create(
                 **data_dict,
-                campaign_id = campaign.id,
-                target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
+                campaign_id = campaign.id
+                # target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
             )
         updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
 
