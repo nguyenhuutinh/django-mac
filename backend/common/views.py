@@ -20,6 +20,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from io import StringIO
 from faker import Faker
 from django.core import serializers
+from common.models import Schedule
 from common.models import CampaignSerializer
 from users.tasks import updateForms
 
@@ -498,6 +499,28 @@ class GoogleFormViewSet(viewsets.ViewSet):
         json_object = json.dumps(campaign)
 
         return HttpResponse(json_object, content_type="application/json")
+    @action(
+        detail=False,
+        methods=['get'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+
+        url_path='schedule-list',
+    )
+    @csrf_exempt
+    def scheduleListDetail(self, request):
+        try:
+            id = request.query_params.get('campaign_id', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
+        data = Schedule.objects.filter(campaign_id= id)
+        # print(data)
+        schedules = serializers.serialize('json', data)
+
+        # print(campaign)
+
+        return HttpResponse(schedules, content_type="application/json")
 
     @action(
         detail=False,
@@ -551,29 +574,65 @@ class GoogleFormViewSet(viewsets.ViewSet):
     def add_new_campaign(self, request):
         default_date = datetime.combine(datetime.now(),
                                 time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+
+
         # try:
         name = request.data['name']
         # print(name)
         startDate = request.data.get("start_date")
         # print(startDate)
         convertedSD = parser.parse(startDate, default =default_date)
+
         # print(convertedSD)
         endDate = request.data.get("end_date")
+        # print(endDate)
         convertedED = parser.parse(endDate, default =default_date)
-        # print(convertedED)
-        record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED)
 
-        campaign = Campaign.objects.filter(id=record.id)
+        startTime = request.data.get("start_time")
+        convertedST = parser.parse(startTime, default =default_date)
+        # print(startTime)
+        endTime = request.data.get("end_time")
+        # print(endTime)
+        convertedET = parser.parse(endTime, default =default_date)
 
-        # campaign = json.dumps(record.__dict__)
-        converted = serializers.serialize('json', campaign)
+
+
+        record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED, start_time= convertedST, end_time= convertedET, status = "new init")
+
+        data = Campaign.objects.get(id=record.id)
+        print(data)
+        isValid = add_schedule(data, convertedST, convertedET , request)
+        if(isValid != True):
+            return isValid
+
+        campaign = CampaignSerializer(instance=data).data
+
+        # print(campaign)
+        json_object = json.dumps(campaign)
+
+
 
         # print(converted)
-        return HttpResponse(converted, content_type="application/json")
+        return HttpResponse(json_object, content_type="application/json")
         # except:
         #     print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
         #     return JsonResponse({"error_message": "id parameter is required" }, status=400)
 
+def add_schedule(campaign, convertedST, convertedET, request):
+    try:
+        schedules = request.data['schedules']
+        default_date = datetime.combine(datetime.now(),
+                                time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+        for sch in schedules:
+            print(sch)
+            targetDate = sch["date"]
+            items = sch["items"]
+            convertedDate = parser.parse(targetDate, default =default_date)
+            Schedule.objects.create(campaign=campaign, target_date = convertedDate, start_time= convertedST, end_time= convertedET, items = items)
+    except:
+        print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
+        return JsonResponse({"error_message": "id parameter is required" }, status=400)
+    return True
 # def submitForm(id):
     # print(id)
     # res = googleSubmitForm.apply(kwargs={ "id":id})
