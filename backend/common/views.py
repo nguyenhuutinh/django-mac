@@ -406,7 +406,7 @@ class IndexView(generic.TemplateView):
 #     result = result.replace(hour= random.randint(minHour, maxHour), minute= random.randint(minMinute + 2, 59))
 #     print(result)
 #     return result
-def randomtimes(stime, etime, n):
+def randomTimes(stime, etime, n):
     # frmt = '%d-%m-%Y %H:%M:%S'
     # stime = datetime.strptime(stime, frmt)
     # etime = datetime.strptime(etime, frmt)
@@ -449,33 +449,49 @@ class GoogleFormViewSet(viewsets.ViewSet):
         csv_rows = [[x.strip() for x in row] for row in csv_reader]
         field_names = csv_rows[0]  # Get the header row
         del csv_rows[0]
-        camp = Campaign.objects.get(id=campaignId)
 
-        camp.file_name=csv_file.name
-        camp.status = "processed"
-        camp.save()
-        # print(camp.id)
-        # submitForm(690)
-        # return
-        # scheduler = BackgroundScheduler()
-        # scheduler.start()
-        timeRange = randomtimes( camp.start_date, camp.end_date, len(csv_rows))
-        # timeRange.pop()
+        scheduleList = Schedule.objects.filter(campaign_id = campaignId).order_by("target_date")
+        for schedule in scheduleList:
+
+            startDate = schedule.target_date
+            startDate = startDate.replace(hour=campaign.start_time.hour,minute = campaign.start_time.minute, second = campaign.start_time.second)
+            print("startDate")
+            print(startDate)
+            endDate = schedule.target_date
+            endDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
+            print(endDate)
+            timeRange = randomTimes( startDate, endDate, schedule.items)
+            # timeRange.pop()
+            for index, row in enumerate(csv_rows):
+                print(f"{index} - {schedule.items}")
+                if index >=schedule.items:
+                    break
+                data_dict = dict(zip(field_names, row))
+                # print(data_dict)
+                planDt = timeRange.pop(0)
+                UserFormInfo.objects.create(
+                    **data_dict,
+                    campaign_id = campaign.id,
+                    target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
+                )
+                del csv_rows[index]
         for index, row in enumerate(csv_rows):
             data_dict = dict(zip(field_names, row))
             # print(data_dict)
             planDt = timeRange.pop(0)
-            # trigger = CronTrigger(
-            #     year=planDt.year, month=planDt.month, day=planDt.day, hour=planDt.hour, minute=planDt.minute, second=planDt.second
-            # )
             UserFormInfo.objects.create(
                 **data_dict,
-                campaign_id = camp.id,
+                campaign_id = campaign.id,
                 target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
             )
-
         updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
-        return JsonResponse({"success": True, "campaign_id" : camp.id }, status=200)
+
+
+        campaign.file_name=csv_file.name
+        campaign.status = "ready"
+        campaign.save()
+
+        return JsonResponse({"success": True, "campaign_id" : campaign.id }, status=200)
 
     @action(
         detail=False,
