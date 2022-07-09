@@ -52,6 +52,18 @@ class Campaign(models.Model):
     status = models.CharField(max_length=1000, default="")
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
+    
+class Schedule(models.Model):
+    id = models.AutoField(primary_key=True)
+    campaign = models.ForeignKey(
+        "Campaign", on_delete=models.CASCADE)
+    form = models.ForeignKey(
+        "UserFormInfo", on_delete=models.CASCADE)
+    target_date = models.DateTimeField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    number = models.IntegerField(default=1)
+
 class CampaignSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campaign
