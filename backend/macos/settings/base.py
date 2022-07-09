@@ -223,8 +223,8 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_SEND_TASK_ERROR_EMAILS = True
 
 # Sentry
-SENTRY_DSN = config("SENTRY_DSN", default="")
-COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
+# SENTRY_DSN = config("SENTRY_DSN", default="")
+# COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
 
 # Fix for Safari 12 compatibility issues, please check:
 # https://github.com/vintasoftware/safari-samesite-cookie-issue

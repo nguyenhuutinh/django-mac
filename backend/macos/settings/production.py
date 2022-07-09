@@ -1,6 +1,6 @@
-import sentry_sdk
+# import sentry_sdk
 from decouple import Csv, config
-from sentry_sdk.integrations.django import DjangoIntegration
+# from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *  # noqa
 
@@ -108,7 +108,7 @@ LOGGING = {
     },
 }
 
-JS_REVERSE_EXCLUDE_NAMESPACES = ["admin"]
+# JS_REVERSE_EXCLUDE_NAMESPACES = ["admin"]
 
 # Sentry
-sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], release=COMMIT_SHA)
+# sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], release=COMMIT_SHA)
