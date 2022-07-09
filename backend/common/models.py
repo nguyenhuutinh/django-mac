@@ -62,6 +62,8 @@ class Schedule(models.Model):
     target_date = models.DateTimeField(blank=True, null=True)
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
+    status = models.CharField(max_length=50, default="")
+    finished_time = models.TimeField(blank=True, null=True)
     items = models.IntegerField(default=1)
 
 class CampaignSerializer(serializers.ModelSerializer):

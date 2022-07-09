@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import random
 from django.core import management
-from backend.common.models import Campaign
+from common.models import Campaign
 from common.google_form_submit import googleSubmitForm
 from common.models import UserFormInfo
 
