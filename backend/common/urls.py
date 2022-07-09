@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -9,5 +9,6 @@ urlpatterns = [
     path('fshare', views.IndexView.as_view(), name='index'),
     path('google-form', views.IndexView.as_view(), name='index'),
     path('ads', views.IndexView.as_view(), name='index'),
+    # path('auth/', include('knox.urls'))
 
 ]

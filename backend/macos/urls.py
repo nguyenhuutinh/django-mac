@@ -1,6 +1,6 @@
 from django.urls import include
 from django.urls import path
-from django.contrib import admin
+# from django.contrib import admin
 
 # import django_js_reverse.views
 from rest_framework.routers import DefaultRouter
@@ -15,7 +15,8 @@ for route in routes:
 
 urlpatterns = [
     path("", include("common.urls"), name="common"),
-    path("admin/", admin.site.urls, name="admin"),
+
+    # path("admin/", admin.site.urls, name="admin"),
     # path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),
     # path(r'api/captcha/', include('rest_captcha.urls')),
     path("api/", include(router.urls), name="api"),

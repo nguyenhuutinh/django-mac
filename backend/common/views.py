@@ -13,6 +13,8 @@ from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 from werkzeug.utils import secure_filename
 import csv
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 
 from io import StringIO
@@ -419,7 +421,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
         methods=['post'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
         permission_classes=[AllowAny],
+
         url_path='auto-submit',
     )
     @csrf_exempt
@@ -473,7 +478,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
         methods=['get'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
         permission_classes=[AllowAny],
+
         url_path='campaign-detail',
     )
     @csrf_exempt
@@ -494,7 +502,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
         methods=['get'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
         permission_classes=[AllowAny],
+
         url_path='form-list',
     )
     @csrf_exempt
@@ -512,7 +523,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
         methods=['get'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
         permission_classes=[AllowAny],
+
         url_path='campaign-list',
     )
     @csrf_exempt
@@ -522,10 +536,15 @@ class GoogleFormViewSet(viewsets.ViewSet):
         campaign = serializers.serialize('json', data)
         # print(campaign)
         return HttpResponse(campaign, content_type="application/json")
+
+
     @action(
         detail=False,
         methods=['post'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
         permission_classes=[AllowAny],
+
         url_path='add-campaign',
     )
     @csrf_exempt
