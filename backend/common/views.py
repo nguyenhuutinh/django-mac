@@ -9,9 +9,6 @@ from datetime import datetime,date, timedelta, time
 from django.utils.timezone import now
 from dateutil import tz, parser
 import pprint
-from http.cookiejar import MozillaCookieJar
-from pathlib import Path
-from tomlkit import item
 from werkzeug.utils import secure_filename
 import csv
 from rest_framework.permissions import IsAuthenticated
