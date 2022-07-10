@@ -12,37 +12,25 @@ class IndexedTimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
-# class DownloadInfo(models.Model):
-#     # define department name and description columns, the id column will be added automatically.
-#     file_id = models.CharField(max_length=1000)
-#     file_desc = models.CharField(max_length=1000)
-#     client_ip = models.CharField(max_length=1000, default="")
-
-#     created = AutoCreatedField(_("created"), db_index=True)
-#     modified = AutoLastModifiedField(_("modified"), db_index=True)
-#     download_count = models.IntegerField()
-#     download_status = models.CharField(max_length=1000, default="")
-#     # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
-#     def __str__(self):
-#         ret = self.file_id + ',' + str(self.download_count)
-#         return ret
-#     # class Meta:
-#     #     unique_together = ['file_id']
-# class TokenInfo(models.Model):
-#     # define department name and description columns, the id column will be added automatically.
-#     account_id = models.CharField(max_length=1000,primary_key = True)
-#     cookie_share_app = models.CharField(max_length=1000)
-#     cookie_csrf = models.CharField(max_length=1000)
-#     # cookie_csrf_2 = models.CharField(max_length=1000)
-#     created = AutoCreatedField(_("created"), db_index=True)
-#     modified = AutoLastModifiedField(_("modified"), db_index=True)
-
-#     # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
-#     def __str__(self):
-#         ret = self.account_id + ',' + str(self.modified)
-#         return ret
-#     # class Meta:
-    #     unique_together = ['file_id']
+class GoogleFormField(models.Model):
+    id = models.AutoField(primary_key=True)
+    key_name = models.CharField(max_length=200 )
+    key_index = models.IntegerField(default=1)
+    google_form = models.ForeignKey(
+        "GoogleFormInfo", on_delete=models.CASCADE)
+    campaign = models.ForeignKey(
+        "Campaign", on_delete=models.CASCADE)
+class GoogleFormInfo(models.Model):
+    id = models.AutoField(primary_key=True)
+    link = models.CharField(max_length=300, default="" )
+    action_link = models.CharField(max_length=300, default="" )
+    num_fields = models.IntegerField(default=1 )
+    partial_response = models.CharField(max_length=300, default="" )
+    fbzx = models.CharField(max_length=300, default="" )
+    fvv  = models.CharField(max_length=300, default="" )
+    page_history = models.CharField(max_length=300, default="" )
+    campaign = models.ForeignKey(
+        "Campaign", on_delete=models.CASCADE)
 class Campaign(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200 )
@@ -55,6 +43,7 @@ class Campaign(models.Model):
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     total_schedules = models.IntegerField(default= 0)
+    google_form_id = models.IntegerField(default= -1)
 
 class Schedule(models.Model):
     id = models.AutoField(primary_key=True)
@@ -75,13 +64,18 @@ class CampaignSerializer(serializers.ModelSerializer):
 class UserFormInfo(models.Model):
     # define department name and description columns, the id column will be added automatically.
     auto_increment_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200 )
-    phone = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    age = models.CharField(max_length=100)
-    gender = models.CharField(max_length=100)
-    status = models.CharField(max_length=100,default="")
-    lucky_number = models.CharField(max_length=20, default="")
+    field1 = models.CharField(max_length=200 , default="")
+    field2 = models.CharField(max_length=200, default="")
+    field3 = models.CharField(max_length=200, default="")
+    field4 = models.CharField(max_length=200, default="")
+    field5 = models.CharField(max_length=200 ,default="")
+    field6 = models.CharField(max_length=200,default="")
+    field7 = models.CharField(max_length=200, default="")
+    field8 = models.CharField(max_length=200, default="")
+    field9 = models.CharField(max_length=200, default="")
+    field10 = models.CharField(max_length=200, default="")
+
+    status = models.CharField(max_length=50, default="")
     sent = models.BooleanField(default=False)
 
     target_date = models.DateTimeField(blank=True, null=True)
@@ -96,9 +90,3 @@ class UserFormInfo(models.Model):
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     campaign = models.ForeignKey(
         "Campaign", on_delete=models.CASCADE)
-
-
-    # this is a inner class which is used to define unique index columns. You can specify multiple columns in a list or tuple.
-    # def __str__(self):
-    #     ret = self.name + ',' + self.phone + ',' + self.email  + ',' + str(self.modified)
-    #     return ret

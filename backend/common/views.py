@@ -21,6 +21,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from io import StringIO
 from faker import Faker
 from django.core import serializers
+from common.google_form import getFormResponse
 from common.models import Schedule
 from common.models import CampaignSerializer
 from users.tasks import updateForms
@@ -448,8 +449,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
 
         csv_rows = [[x.strip() for x in row] for row in csv_reader]
-        field_names = csv_rows[0]  # Get the header row
-        del csv_rows[0]
+        field_names =["field1", "field2", "field3", "field4", "field5" ,"field6", "field7", "field8", "field9", "field10"]
+
         last_row = csv_rows[-1]
         scheduleList = Schedule.objects.filter(campaign_id = campaignId).order_by("target_date")
         for schedule in scheduleList:
@@ -472,7 +473,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
                 if index >=schedule.items:
                     break
                 data_dict = dict(zip(field_names, row))
-                # print(data_dict)
+                print(data_dict)
                 # print(len(timeRange))
                 planDt = timeRange.pop(0)
                 lastItem = False
@@ -495,7 +496,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # print(n)
             for index, row in enumerate(remain_csv_rows):
                 data_dict = dict(zip(field_names, row))
-                # print(data_dict)
+                print(data_dict)
 
                 lastItem = False
                 if last_row == row:
@@ -508,12 +509,14 @@ class GoogleFormViewSet(viewsets.ViewSet):
                     last_item = lastItem
                 )
 
-        updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
+
 
 
         campaign.file_name=csv_file.name
         campaign.status = "ready"
         campaign.save()
+
+        updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
 
         return JsonResponse({"success": True, "campaign_id" : campaign.id }, status=200)
 
@@ -674,6 +677,12 @@ class GoogleFormViewSet(viewsets.ViewSet):
         if(isValid != True):
             return isValid
 
+
+        isValid = add_google_form(data, request)
+
+        if(isValid != True):
+            return isValid
+
         campaign = CampaignSerializer(instance=data).data
 
         # print(campaign)
@@ -706,8 +715,14 @@ def add_schedule(campaign, convertedST, convertedET, request):
         # print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
         return JsonResponse({"error_message": "id parameter is required" }, status=400)
     return True
-# def submitForm(id):
-    # print(id)
-    # res = googleSubmitForm.apply(kwargs={ "id":id})
-    # print(res)
+
+def add_google_form(campaign, request):
+    try:
+        url = request.data['google_form_link']
+        print(url)
+        return getFormResponse(campaign, url)
+    except:
+        # print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
+        return JsonResponse({"error_message": "id parameter is required" }, status=400)
+
 

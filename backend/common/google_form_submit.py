@@ -25,6 +25,8 @@ import httplib2
 import requests
 import celery
 from celery import shared_task
+from common.models import GoogleFormInfo
+from common.models import GoogleFormField
 from common.models import Campaign
 # from common.fshare import FS
 from common.models import UserFormInfo
@@ -41,22 +43,52 @@ from macos import celery_app
 def googleSubmitForm(id):
 
     # print("do submitForm Flow", id)
-    userFormInfo = UserFormInfo.objects.select_related("campaign").get(auto_increment_id=id, target_date__lt = datetime.now())
+    forms = UserFormInfo.objects.select_related("campaign").get(auto_increment_id=id, target_date__lt = datetime.now())
     # print(userFormInfo)
-    if userFormInfo is None:
+    if forms is None:
         raise Exception("form is empty")
 
-    if userFormInfo.campaign.status == "ready":
+    if forms.campaign.status == "ready":
             # print("update status")
-            camp = Campaign.objects.get(id= userFormInfo.campaign.id)
+            camp = Campaign.objects.get(id= forms.campaign.id)
             camp.status = "running"
             camp.save()
-    if userFormInfo.last_item == True:
-            camp = Campaign.objects.get(id= userFormInfo.campaign.id)
+    if forms.last_item == True:
+            camp = Campaign.objects.get(id= forms.campaign.id)
             camp.status = "finished"
             camp.save()
 
-    payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.age)}&entry.306010364={urllib.parse.quote(userFormInfo.gender)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'
+
+    googleFormInfo = GoogleFormInfo.objects.get(campaign_id = forms.campaign.id)
+    print(googleFormInfo)
+    fields = GoogleFormField.objects.filter(google_form_id= googleFormInfo.id, campaign_id = forms.campaign.id).order_by("key_index")
+    print(fields)
+    payload = ''
+    index = 1
+    for field in fields:
+        if(index == 1):
+            payload = payload + f'{field.key_name}={urllib.parse.quote(forms.field1)}'
+        if(index == 2):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field2)}'
+        if(index == 3):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field3)}'
+        if(index == 4):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field4)}'
+        if(index == 5):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field5)}'
+        if(index == 6):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field6)}'
+        if(index == 7):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field7)}'
+        if(index == 8):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field8)}'
+        if(index == 9):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field9)}'
+        if(index == 10):
+            payload = payload + f'&{field.key_name}={urllib.parse.quote(forms.field10)}'
+        index = index + 1
+    payload = payload + f'&{"fvv"}={urllib.parse.quote(googleFormInfo.fvv)}' + f'&{"pageHistory"}={urllib.parse.quote(googleFormInfo.page_history)}' + f'&{"fbzx"}={urllib.parse.quote(googleFormInfo.fbzx)}' + f'&{"partialResponse"}={urllib.parse.quote(googleFormInfo.partial_response)}'
+    print(payload)
 
     # print(payload)
     headers = {
@@ -68,12 +100,12 @@ def googleSubmitForm(id):
 
     }
 
-    resp = requests.post('https://docs.google.com/forms/u/0/d/e/1FAIpQLSePhwWx1wb56QYDKR8cWlAMcq52bbkHakSeAjXi1b2KWM45PA/formResponse', data=payload.encode("utf-8"), headers=headers)
+    resp = requests.post(googleFormInfo.action_link, data=payload.encode("utf-8"), headers=headers)
     # print(resp.request.url)
     # print(resp.request.body)
     # print(resp.request.headers)
 
-    print(f'submitted form {userFormInfo.name} - {userFormInfo.phone} with result {resp.status_code}')
+    print(f'submitted form {forms.field1} - {forms.field2} with result {resp.status_code}')
     UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_date_time= datetime.now(), sent_time= datetime.now())
 
     # print(resp.headers)
