@@ -411,7 +411,6 @@ def randomTimes(stime, etime, n):
     # etime = datetime.strptime(etime, frmt)
     td = etime - stime
     timeRange = [random.random() * td + stime for _ in range(n)]
-    print(timeRange)
     timeRange.sort()
     return timeRange
 
@@ -459,10 +458,11 @@ class GoogleFormViewSet(viewsets.ViewSet):
             endDate = schedule.target_date
             newEndDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
             print(newEndDate)
-            length =  schedule.items if schedule.items > len(csv_rows) else len(csv_rows)
+            length =  len(csv_rows) if schedule.items > len(csv_rows) else schedule.items
             # print(length)
             timeRange = randomTimes( newStartDate, newEndDate, length)
-            # timeRange.pop()
+            print(len(timeRange))
+            print(timeRange[-1])
             for index, row in enumerate(csv_rows):
                 # print("hello")
                 # print(len(csv_rows))
