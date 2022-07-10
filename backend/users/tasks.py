@@ -30,4 +30,4 @@ def updateForms():
         for form in formList:
             # print(form)
             # print(form.campaign)
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(3, 30))
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(3, 60))
