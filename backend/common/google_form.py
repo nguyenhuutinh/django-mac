@@ -32,7 +32,7 @@ def get_file_size(campaign, url, content):
         fbzx = tree.xpath('//input[contains(@name, "fbzx")]/@value')[0]
         actionLink = tree.xpath('//form/@action')[0]
         # print(actionLink)
-        form = GoogleFormInfo.objects.create(link= url, num_fields= len(listData), campaign= campaign, partial_response =  partialResponse, action_link = actionLink, fbzx = fbzx, fvv= fvv, pageHistory= pageHistory)
+        form = GoogleFormInfo.objects.create(link= url, num_fields= len(listData), campaign= campaign, partial_response =  partialResponse, action_link = actionLink, fbzx = fbzx, fvv= fvv, page_history= pageHistory)
         index = 1
         for result in listData:
             data = result.split(",")

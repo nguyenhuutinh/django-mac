@@ -671,12 +671,13 @@ class GoogleFormViewSet(viewsets.ViewSet):
         data = Campaign.objects.get(id=record.id)
         # print(data)
         isValid = add_schedule(data, convertedST, convertedET , request)
+        print(isValid)
         if(isValid != True):
             return isValid
 
 
         isValid = add_google_form(data, request)
-
+        print(isValid)
         if(isValid != True):
             return isValid
 
@@ -714,12 +715,8 @@ def add_schedule(campaign, convertedST, convertedET, request):
     return True
 
 def add_google_form(campaign, request):
-    try:
-        url = request.data['google_form_link']
-        print(url)
-        return getFormResponse(campaign, url)
-    except:
-        # print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
-        return JsonResponse({"error_message": "id parameter is required" }, status=400)
+    url = request.data['google_form_link']
+    print(url)
+    return getFormResponse(campaign, url)
 
 
