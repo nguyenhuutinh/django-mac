@@ -40,16 +40,20 @@ from macos import celery_app
 @shared_task
 def googleSubmitForm(id):
 
-    print("do submitForm Flow", id)
+    # print("do submitForm Flow", id)
     userFormInfo = UserFormInfo.objects.select_related("campaign").get(auto_increment_id=id, target_date__lt = datetime.now())
-    print(userFormInfo)
+    # print(userFormInfo)
     if userFormInfo is None:
         raise Exception("form is empty")
 
     if userFormInfo.campaign.status == "ready":
-            print("update status")
+            # print("update status")
             camp = Campaign.objects.get(id= userFormInfo.campaign.id)
             camp.status = "running"
+            camp.save()
+    if userFormInfo.last_item == True:
+            camp = Campaign.objects.get(id= userFormInfo.campaign.id)
+            camp.status = "finished"
             camp.save()
 
     payload=f'entry.1678210758={urllib.parse.quote(userFormInfo.name)}&entry.861103900={userFormInfo.email}&entry.342149314={userFormInfo.phone}&entry.1552925985={userFormInfo.lucky_number}&entry.1416255078={urllib.parse.quote(userFormInfo.age)}&entry.306010364={urllib.parse.quote(userFormInfo.gender)}&partialResponse=[null,null,"-6707872070833591597"]&pageHistory=0&fbzx=-6707872070833591597&fvv=1'

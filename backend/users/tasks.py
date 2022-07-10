@@ -15,14 +15,14 @@ def clearsessions():
 
 @celery_app.task
 def updateForms():
-    print("scheduled_posts")
+    # print("scheduled_posts")
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
         target_date__lt = datetime.now()
     ).exclude(campaign__status = 'canceled').exclude(status='canceled').order_by('auto_increment_id').select_related("campaign")
     # print(scheduled_posts , datetime.now() + timedelta(seconds=1*10))
     if scheduled_posts != None and len(scheduled_posts) > 0 :
-        
+
         formList = scheduled_posts
         if len(scheduled_posts) > 5 :
             formList = scheduled_posts[:5]

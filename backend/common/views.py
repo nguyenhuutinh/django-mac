@@ -11,6 +11,7 @@ from dateutil import tz, parser
 import pprint
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
+from tomlkit import item
 from werkzeug.utils import secure_filename
 import csv
 from rest_framework.permissions import IsAuthenticated
@@ -438,8 +439,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
         campaign = Campaign.objects.get(id=campaignId)
         if campaign == None:
             return JsonResponse({"error": f"{campaignId} ko tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
-        if campaign.status != "new_init":
-            return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
+        # if campaign.status != "new_init":
+        #     return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
         csv_reader = csv.reader(content, delimiter=',', quoting=csv.QUOTE_NONE)
 
@@ -449,42 +450,64 @@ class GoogleFormViewSet(viewsets.ViewSet):
         csv_rows = [[x.strip() for x in row] for row in csv_reader]
         field_names = csv_rows[0]  # Get the header row
         del csv_rows[0]
-
+        last_row = csv_rows[-1]
         scheduleList = Schedule.objects.filter(campaign_id = campaignId).order_by("target_date")
         for schedule in scheduleList:
 
             startDate = schedule.target_date
             startDate = startDate.replace(hour=campaign.start_time.hour,minute = campaign.start_time.minute, second = campaign.start_time.second)
-            print("startDate")
-            print(startDate)
+            # print("startDate")
+            # print(startDate)
             endDate = schedule.target_date
             endDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
-            print(endDate)
-            timeRange = randomTimes( startDate, endDate, schedule.items)
+            # print(endDate)
+            length =  schedule.items if schedule.items > len(csv_rows) else len(csv_rows)
+            # print(length)
+            timeRange = randomTimes( startDate, endDate, length)
             # timeRange.pop()
             for index, row in enumerate(csv_rows):
-                print(f"{index} - {schedule.items}")
+                # print("hello")
+                # print(len(csv_rows))
+                # print(f"{index} - {schedule.items}")
                 if index >=schedule.items:
                     break
                 data_dict = dict(zip(field_names, row))
                 # print(data_dict)
+                # print(len(timeRange))
                 planDt = timeRange.pop(0)
+                lastItem = False
+                if last_row == row:
+                    # print(data_dict)
+                    # print("last_row")
+                    lastItem = True
                 UserFormInfo.objects.create(
                     **data_dict,
                     campaign_id = campaign.id,
-                    target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
+                    target_date = planDt.strftime('%Y-%m-%d %H:%M:%S'),
+                    last_item = lastItem
                 )
-                del csv_rows[index]
+                # print(result)
+        # print("end")
+        if(len(csv_rows) > campaign.total_schedules):
+            n =  campaign.total_schedules
+            # print("out of schedules length")
+            remain_csv_rows = csv_rows[n:]
+            # print(n)
+            for index, row in enumerate(remain_csv_rows):
+                data_dict = dict(zip(field_names, row))
+                # print(data_dict)
 
-        for index, row in enumerate(csv_rows):
-            data_dict = dict(zip(field_names, row))
-            # print(data_dict)
-            # planDt = timeRange.pop(0)
-            UserFormInfo.objects.create(
-                **data_dict,
-                campaign_id = campaign.id
-                # target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
-            )
+                lastItem = False
+                if last_row == row:
+                    # print(data_dict)
+                    # print("last_row")
+                    lastItem = True
+                UserFormInfo.objects.create(
+                    **data_dict,
+                    campaign_id = campaign.id,
+                    last_item = lastItem
+                )
+
         updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
 
 
@@ -646,7 +669,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
         record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED, start_time= convertedST, end_time= convertedET, status = "new_init")
 
         data = Campaign.objects.get(id=record.id)
-        print(data)
+        # print(data)
         isValid = add_schedule(data, convertedST, convertedET , request)
         if(isValid != True):
             return isValid
@@ -669,14 +692,18 @@ def add_schedule(campaign, convertedST, convertedET, request):
         schedules = request.data['schedules']
         default_date = datetime.combine(datetime.now(),
                                 time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+        totalSchedules = 0
         for sch in schedules:
-            print(sch)
+            # print(sch)
             targetDate = sch["date"]
             items = sch["items"]
+            totalSchedules += items
             convertedDate = parser.parse(targetDate, default =default_date)
             Schedule.objects.create(campaign=campaign, target_date = convertedDate, start_time= convertedST, end_time= convertedET, items = items)
+        campaign.total_schedules = totalSchedules
+        campaign.save()
     except:
-        print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
+        # print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")
         return JsonResponse({"error_message": "id parameter is required" }, status=400)
     return True
 # def submitForm(id):
