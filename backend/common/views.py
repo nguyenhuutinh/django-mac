@@ -411,7 +411,7 @@ def randomTimes(stime, etime, n):
     # etime = datetime.strptime(etime, frmt)
     td = etime - stime
     timeRange = [random.random() * td + stime for _ in range(n)]
-    # print(timeRange)
+    print(timeRange)
     timeRange.sort()
     return timeRange
 
