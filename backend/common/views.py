@@ -453,16 +453,16 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
             startDate = schedule.target_date
             newStartDate = startDate.replace(hour=campaign.start_time.hour,minute = campaign.start_time.minute, second = campaign.start_time.second)
-            print("startDate")
-            print(newStartDate)
+            # print("startDate")
+            # print(newStartDate)
             endDate = schedule.target_date
             newEndDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
-            print(newEndDate)
+            # print(newEndDate)
             length =  len(csv_rows) if schedule.items > len(csv_rows) else schedule.items
             # print(length)
             timeRange = randomTimes( newStartDate, newEndDate, length)
-            print(len(timeRange))
-            print(timeRange[-1])
+            # print(len(timeRange))
+            # print(timeRange[-1])
             for index, row in enumerate(csv_rows):
                 # print("hello")
                 # print(len(csv_rows))
@@ -671,13 +671,13 @@ class GoogleFormViewSet(viewsets.ViewSet):
         data = Campaign.objects.get(id=record.id)
         # print(data)
         isValid = add_schedule(data, convertedST, convertedET , request)
-        print(isValid)
+        # print(isValid)
         if(isValid != True):
             return isValid
 
 
         isValid = add_google_form(data, request)
-        print(isValid)
+        # print(isValid)
         if(isValid != True):
             return isValid
 
@@ -716,7 +716,7 @@ def add_schedule(campaign, convertedST, convertedET, request):
 
 def add_google_form(campaign, request):
     url = request.data['google_form_link']
-    print(url)
+    # print(url)
     return getFormResponse(campaign, url)
 
 
