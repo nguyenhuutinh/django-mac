@@ -572,9 +572,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def updateCampaign(self, request):
+        # print(request.data)
         try:
-            campaignId = request.query_params.get('campaign-id', '')
-            status = request.query_params.get('status', '')
+            campaignId = request.data.get('id', '')
+            status = request.data.get('status', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
 
