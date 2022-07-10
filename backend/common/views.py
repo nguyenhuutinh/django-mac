@@ -1,46 +1,54 @@
+import csv
 import json
+import pprint
 import random
 import sys
-from django.views import generic
-from celery.result import AsyncResult
+from datetime import date, datetime, time, timedelta
+from io import StringIO
+
+from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from datetime import datetime,date, timedelta, time
 from django.utils.timezone import now
-from dateutil import tz, parser
-import pprint
-from werkzeug.utils import secure_filename
-import csv
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django.views import generic
 
-
-from io import StringIO
-from faker import Faker
-from django.core import serializers
+from celery.result import AsyncResult
 from common.google_form import getFormResponse
-from common.models import Schedule
-from common.models import CampaignSerializer
-from users.tasks import updateForms
-
 from common.google_form_submit import googleSubmitForm
+from common.models import CampaignSerializer, Schedule
+from dateutil import parser, tz
+from faker import Faker
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from users.tasks import updateForms
+from werkzeug.utils import secure_filename
+
+
 fake = Faker()
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
-from time import sleep
-
-from datetime import timedelta
-from django.utils import timezone
-
 import os
 import re
-import requests
+from datetime import timedelta
+from time import sleep
 
-from django.views.decorators.csrf import csrf_exempt
-from celery.result import AsyncResult
-from common.models import Campaign
-from common.models import UserFormInfo
+from django.core.cache import cache
 from django.db.models import Count
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+
+import requests
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+from celery.result import AsyncResult
+from common.models import Campaign, UserFormInfo
+# from common.api_captcha import RestCaptchaSerializer
+from macos.settings import base
+# from common.file_info_task import checkfileInfoTask
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+
 # from common.google_drive_task import downloadGoogleDrive
 # from common.ads_shorten_task import shorten
 
@@ -50,14 +58,6 @@ from django.db.models import Count
 # from common.download_direct_task import downloadDirectFshare
 # from common.download_zip_task import downloadZipFShare
 
-# from common.file_info_task import checkfileInfoTask
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from django.core.cache import cache
-# from common.api_captcha import RestCaptchaSerializer
-from macos.settings import base
 
 # from common.file_info_task import checkaccountInfoTask
 
