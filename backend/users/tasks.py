@@ -22,10 +22,10 @@ def updateForms():
     ).exclude(campaign__status = 'canceled').exclude(status='canceled').order_by('auto_increment_id').select_related("campaign")
     # print(scheduled_posts , datetime.now() + timedelta(seconds=1*10))
     if scheduled_posts != None and len(scheduled_posts) > 0 :
-        print(scheduled_posts[0].campaign.status)
-        if scheduled_posts[0].campaign.status == "ready":
+        print(scheduled_posts[-1].campaign.status)
+        if scheduled_posts[-1].campaign.status == "ready":
             print("update status")
-            Campaign.objects.filter(id=scheduled_posts[0].campaign.id).update(status='running')
+            Campaign.objects.filter(id=scheduled_posts[-1].campaign.id).update(status='running')
         formList = scheduled_posts
         if len(scheduled_posts) > 5 :
             formList = scheduled_posts[:5]
