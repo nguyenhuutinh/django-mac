@@ -470,7 +470,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
                 if index >=schedule.items:
                     break
                 data_dict = dict(zip(field_names, row))
-                print(data_dict)
+                # print(data_dict)
                 # print(len(timeRange))
                 planDt = timeRange.pop(0)
                 lastItem = False
@@ -493,7 +493,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # print(n)
             for index, row in enumerate(remain_csv_rows):
                 data_dict = dict(zip(field_names, row))
-                print(data_dict)
+                # print(data_dict)
 
                 lastItem = False
                 if last_row == row:
