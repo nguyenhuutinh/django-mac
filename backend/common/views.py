@@ -563,6 +563,33 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
     @action(
         detail=False,
+        methods=['put'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+
+        url_path='update-campaign',
+    )
+    @csrf_exempt
+    def updateCampaign(self, request):
+        try:
+            campaignId = request.query_params.get('campaign-id', '')
+            status = request.query_params.get('status', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
+
+        campaign = Campaign.objects.get(id=campaignId)
+        if campaign == None:
+            return JsonResponse({"error": f"{campaignId} ko tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
+
+        campaign.status = status
+        campaign.save()
+        # print(converted)
+        return JsonResponse({"success": True, "campaign_id" : campaign.id }, status = 200)
+
+
+    @action(
+        detail=False,
         methods=['get'],
         # authentication_classes = [SessionAuthentication, BasicAuthentication],
         # permission_classes=[IsAuthenticated],
