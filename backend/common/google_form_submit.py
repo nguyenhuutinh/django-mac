@@ -65,6 +65,8 @@ def googleSubmitForm(id):
     print(fields)
     payload = ''
     index = 1
+    if forms.field1 == "" and forms.field2 == "":
+        raise Exception("data is empty")
     for field in fields:
         if(index == 1):
             payload = payload + f'{field.key_name}={urllib.parse.quote(forms.field1)}'
