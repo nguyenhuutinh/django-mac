@@ -486,14 +486,12 @@ class GoogleFormViewSet(viewsets.ViewSet):
                     target_date = planDt.strftime('%Y-%m-%d %H:%M:%S'),
                     last_item = lastItem
                 )
-                # print(result)
-        # print("end")
-        if(len(csv_rows) > campaign.total_schedules):
-            n =  campaign.total_schedules
+            del(csv_rows[: schedule.items])
+        if len(csv_rows) > 0:
             # print("out of schedules length")
-            remain_csv_rows = csv_rows[n:]
+            # remain_csv_rows = csv_rows[n:]
             # print(n)
-            for index, row in enumerate(remain_csv_rows):
+            for index, row in enumerate(csv_rows):
                 data_dict = dict(zip(field_names, row))
                 # print(data_dict)
 
