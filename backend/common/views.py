@@ -641,7 +641,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
         url_path='form-info',
     )
     @csrf_exempt
-    def campaignList(self, request):
+    def formInfo(self, request):
         try:
             formId = request.data.get('id', '')
             status = request.data.get('status', '')
