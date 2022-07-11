@@ -34,6 +34,8 @@ def get_file_size(campaign, url, content):
         # print(actionLink)
         form = GoogleFormInfo.objects.create(link= url, num_fields= len(listData), campaign= campaign, partial_response =  partialResponse, action_link = actionLink, fbzx = fbzx, fvv= fvv, page_history= pageHistory)
         index = 1
+        campaign.google_form_id = form.id
+        campaign.save()
         for result in listData:
             data = result.split(",")
             # print(data)
