@@ -441,7 +441,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
         if campaign.status != "new_init":
             return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
-        csv_reader = csv.reader(content, delimiter=',', quoting=csv.QUOTE_NONE)
+        print(content)
+        csv_reader = csv.reader(content, delimiter=';', quoting=csv.QUOTE_NONE)
 
 
 
