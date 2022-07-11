@@ -44,6 +44,7 @@ class Campaign(models.Model):
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     total_schedules = models.IntegerField(default= 0)
     google_form_id = models.IntegerField(default= -1)
+    last_item_id = models.IntegerField(default= -1)
 
 class Schedule(models.Model):
     id = models.AutoField(primary_key=True)
@@ -90,7 +91,7 @@ class UserFormInfo(models.Model):
     sent_time = models.TimeField(blank=True, null=True)
     sent_status = models.CharField(max_length=50)
 
-    last_item = models.BooleanField(default=False)
+    # last_item = models.BooleanField(default=False)
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     campaign = models.ForeignKey(

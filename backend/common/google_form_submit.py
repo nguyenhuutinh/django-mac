@@ -53,7 +53,7 @@ def googleSubmitForm(id):
             camp = Campaign.objects.get(id= forms.campaign.id)
             camp.status = "running"
             camp.save()
-    if forms.last_item == True:
+    if forms.auto_increment_id == forms.campaign.last_item_id:
             camp = Campaign.objects.get(id= forms.campaign.id)
             camp.status = "finished"
             camp.save()
