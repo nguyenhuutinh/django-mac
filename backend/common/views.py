@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from django.views import generic
 
 from celery.result import AsyncResult
+from backend.common.models import GoogleFormInfo
 from common.google_form import getFormResponse
 from common.google_form_submit import googleSubmitForm
 from common.models import CampaignSerializer, Schedule
@@ -628,6 +629,29 @@ class GoogleFormViewSet(viewsets.ViewSet):
         campaign = serializers.serialize('json', data)
         # print(campaign)
         return HttpResponse(campaign, content_type="application/json")
+
+
+    @action(
+        detail=False,
+        methods=['get'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+
+        url_path='form-info',
+    )
+    @csrf_exempt
+    def campaignList(self, request):
+        try:
+            formId = request.data.get('id', '')
+            status = request.data.get('status', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
+        data = GoogleFormInfo.objects.get(id= formId)
+        # print(data)
+        formInfo = serializers.serialize('json', data)
+        # print(campaign)
+        return HttpResponse(formInfo, content_type="application/json")
 
 
     @action(
