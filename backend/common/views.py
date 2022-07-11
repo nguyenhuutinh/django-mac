@@ -13,7 +13,7 @@ from django.utils.timezone import now
 from django.views import generic
 
 from celery.result import AsyncResult
-from backend.common.models import GoogleFormInfo
+from common.models import GoogleFormInfo
 from common.google_form import getFormResponse
 from common.google_form_submit import googleSubmitForm
 from common.models import CampaignSerializer, Schedule
