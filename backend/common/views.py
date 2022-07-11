@@ -644,7 +644,6 @@ class GoogleFormViewSet(viewsets.ViewSet):
     def formInfo(self, request):
         try:
             formId = request.data.get('id', '')
-            status = request.data.get('status', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
         data = GoogleFormInfo.objects.get(id= formId)
