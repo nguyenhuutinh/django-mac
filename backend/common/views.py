@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from django.views import generic
 
 from celery.result import AsyncResult
+from common.models import GoogleFormInfoSerializer
 from common.models import GoogleFormInfo
 from common.google_form import getFormResponse
 from common.google_form_submit import googleSubmitForm
@@ -643,14 +644,17 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @csrf_exempt
     def formInfo(self, request):
         try:
-            formId = request.data.get('id', '')
+            formId = request.query_params.get('id', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
+        print(formId)
         data = GoogleFormInfo.objects.get(id= formId)
-        # print(data)
-        formInfo = serializers.serialize('json', data)
+        formInfo = GoogleFormInfoSerializer(instance=data).data
+
         # print(campaign)
-        return HttpResponse(formInfo, content_type="application/json")
+        json_object = json.dumps(formInfo)
+
+        return HttpResponse(json_object, content_type="application/json")
 
 
     @action(

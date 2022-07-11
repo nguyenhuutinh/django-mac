@@ -61,6 +61,11 @@ class CampaignSerializer(serializers.ModelSerializer):
         model = Campaign
         fields = '__all__'
 
+class GoogleFormInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoogleFormInfo
+        fields = '__all__'
+
 class UserFormInfo(models.Model):
     # define department name and description columns, the id column will be added automatically.
     auto_increment_id = models.AutoField(primary_key=True)
