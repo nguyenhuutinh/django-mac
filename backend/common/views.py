@@ -441,7 +441,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
         if campaign.status != "new_init":
             return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
-        print(content)
+        # print(content)
         csv_reader = csv.reader(content, delimiter=';', quoting=csv.QUOTE_NONE)
 
 
@@ -467,6 +467,9 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # print(len(timeRange))
             # print(timeRange[-1])
             for index, row in enumerate(csv_rows):
+                if any(row) == False:
+                    print("empty line")
+                    continue
                 # print("hello")
                 # print(len(csv_rows))
                 # print(f"{index} - {schedule.items}")
@@ -493,6 +496,9 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # remain_csv_rows = csv_rows[n:]
             # print(n)
             for index, row in enumerate(csv_rows):
+                if any(row) == False:
+                    print("empty line")
+                    continue
                 data_dict = dict(zip(field_names, row))
                 # print(data_dict)
 
