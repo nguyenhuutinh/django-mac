@@ -433,7 +433,6 @@ class GoogleFormViewSet(viewsets.ViewSet):
         csv_file = request.FILES.get('file')
 
 
-
         campaignId = request.data['campaign_id']
         campaign = Campaign.objects.get(id=campaignId)
         if campaign == None:
@@ -441,8 +440,12 @@ class GoogleFormViewSet(viewsets.ViewSet):
         if campaign.status != "new_init":
             return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
-        # print(content)
-        csv_reader = csv.reader(content, delimiter=';', quoting=csv.QUOTE_NONE)
+        isSemiColon = False
+        for _dict in csv.DictReader(content):
+            isSemiColon = json.dumps(_dict).count(";") > 3
+            break
+        # print(isSemiColon)
+        csv_reader = csv.reader(content, delimiter= ';' if isSemiColon else ',', quoting=csv.QUOTE_NONE)
 
 
 
