@@ -473,47 +473,27 @@ class GoogleFormViewSet(viewsets.ViewSet):
                 if any(row) == False:
                     print("empty line")
                     continue
-                # print("hello")
-                # print(len(csv_rows))
-                # print(f"{index} - {schedule.items}")
                 if index >=schedule.items:
                     break
                 data_dict = dict(zip(field_names, row))
-                # print(data_dict)
-                # print(len(timeRange))
                 planDt = timeRange.pop(0)
-                lastItem = False
-                if last_row == row:
-                    # print(data_dict)
-                    # print("last_row")
-                    lastItem = True
-                UserFormInfo.objects.create(
+
+                lastItem = UserFormInfo.objects.create(
                     **data_dict,
                     campaign_id = campaign.id,
-                    target_date = planDt.strftime('%Y-%m-%d %H:%M:%S'),
-                    last_item = lastItem
+                    target_date = planDt.strftime('%Y-%m-%d %H:%M:%S')
                 )
             del(csv_rows[: schedule.items])
         if len(csv_rows) > 0:
-            # print("out of schedules length")
-            # remain_csv_rows = csv_rows[n:]
-            # print(n)
             for index, row in enumerate(csv_rows):
                 if any(row) == False:
                     print("empty line")
                     continue
                 data_dict = dict(zip(field_names, row))
                 # print(data_dict)
-
-                lastItem = False
-                if last_row == row:
-                    # print(data_dict)
-                    # print("last_row")
-                    lastItem = True
-                UserFormInfo.objects.create(
+                lastItem = UserFormInfo.objects.create(
                     **data_dict,
-                    campaign_id = campaign.id,
-                    last_item = lastItem
+                    campaign_id = campaign.id
                 )
 
 
@@ -521,6 +501,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
         campaign.file_name=csv_file.name
         campaign.status = "ready"
+        if lastItem:
+            campaign.last_item_id = lastItem.auto_increment_id
         campaign.save()
 
         updateForms.apply_async(kwargs={}, eta=now() + timedelta(seconds=1*30))
@@ -665,6 +647,18 @@ class GoogleFormViewSet(viewsets.ViewSet):
         return HttpResponse(json_object, content_type="application/json")
 
 
+    @action(
+        detail=False,
+        methods=['put'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+
+        url_path='delete-campaign',
+    )
+    @csrf_exempt
+    def add_new_campaign(self, request):
+        print()
     @action(
         detail=False,
         methods=['post'],
