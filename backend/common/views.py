@@ -631,7 +631,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
         data = Campaign.objects.all().order_by('-created')
         # print(data)
         campaign = serializers.serialize('json', data)
-        # print(campaign)
+        print(campaign)
         return HttpResponse(campaign, content_type="application/json")
 
 
@@ -651,7 +651,10 @@ class GoogleFormViewSet(viewsets.ViewSet):
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
         print(formId)
-        data = GoogleFormInfo.objects.get(id= formId)
+        try:
+            data = GoogleFormInfo.objects.get(id= formId)
+        except GoogleFormInfo.DoesNotExist:
+            return JsonResponse({"error_message": f"GFomr Id: {id} does not exist" }, status=400)
         formInfo = GoogleFormInfoSerializer(instance=data).data
 
         # print(campaign)
