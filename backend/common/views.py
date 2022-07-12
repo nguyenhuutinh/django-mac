@@ -480,7 +480,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # print(timeRange[-1])
             for index, row in enumerate(csv_rows):
                 data_dict = dict(zip(field_names, row))
-                print(data_dict)
+                # print(data_dict)
                 if any(row) == False:
                     print("empty line")
                     continue
