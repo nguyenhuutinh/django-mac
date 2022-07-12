@@ -463,7 +463,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
         csv_rows = [[x.strip() for x in row] for row in csv_reader]
         field_names =["field1", "field2", "field3", "field4", "field5" ,"field6", "field7", "field8", "field9", "field10"]
 
-        last_row = csv_rows[-1]
+
         scheduleList = Schedule.objects.filter(campaign_id = campaignId).order_by("target_date")
         for schedule in scheduleList:
 
@@ -474,7 +474,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             endDate = schedule.target_date
             newEndDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
             # print(newEndDate)
-            length =  len(csv_rows) if schedule.items > len(csv_rows) else schedule.items
+            length =  len(csv_rows) if schedule.items < len(csv_rows) else schedule.items
             # print(length)
             timeRange = randomTimes( newStartDate, newEndDate, length)
             # print(len(timeRange))
