@@ -43,7 +43,7 @@ from macos import celery_app
 def googleSubmitForm(id):
 
     # print("do submitForm Flow", id)
-    forms = UserFormInfo.objects.select_related("campaign").get(auto_increment_id=id, target_date__lt = datetime.now())
+    forms = UserFormInfo.objects.select_related("campaign").get(auto_increment_id=id)
     # print(userFormInfo)
     if forms is None:
         raise Exception("form is empty")
