@@ -1,3 +1,4 @@
+import copy
 import csv
 import json
 import pprint
@@ -437,14 +438,22 @@ class GoogleFormViewSet(viewsets.ViewSet):
         campaign = Campaign.objects.get(id=campaignId)
         if campaign == None:
             return JsonResponse({"error": f"{campaignId} ko tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
-        if campaign.status != "new_init":
-            return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
+        # if campaign.status != "new_init":
+        #     return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
-        isSemiColon = False
-        for _dict in csv.DictReader(content):
+        temp_content = copy.copy(content)
+        # print(temp_content)
+        isSemiColon = True
+
+        for _dict in csv.DictReader(temp_content):
+            # print(_dict)
             isSemiColon = json.dumps(_dict).count(";") > 3
             break
         # print(isSemiColon)
+
+        del(temp_content)
+
+
         csv_reader = csv.reader(content, delimiter= ';' if isSemiColon else ',', quoting=csv.QUOTE_NONE)
 
 
@@ -470,6 +479,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
             # print(len(timeRange))
             # print(timeRange[-1])
             for index, row in enumerate(csv_rows):
+                data_dict = dict(zip(field_names, row))
+                print(data_dict)
                 if any(row) == False:
                     print("empty line")
                     continue
@@ -498,6 +509,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
 
 
+        del(csv_rows)
 
         campaign.file_name=csv_file.name
         campaign.status = "ready"
