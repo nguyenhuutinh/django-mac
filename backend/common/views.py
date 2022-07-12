@@ -14,6 +14,7 @@ from django.utils.timezone import now
 from django.views import generic
 
 from celery.result import AsyncResult
+from common.models import GoogleFormField
 from common.models import GoogleFormInfoSerializer
 from common.models import GoogleFormInfo
 from common.google_form import getFormResponse
@@ -669,8 +670,19 @@ class GoogleFormViewSet(viewsets.ViewSet):
         url_path='delete-campaign',
     )
     @csrf_exempt
-    def add_new_campaign(self, request):
-        print()
+    def delete_campaign(self, request):
+        try:
+            campaignId = request.data.get('id', '')
+        except:
+            return JsonResponse({"error_message": "id parameter is required" }, status=400)
+
+        #  delete Schedule
+        Schedule.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
+        GoogleFormField.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
+        GoogleFormInfo.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
+        UserFormInfo.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
+        Campaign.objects.filter(id= campaignId).delete()
+        return JsonResponse({"result": "success" }, status=200)
     @action(
         detail=False,
         methods=['post'],
