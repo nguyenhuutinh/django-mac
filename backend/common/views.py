@@ -474,7 +474,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
             endDate = schedule.target_date
             newEndDate = endDate.replace(hour=campaign.end_time.hour,minute = campaign.end_time.minute, second = campaign.end_time.second)
             # print(newEndDate)
-            length =  len(csv_rows) if schedule.items < len(csv_rows) else schedule.items
+            length =  len(csv_rows) if schedule.items > len(csv_rows) else schedule.items
             # print(length)
             timeRange = randomTimes( newStartDate, newEndDate, length)
             # print(len(timeRange))
