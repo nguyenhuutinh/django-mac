@@ -6,7 +6,7 @@ import random
 import sys
 from datetime import date, datetime, time, timedelta
 from io import StringIO
-
+from django.db.models import Q
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -420,6 +420,59 @@ def randomTimes(stime, etime, n):
 
 
 class GoogleFormViewSet(viewsets.ViewSet):
+    @action(
+        detail=False,
+        methods=['put'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+
+        url_path='regenerate-date',
+    )
+    @csrf_exempt
+    def regenerateDate(self, request):
+        print()
+        default_date = datetime.combine(datetime.now(),
+                                time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+
+        campaignId = request.data['campaign_id']
+
+        targetDate = request.data.get("target_date")
+
+        # print(startDate)
+        convertedDate = parser.parse(targetDate, default =default_date)
+
+        data = UserFormInfo.objects.filter(~Q(status = 'queued'), sent=False, campaign_id= campaignId, target_date__date = convertedDate ).order_by('auto_increment_id')
+        # print(data)
+        if len(data) == 0:
+            return JsonResponse({"error": f"{campaignId} không có dữ liệu form" }, status=400, json_dumps_params={'ensure_ascii':False})
+
+
+
+
+        startTime = request.data.get("start_time")
+        convertedST = parser.parse(startTime, default =default_date)
+        # print(startTime)
+        endTime = request.data.get("end_time")
+        # print(endTime)
+        convertedET = parser.parse(endTime, default =default_date)
+
+
+
+        startDate = convertedDate.replace(hour=convertedST.hour,minute = convertedST.minute, second = convertedST.second)
+        endDate = convertedDate.replace(hour=convertedET.hour,minute = convertedET.minute, second = convertedET.second)
+
+        timeRange = randomTimes( startDate, endDate, len(data))
+
+        for form in data:
+
+            targetDate = timeRange.pop(0)
+
+            form.target_date = targetDate.strftime('%Y-%m-%d %H:%M:%S')
+
+            form.save()
+
+        return JsonResponse({"success": True, "campaign_id" : campaignId }, status=200)
 
     @action(
         detail=False,
@@ -439,8 +492,8 @@ class GoogleFormViewSet(viewsets.ViewSet):
         campaign = Campaign.objects.get(id=campaignId)
         if campaign == None:
             return JsonResponse({"error": f"{campaignId} ko tồn tại. Hãy chọn tên campaign khác" }, status=400, json_dumps_params={'ensure_ascii':False})
-        # if campaign.status != "new_init":
-        #     return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
+        if campaign.status != "new_init":
+            return JsonResponse({"error": f"{campaign.name} đã có dữ liệu. Vui lòng tạo campaign mới" }, status=400, json_dumps_params={'ensure_ascii':False})
         content = StringIO(csv_file.read().decode('utf-8-sig'))
         temp_content = copy.copy(content)
         # print(temp_content)
