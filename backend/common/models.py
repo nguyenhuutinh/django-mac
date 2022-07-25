@@ -43,6 +43,8 @@ class Campaign(models.Model):
     created = AutoCreatedField(_("created"), db_index=True)
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     total_schedules = models.IntegerField(default= 0)
+    total_forms = models.IntegerField(default= 0)
+    completed_forms = models.IntegerField(default= 0)
     google_form_id = models.IntegerField(default= -1)
     last_item_id = models.IntegerField(default= -1)
 

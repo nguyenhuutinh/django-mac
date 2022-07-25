@@ -682,6 +682,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
     @csrf_exempt
     def campaignList(self, request):
         data = Campaign.objects.all().order_by('-created')
+
         # print(data)
         campaign = serializers.serialize('json', data)
         print(campaign)
@@ -729,9 +730,12 @@ class GoogleFormViewSet(viewsets.ViewSet):
     def delete_campaign(self, request):
         try:
             campaignId = request.data.get('id', '')
+            password = request.data.get('password', '')
         except:
             return JsonResponse({"error_message": "id parameter is required" }, status=400)
 
+        if password != '5933':
+            return JsonResponse({"error_message": "wrong password" }, status=400)
         #  delete Schedule
         Schedule.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
         GoogleFormField.objects.select_related("campaign").filter(campaign_id= campaignId).delete()
@@ -816,7 +820,7 @@ def add_schedule(campaign, convertedST, convertedET, request):
             totalSchedules += items
             convertedDate = parser.parse(targetDate, default =default_date)
             Schedule.objects.create(campaign=campaign, target_date = convertedDate, start_time= convertedST, end_time= convertedET, items = items)
-        campaign.total_schedules = totalSchedules
+        campaign.total_forms = totalSchedules
         campaign.save()
     except:
         # print("Có ngoại lệ ",sys.exc_info()[0]," xảy ra.")

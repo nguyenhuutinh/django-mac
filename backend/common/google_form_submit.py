@@ -3,15 +3,8 @@
 
 from __future__ import print_function
 import urllib
-import io
-import json
-import ntpath
-import os
-import pprint
-import re
-import shutil
-import threading
-import time
+from django.db.models import Count
+
 from argparse import Namespace
 from datetime import datetime, timedelta
 from http.cookiejar import MozillaCookieJar
@@ -109,7 +102,16 @@ def googleSubmitForm(id):
 
     print(f'submitted form {forms.field1} - {forms.field2} with result {resp.status_code}')
     UserFormInfo.objects.filter(auto_increment_id=id).update(sent_status = f"{resp.status_code}",  sent = True, sent_date= datetime.now(), sent_date_time= datetime.now(), sent_time= datetime.now())
-
+    try:
+        numberSent = UserFormInfo.objects.filter(sent=True)
+        print(len(numberSent))
+        camp = Campaign.objects.get(id= forms.campaign.id)
+        camp.completed_forms = len(numberSent)
+        if camp.total_forms == 0:
+            camp.total_forms = camp.total_schedules
+        camp.save()
+    except:
+        print("error ")
     # print(resp.headers)
     # print(resp.content)
     # linkCode = resp.json().get("linkcode")
