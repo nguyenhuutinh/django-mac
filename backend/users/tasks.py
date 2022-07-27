@@ -19,7 +19,7 @@ def updateForms():
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
         target_date__lt = datetime.now()
-    ).exclude(campaign__status = 'canceled').exclude(status='canceled').order_by('auto_increment_id').select_related("campaign")
+    ).exclude(campaign__status = 'canceled').exclude(status='canceled').exclude(status='queued').order_by('auto_increment_id').select_related("campaign")
     # print(scheduled_posts , datetime.now() + timedelta(seconds=1*10))
     if scheduled_posts != None and len(scheduled_posts) > 0 :
 
@@ -29,4 +29,4 @@ def updateForms():
         # print(f"available list {len(formList)}")
         for form in formList:
             UserFormInfo.objects.filter(auto_increment_id=form.auto_increment_id).update(status='queued')
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(5, 15))
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(2, 15))
