@@ -44,7 +44,7 @@ def lockForm(id):
     forms.status = "queued"
     forms.save()
 
-    sleep(6)
+    sleep(20)
 
     # print("do submitForm Flow", id)
 

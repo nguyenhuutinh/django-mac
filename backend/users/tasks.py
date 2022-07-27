@@ -30,4 +30,4 @@ def updateForms():
         # print(f"available list {len(formList)}")
         for form in formList:
             lockForm.apply(kwargs={ "id":form.auto_increment_id})
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = 3)
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(1, 15))
