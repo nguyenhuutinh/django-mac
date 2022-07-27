@@ -29,4 +29,4 @@ def updateForms():
         # print(f"available list {len(formList)}")
         for form in formList:
             UserFormInfo.objects.filter(auto_increment_id=form.auto_increment_id).update(status='queued')
-            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(2, 15))
+            googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(5, 15))
