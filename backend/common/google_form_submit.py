@@ -2,6 +2,7 @@
 # project/tasks/sample_tasks.py
 
 from __future__ import print_function
+from time import sleep
 import urllib
 from django.db.models import Count
 
@@ -31,6 +32,27 @@ from celery import current_task
 from macos import celery_app
 
 
+
+
+@shared_task
+def lockForm(id):
+    forms = UserFormInfo.objects.get(auto_increment_id=id)
+
+    if forms is None:
+        raise Exception("form is empty")
+
+    forms.status = "queued"
+    forms.save()
+
+    sleep(5)
+
+    # print("do submitForm Flow", id)
+
+    # print(userFormInfo)
+
+
+    forms.status = ""
+    forms.save()
 
 @shared_task
 def googleSubmitForm(id):
