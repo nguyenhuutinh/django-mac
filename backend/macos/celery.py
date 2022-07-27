@@ -22,6 +22,6 @@ app = Celery("macos")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])
 app.conf.beat_schedule = {
-    "form-every-60-seconds": {"schedule": 30.0, "task": "users.tasks.updateForms"},
+    "form-every-10-seconds": {"schedule": 10.0, "task": "users.tasks.updateForms"},
 }
 # print("hell")
