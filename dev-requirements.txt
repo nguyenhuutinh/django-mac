@@ -6,7 +6,7 @@
 #
 asgiref==3.5.2
     # via django
-astroid==2.11.6
+astroid==2.11.7
     # via
     #   pylint
     #   pylint-celery
@@ -28,21 +28,21 @@ click==8.1.3
     # via
     #   black
     #   safety
-coverage==6.4.1
+coverage==6.4.4
     # via -r dev-requirements.in
 dill==0.3.5.1
     # via pylint
-distlib==0.3.4
+distlib==0.3.5
     # via virtualenv
-django==4.0.6
+django==4.1
     # via
     #   -r dev-requirements.in
     #   model-bakery
 dodgy==0.2.1
     # via prospector
-dparse==0.5.1
+dparse==0.5.2
     # via safety
-filelock==3.7.1
+filelock==3.8.0
     # via virtualenv
 flake8==3.8.4
     # via
@@ -54,7 +54,7 @@ gitdb==4.0.9
     # via gitpython
 gitpython==3.1.27
     # via bandit
-identify==2.5.1
+identify==2.5.3
     # via pre-commit
 idna==3.3
     # via requests
@@ -69,7 +69,7 @@ mccabe==0.6.1
     #   flake8
     #   prospector
     #   pylint
-model-bakery==1.6.0
+model-bakery==1.7.0
     # via -r dev-requirements.in
 mypy-extensions==0.4.3
     # via black
@@ -81,7 +81,7 @@ packaging==21.3
     #   safety
 pathspec==0.9.0
     # via black
-pbr==5.9.0
+pbr==5.10.0
     # via stevedore
 pep8-naming==0.10.0
     # via prospector
@@ -90,7 +90,7 @@ platformdirs==2.5.2
     #   black
     #   pylint
     #   virtualenv
-pre-commit==2.19.0
+pre-commit==2.20.0
     # via -r dev-requirements.in
 prospector[with-vulture]==1.7.7
     # via -r dev-requirements.in
@@ -104,7 +104,7 @@ pyflakes==2.2.0
     # via
     #   flake8
     #   prospector
-pylint==2.14.4
+pylint==2.14.5
     # via
     #   prospector
     #   pylint-celery
@@ -128,7 +128,6 @@ pyparsing==3.0.9
 pyyaml==6.0
     # via
     #   bandit
-    #   dparse
     #   pre-commit
     #   prospector
 requests==2.28.1
@@ -139,19 +138,17 @@ ruamel-yaml==0.17.21
     # via safety
 ruamel-yaml-clib==0.2.6
     # via ruamel-yaml
-safety==2.0.0
+safety==2.1.1
     # via -r dev-requirements.in
 setoptconf-tmp==0.3.1
     # via prospector
-six==1.16.0
-    # via virtualenv
 smmap==5.0.0
     # via gitdb
 snowballstemmer==2.2.0
     # via pydocstyle
 sqlparse==0.4.2
     # via django
-stevedore==3.5.0
+stevedore==4.0.0
     # via bandit
 toml==0.10.2
     # via
@@ -162,16 +159,16 @@ tomli==2.0.1
     # via
     #   black
     #   pylint
-tomlkit==0.11.1
+tomlkit==0.11.4
     # via pylint
 typing-extensions==4.3.0
     # via
     #   astroid
     #   black
     #   pylint
-urllib3==1.26.10
+urllib3==1.26.11
     # via requests
-virtualenv==20.15.1
+virtualenv==20.16.3
     # via pre-commit
 wrapt==1.14.1
     # via astroid
