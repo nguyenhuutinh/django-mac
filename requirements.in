@@ -32,4 +32,5 @@ django-cors-headers
 #django-rest-captcha
 django-redis
 django-rest-knox
-pylibmc
+# pylibmc
+python-telegram-bot
