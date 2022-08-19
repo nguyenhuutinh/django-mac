@@ -24,6 +24,7 @@ ADMINS = (("Admin", "huutinh.baoloc@gmail.com"),)
 AUTH_USER_MODEL = "users.User"
 
 ALLOWED_HOSTS = []
+TELEGRAM_BOT_TOKEN = ""
 
 DATABASES = {
     "default": config("DATABASE_URL", cast=db_url),

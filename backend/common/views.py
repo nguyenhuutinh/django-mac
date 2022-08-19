@@ -838,10 +838,12 @@ class IndexView(generic.TemplateView):
 class TeleGramBotViewSet(viewsets.ViewSet):
     @action(
         detail=False,
-        methods=['post'],
+        methods=['get'],
         permission_classes=[AllowAny],
         url_path='check_change_name',
     )
     @csrf_exempt
     def check_change_name(self, request):
         print(request)
+        return JsonResponse({"result": "ok" }, status=200)
+
