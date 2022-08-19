@@ -838,7 +838,7 @@ class IndexView(generic.TemplateView):
 class TeleGramBotViewSet(viewsets.ViewSet):
     @action(
         detail=False,
-        methods=['get'],
+        methods=['post'],
         permission_classes=[AllowAny],
         url_path='check_change_name',
     )
