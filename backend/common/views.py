@@ -844,6 +844,6 @@ class TeleGramBotViewSet(viewsets.ViewSet):
     )
     @csrf_exempt
     def check_change_name(self, request):
-        print(request)
+        print("check_change_name")
         return JsonResponse({"result": "ok" }, status=200)
 
