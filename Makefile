@@ -36,7 +36,7 @@ compile_install_requirements:
 docker_setup:
 	docker volume create macos_dbdata
 	docker-compose build --no-cache backend
-	# docker-compose run frontend npm install
+	docker-compose run frontend npm install
 
 docker_test:
 	docker-compose run backend python manage.py test $(ARG) --parallel --keepdb
