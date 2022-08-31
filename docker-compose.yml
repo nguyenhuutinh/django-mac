@@ -7,8 +7,9 @@ services:
       - POSTGRES_USER=postres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=macos
+
     ports:
-      - "5432"
+      - "6543:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data:delegated
 
