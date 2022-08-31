@@ -6,7 +6,7 @@
   "main": "index.js",
   "prettier": "eslint-config-vinta/prettier",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "scripts": {
     "test": "jest",
