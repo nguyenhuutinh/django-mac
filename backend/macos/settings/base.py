@@ -23,7 +23,7 @@ ADMINS = (("Admin", "huutinh.baoloc@gmail.com"),)
 
 AUTH_USER_MODEL = "users.User"
 
-ALLOWED_HOSTS = ["139.180.185.245", "auto-forms.xyz", 'localhost']
+ALLOWED_HOSTS = ["139.180.185.245", "auto-forms.xyz", 'localhost', '0.0.0.0']
 TELEGRAM_BOT_TOKEN = ""
 
 DATABASES = {
