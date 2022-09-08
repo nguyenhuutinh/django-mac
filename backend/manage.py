@@ -5,7 +5,7 @@ import sys
 from common.tccl_bot import bot
 from decouple import config
 
-APP_URL = "https://telegram-bot-check-name.herokuapp.com"
+APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
 
 
 if __name__ == "__main__":

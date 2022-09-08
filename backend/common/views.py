@@ -77,5 +77,5 @@ class TCCLBotView(viewsets.ViewSet):
         url_path='webhook',
     )
     @csrf_exempt
-    def shorten(self, request):
+    def check_bot(self, request):
         process_request(request)

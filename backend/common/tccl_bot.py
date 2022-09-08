@@ -27,6 +27,8 @@ def process_request(request):
     print(request.data)
     json_string = request.data
     print("received message: ", json_string)
+    if json_string == None or json_string == '':
+        return "empty body", 400
     update = telebot.types.Update.de_json(json_string)
     bot.process_new_updates([update])
     return "!", 200
