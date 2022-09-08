@@ -68,9 +68,9 @@ def chat_m(message: types.ChatMemberUpdated):
 
 
 # When comment has been written, we save data into our db and send user to starting state 1 - START
-@bot.message_handler(func=lambda message: message)
-def _add_comment(message):
-    print("add_comment")
+# @bot.message_handler(func=lambda message: message)
+# def _add_comment(message):
+#     print("add_comment")
 
 
 #     user_id = message.from_user.id
@@ -103,7 +103,11 @@ def photo(message):
 @bot.message_handler(is_admin=False)
 def _all(message):
     print("other", message.text)
-    moderate(message=message)
+    # moderate(message=message)
+@bot.message_handler(is_admin=True)
+def _all(message):
+    print("admin message", message.text)
+    # moderate(message=message)
 
 
 def moderate(message):
