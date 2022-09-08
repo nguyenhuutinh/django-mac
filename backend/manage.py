@@ -2,13 +2,16 @@
 
 import os
 import sys
-
+from common.tccl_bot import bot
 from decouple import config
+
+APP_URL = "https://telegram-bot-check-name.herokuapp.com"
 
 
 if __name__ == "__main__":
     settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
-
+    bot.remove_webhook()
+    bot.set_webhook(url=APP_URL)
     if sys.argv[1] == "test":
         if settings_module:
             print(

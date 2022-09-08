@@ -100,6 +100,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     # 'rest_captcha',
     # "django.contrib.admin",
+'rest_framework_simplejwt',
+
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -107,7 +109,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # "django_js_reverse",
     # "webpack_loader",
-    'knox',
+    # 'knox',
 
     "import_export",
     "rest_framework",
@@ -171,20 +173,12 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
-
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-}
-REST_KNOX = {
-  'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
-  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
-  'TOKEN_TTL': timedelta(hours=10),
-  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
-  'TOKEN_LIMIT_PER_USER': None,
-  'AUTO_REFRESH': False,
-#   'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
 }
 
 LANGUAGE_CODE = "en-us"

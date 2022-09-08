@@ -31,6 +31,7 @@ lxml
 django-cors-headers
 #django-rest-captcha
 django-redis
-django-rest-knox
+# django-rest-knox
 # pylibmc
-python-telegram-bot
+pyTelegramBotAPI
+djangorestframework-simplejwt

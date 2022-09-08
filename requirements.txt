@@ -8,10 +8,8 @@ amqp==5.1.1
     # via kombu
 appnope==0.1.3
     # via ipython
-apscheduler==3.6.3
-    # via
-    #   -r requirements.in
-    #   python-telegram-bot
+apscheduler==3.9.1
+    # via -r requirements.in
 asgiref==3.5.2
     # via django
 asttokens==2.0.8
@@ -30,10 +28,8 @@ billiard==3.6.4.0
     # via celery
 brotlipy==0.7.0
     # via -r requirements.in
-cachetools==4.2.2
-    # via
-    #   google-auth
-    #   python-telegram-bot
+cachetools==5.2.0
+    # via google-auth
 celery[redis]==5.2.7
     # via
     #   -r requirements.in
@@ -42,14 +38,11 @@ celery-redbeat==2.0.0
     # via -r requirements.in
 certifi==2022.6.15
     # via
-    #   python-telegram-bot
     #   requests
     #   sentry-sdk
 cffi==1.15.1
-    # via
-    #   brotlipy
-    #   cryptography
-charset-normalizer==2.1.0
+    # via brotlipy
+charset-normalizer==2.1.1
     # via requests
 click==8.1.3
     # via
@@ -63,8 +56,6 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-cryptography==37.0.4
-    # via django-rest-knox
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
@@ -85,8 +76,8 @@ django==3.2.15
     #   django-log-request-id
     #   django-model-utils
     #   django-redis
-    #   django-rest-knox
     #   djangorestframework
+    #   djangorestframework-simplejwt
 django-cors-headers==3.13.0
     # via -r requirements.in
 django-debreach==2.1.0
@@ -101,25 +92,25 @@ django-model-utils==4.2.0
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in
-django-rest-knox==4.2.0
-    # via -r requirements.in
 django-webpack-loader==1.6.0
     # via -r requirements.in
 djangorestframework==3.13.1
     # via
     #   -r requirements.in
-    #   django-rest-knox
+    #   djangorestframework-simplejwt
+djangorestframework-simplejwt==5.2.0
+    # via -r requirements.in
 et-xmlfile==1.1.0
     # via openpyxl
-executing==0.10.0
+executing==1.0.0
     # via stack-data
-faker==14.1.0
+faker==14.2.0
     # via -r requirements.in
-google-api-core==2.8.2
+google-api-core==2.10.0
     # via google-api-python-client
-google-api-python-client==2.57.0
+google-api-python-client==2.58.0
     # via -r requirements.in
-google-auth==2.10.0
+google-auth==2.11.0
     # via
     #   google-api-core
     #   google-api-python-client
@@ -164,7 +155,7 @@ openpyxl==3.0.10
     # via tablib
 packaging==21.3
     # via redis
-pandas==1.4.3
+pandas==1.4.4
     # via -r requirements.in
 parso==0.8.3
     # via jedi
@@ -172,7 +163,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-prompt-toolkit==3.0.30
+prompt-toolkit==3.0.31
     # via
     #   click-repl
     #   ipython
@@ -201,16 +192,18 @@ pycparser==2.21
     # via cffi
 pygments==2.13.0
     # via ipython
+pyjwt==2.4.0
+    # via djangorestframework-simplejwt
 pyparsing==3.0.9
     # via packaging
+pytelegrambotapi==4.7.0
+    # via -r requirements.in
 python-dateutil==2.8.2
     # via
     #   celery-redbeat
     #   faker
     #   pandas
 python-decouple==3.6
-    # via -r requirements.in
-python-telegram-bot==13.13
     # via -r requirements.in
 pytz==2022.2.1
     # via
@@ -220,7 +213,6 @@ pytz==2022.2.1
     #   django
     #   djangorestframework
     #   pandas
-    #   python-telegram-bot
 pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
 pyyaml==6.0
@@ -231,12 +223,14 @@ redis==4.3.4
     #   celery-redbeat
     #   django-redis
 requests==2.28.1
-    # via google-api-core
+    # via
+    #   google-api-core
+    #   pytelegrambotapi
 rsa==4.9
     # via
     #   google-auth
     #   oauth2client
-sentry-sdk==1.9.5
+sentry-sdk==1.9.7
     # via -r requirements.in
 six==1.16.0
     # via
@@ -251,14 +245,12 @@ soupsieve==2.3.2.post1
     # via beautifulsoup4
 sqlparse==0.4.2
     # via django
-stack-data==0.4.0
+stack-data==0.5.0
     # via ipython
 tablib[html,ods,xls,xlsx,yaml]==3.2.1
     # via django-import-export
 tenacity==8.0.1
     # via celery-redbeat
-tornado==6.2
-    # via python-telegram-bot
 traitlets==5.3.0
     # via
     #   ipython
@@ -271,7 +263,7 @@ tzlocal==4.2
     # via apscheduler
 uritemplate==4.1.1
     # via google-api-python-client
-urllib3==1.26.11
+urllib3==1.26.12
     # via
     #   requests
     #   sentry-sdk

@@ -1,9 +1,10 @@
 from django.urls import include
 from django.urls import path
 # from django.contrib import admin
-
+from rest_framework_simplejwt import views as jwt_views
 # import django_js_reverse.views
 from rest_framework.routers import DefaultRouter
+from users.views import RegisterApi
 
 from common.routes import routes as common_routes
 
@@ -20,4 +21,9 @@ urlpatterns = [
     # path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),
     # path(r'api/captcha/', include('rest_captcha.urls')),
     path("api/", include(router.urls), name="api"),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', RegisterApi.as_view()),
+
+
 ]
