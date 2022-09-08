@@ -78,4 +78,4 @@ class TCCLBotView(viewsets.ViewSet):
     )
     @csrf_exempt
     def check_bot(self, request):
-        process_request(request)
+        return process_request(request)

@@ -4,6 +4,7 @@ import telebot
 # from config import *
 import logging
 from telebot import types,util
+from django.http import HttpResponse, JsonResponse
 
 
 
@@ -31,7 +32,8 @@ def process_request(request):
         return "empty body", 400
     update = telebot.types.Update.de_json(json_string)
     bot.process_new_updates([update])
-    return "!", 200
+    return JsonResponse({"result": "ok" }, status=200)
+
 
 
 # @bot.message_handler(commands=['start', 'help'])
