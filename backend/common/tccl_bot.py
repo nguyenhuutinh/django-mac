@@ -149,10 +149,10 @@ def checkingUserProfilePhoto(message):
         file_exists = exists(filePath)
         if file_exists:
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/diff_img.png')
+            # print(result)
+            # result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
             print(result)
-            result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
-            print(result)
-            if result != None and result < 0.2:
+            if result != None and result < 0.05:
                 return True
             os.remove(filePath)
 
