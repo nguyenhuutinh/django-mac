@@ -110,9 +110,9 @@ def _all(message):
     print("admin message", message.text)
     number = bot.get_user_profile_photos(message.from_user.id)
     print(number)
-    njson = json.loads(number)
-    nlist = njson['photos']
-    print(nlist)
+    # njson = json.loads(number)
+    # nlist = njson['photos']
+    # print(nlist)
 
 
     # moderate(message=message)
