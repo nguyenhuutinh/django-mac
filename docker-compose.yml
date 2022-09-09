@@ -42,7 +42,7 @@ services:
       - db
       - broker
       - result
-      - frontend
+      # - frontend
 
   celery:
     build:
