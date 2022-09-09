@@ -5,12 +5,12 @@ from rest_framework import serializers
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 
-# class IndexedTimeStampedModel(models.Model):
-#     created = AutoCreatedField(_("created"), db_index=True)
-#     modified = AutoLastModifiedField(_("modified"), db_index=True)
+class IndexedTimeStampedModel(models.Model):
+    created = AutoCreatedField(_("created"), db_index=True)
+    modified = AutoLastModifiedField(_("modified"), db_index=True)
 
-#     class Meta:
-#         abstract = True
+    class Meta:
+        abstract = True
 
 # class GoogleFormField(models.Model):
 #     id = models.AutoField(primary_key=True)
