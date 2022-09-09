@@ -23,6 +23,6 @@ RUN apt-get purge libpq-dev -y && apt-get autoremove -y && \
     rm /var/lib/apt/lists/* rm -rf /var/cache/apt/*
 
 ADD backend/ /home/user/app/backend
-
+RUN chown user /home/user/app/data
 USER user
 CMD gunicorn macos.wsgi --log-file - -b 0.0.0.0:8000 --reload
