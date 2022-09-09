@@ -130,7 +130,7 @@ def checkingUserProfilePhoto(message):
         pic_url = bot.get_file_url(fileId)
         print(pic_url)
         filePath = '/home/user/app/data/' + fileId + '.jpg'
-        if not os.path.exists('/tmp/test'):
+        if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
         with open(filePath, 'wb') as handle:
             response = requests.get(pic_url, stream=True)
