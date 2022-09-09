@@ -36,3 +36,4 @@ django-redis
 pyTelegramBotAPI
 djangorestframework-simplejwt
 Pillow
+diffimg

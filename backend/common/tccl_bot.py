@@ -10,7 +10,7 @@ import json
 import requests
 from os.path import exists
 from pathlib import Path
-
+from diffimg import diff
 from PIL import ImageChops, ImageStat,Image
 
 
@@ -148,6 +148,8 @@ def checkingUserProfilePhoto(message):
                 handle.write(block)
         file_exists = exists(filePath)
         if file_exists:
+            result = diff('/home/user/app/backend/data/logo1.jpg', filePath)
+            print(result)
             result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
             print(result)
             if result != None and result < 0.2:
