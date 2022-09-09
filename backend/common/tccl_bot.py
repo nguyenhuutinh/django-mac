@@ -121,7 +121,7 @@ def _all(message):
         print()
         fileUrl = bot.get_file_url(fileId)
         print(fileUrl)
-        result = compare_images(Image.open('./mario-circle-cs.png'), Image.open('./mario-circle-node.png'))
+        result = compare_images(Image.open('/home/user/app/data/mario-circle-cs.png'), Image.open('/home/user/app/data/mario-circle-node.png'))
         print(result)
 
 
