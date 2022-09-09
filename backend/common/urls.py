@@ -9,7 +9,7 @@ urlpatterns = [
     # path('fshare', views.IndexView.as_view(), name='index'),
     # path('google-form', views.IndexView.as_view(), name='index'),
     # path('ads', views.IndexView.as_view(), name='index'),
-    path('tccl-bot', views.TCCLBotView.as_view(), name='index'),
+    path('tccl-bot', views.IndexView.as_view(), name='index'),
     # path('auth/', include('knox.urls'))
 
 ]
