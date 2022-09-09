@@ -167,10 +167,10 @@ def compare_images(img1, img2):
     """
 
     # Don't compare if images are of different modes or different sizes.
-    if (img1.mode != img2.mode) \
-            or (img1.size != img2.size) \
-            or (img1.getbands() != img2.getbands()):
-        return None
+    # if (img1.mode != img2.mode) \
+    #         or (img1.size != img2.size) \
+    #         or (img1.getbands() != img2.getbands()):
+    #     return None
 
     # Generate diff image in memory.
     diff_img = ImageChops.difference(img1, img2)
