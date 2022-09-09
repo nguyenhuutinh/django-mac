@@ -19,15 +19,15 @@ services:
   result:
     image: "redis:alpine"
 
-  frontend:
-    build:
-      dockerfile: frontend/Dockerfile
-      context: .
-    volumes:
-      - .:/app/
-      - /app/node_modules
-    ports:
-      - "3000:3000"
+  # frontend:
+  #   build:
+  #     dockerfile: frontend/Dockerfile
+  #     context: .
+  #   volumes:
+  #     - .:/app/
+  #     - /app/node_modules
+  #   ports:
+  #     - "3000:3000"
 
   backend:
     build:
