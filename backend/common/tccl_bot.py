@@ -5,6 +5,7 @@ import telebot
 import logging
 from telebot import types,util
 from django.http import HttpResponse, JsonResponse
+import json
 
 
 
@@ -107,6 +108,13 @@ def _all(message):
 @bot.message_handler(is_admin=True)
 def _all(message):
     print("admin message", message.text)
+    number = bot.get_user_profile_photos(message.from_user.id)
+    print(number)
+    njson = json.loads(number)
+    nlist = njson['photos']
+    print(nlist)
+
+
     # moderate(message=message)
 
 
