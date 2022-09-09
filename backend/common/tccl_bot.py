@@ -15,7 +15,8 @@ from PIL import ImageChops, ImageStat,Image
 
 
 
-BOT_TOKEN = "5495185707:AAFOwex3SfYxz2xhz-KA3GdyLpMVLnicUaI"
+BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
+# BOT_TOKEN = "5495185707:AAFOwex3SfYxz2xhz-KA3GdyLpMVLnicUaI"
 
 bot = telebot.TeleBot(BOT_TOKEN)
 logger = telebot.logger
@@ -103,20 +104,15 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    print("photo", message.caption)
+    print("user sent photo", message.caption)
     moderate(message=message)
 
 
 @bot.message_handler(is_admin=False)
-def _all(message):
-    print("other", message.text)
-    # moderate(message=message)
-# @bot.message_handler(is_admin=True)
-# def _all(message):
-#     print("admin message", message.text)
-#     checkingUserProfilePhoto(message)
+def allMessage(message):
+    print("user sent message ", message.text)
+    moderate(message=message)
 
-    # moderate(message=message)
 def checkingUserProfilePhoto(message):
     data = bot.get_user_profile_photos(message.from_user.id)
     # print(data)
@@ -130,7 +126,7 @@ def checkingUserProfilePhoto(message):
         fileId = user_photos[0][0].file_id
 
         pic_url = bot.get_file_url(fileId)
-        print(pic_url)
+        # print(pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
         filePath = '/home/user/app/backend/data/' + fileName + '.jpg'
@@ -183,11 +179,11 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-    if checkingUserProfilePhoto(message):
+    if processCheckAndBan(message):
         banUser(message)
-    elif processCheckAndBan(message):
+    elif checkingUserProfilePhoto(message):
         banUser(message)
-    elif checkAndDeleteMessage(message):
+    if checkAndDeleteMessage(message):
         deleteMessage(message)
 
 
