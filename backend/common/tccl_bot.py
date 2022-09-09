@@ -11,7 +11,7 @@ import requests
 from os.path import exists
 from pathlib import Path
 from diffimg import diff
-from PIL import ImageChops, ImageStat,Image
+# from PIL import ImageChops, ImageStat,Image
 
 
 

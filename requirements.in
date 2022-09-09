@@ -23,7 +23,7 @@ ipython
 sentry-sdk
 pytz
 google-api-python-client
-oauth2client
+#oauth2client
 httplib2<0.16.0
 jsons
 beautifulsoup4
@@ -35,5 +35,5 @@ django-redis
 # pylibmc
 pyTelegramBotAPI
 djangorestframework-simplejwt
-Pillow
+#Pillow
 diffimg
