@@ -126,7 +126,7 @@ def checkingUserProfilePhoto(message):
     if len(user_photos) > 0:
 
         # photos_ids = []
-        fileId = 'abcd'
+        fileId = user_photos[0][0].file_unique_id
 
         pic_url = bot.get_file_url(fileId)
         print(pic_url)
