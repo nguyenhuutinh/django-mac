@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 import json
 import requests
 from os.path import exists
+from pathlib import Path
 
 from PIL import ImageChops, ImageStat,Image
 
@@ -129,6 +130,8 @@ def checkingUserProfilePhoto(message):
 
         pic_url = bot.get_file_url(fileId)
         print(pic_url)
+        Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
+
         filePath = '/home/user/app/backend/data/' + fileId + '.jpg'
         if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
