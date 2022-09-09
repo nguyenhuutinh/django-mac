@@ -253,7 +253,7 @@ def banUser(message):
     bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm. Mời ra đảo du lịch không hẹn ngày về ‼️ 🧞‍♂️")
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
-    bot.send_message("-643525876", "Reported user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    bot.send_message("-643525876", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 
 # @bot.message_handler(commands=['list'])
 # def _list(message):
@@ -284,7 +284,7 @@ def new_chat_members(message):
 def unban_user(message):
     userId = message.text.replace("/unban_user ", "")
     bot.unban_chat_member(-1001724937734, userId)
-    bot.send_message("-643525876", "Đã Mở " + f" {userId}")
+    bot.send_message("-643525876", "Đã Mở UserId:  " + f" {userId}")
 
 
 
