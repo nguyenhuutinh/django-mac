@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import os
 from re import M
 import telebot
 # from config import *
@@ -6,6 +7,9 @@ import logging
 from telebot import types,util
 from django.http import HttpResponse, JsonResponse
 import json
+import requests
+from os.path import exists
+
 from PIL import ImageChops, ImageStat,Image
 
 
@@ -108,7 +112,11 @@ def _all(message):
     # moderate(message=message)
 @bot.message_handler(is_admin=True)
 def _all(message):
-    # print("admin message", message.text)
+    print("admin message", message.text)
+    checkingUserProfilePhoto(message)
+
+    # moderate(message=message)
+def checkingUserProfilePhoto(message):
     data = bot.get_user_profile_photos(message.from_user.id)
     # print(data)
     # njson = json.loads(data)
@@ -119,13 +127,27 @@ def _all(message):
         # photos_ids = []
         fileId = user_photos[0][0].file_id
         print()
-        fileUrl = bot.get_file_url(fileId)
-        print(fileUrl)
-        result = compare_images(Image.open('/home/user/app/data/mario-circle-cs.png'), Image.open('/home/user/app/data/mario-circle-node.png'))
-        print(result)
+        pic_url = bot.get_file_url(fileId)
+        print(pic_url)
+        filePath = '/home/user/app/data/' + fileId + '.jpg'
+        with open(filePath, 'wb') as handle:
+            response = requests.get(pic_url, stream=True)
 
+            if not response.ok:
+                print(response)
 
-    # moderate(message=message)
+            for block in response.iter_content(1024):
+                if not block:
+                    break
+                handle.write(block)
+        file_exists = exists(filePath)
+        if file_exists:
+            result = compare_images(Image.open('/home/user/app/data/logo1.jpg'), Image.open(filePath))
+            if result != None and result < 0.2:
+                return True
+            os.remove(filePath)
+
+    return False
 
 def compare_images(img1, img2):
     """Calculate the difference between two images of the same size
@@ -150,6 +172,7 @@ def compare_images(img1, img2):
     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
     return diff_ratio * 100
+
 def moderate(message):
     if processCheckAndBan(message):
         banUser(message)
