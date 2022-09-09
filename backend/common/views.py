@@ -13,12 +13,12 @@ from django.shortcuts import render
 from django.utils.timezone import now
 from django.views import generic
 from celery.result import AsyncResult
-from common.models import GoogleFormField
-from common.models import GoogleFormInfoSerializer
-from common.models import GoogleFormInfo
-from common.google_form import getFormResponse
-from common.google_form_submit import googleSubmitForm
-from common.models import CampaignSerializer, Schedule
+# from common.models import GoogleFormField
+# from common.models import GoogleFormInfoSerializer
+# from common.models import GoogleFormInfo
+# from common.google_form import getFormResponse
+# from common.google_form_submit import googleSubmitForm
+# from common.models import CampaignSerializer, Schedule
 from dateutil import parser, tz
 from faker import Faker
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
@@ -42,7 +42,7 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from celery.result import AsyncResult
-from common.models import Campaign, UserFormInfo
+# from common.models import Campaign, UserFormInfo
 # from common.api_captcha import RestCaptchaSerializer
 from macos.settings import base
 # from common.file_info_task import checkfileInfoTask

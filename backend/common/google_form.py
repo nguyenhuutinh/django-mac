@@ -4,9 +4,9 @@ import io
 import logging
 from lxml import html
 import requests
-from common.models import GoogleFormField
+# from common.models import GoogleFormField
 
-from common.models import GoogleFormInfo
+# from common.models import GoogleFormInfo
 
 # def getFormResponse(campaign, url):
 #     r = requests.get(url, allow_redirects=True)
