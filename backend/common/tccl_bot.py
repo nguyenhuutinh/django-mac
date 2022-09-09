@@ -148,7 +148,7 @@ def checkingUserProfilePhoto(message):
                 handle.write(block)
         file_exists = exists(filePath)
         if file_exists:
-            result = diff('/home/user/app/backend/data/logo1.jpg', filePath)
+            result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/diff_img.png')
             print(result)
             result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
             print(result)
