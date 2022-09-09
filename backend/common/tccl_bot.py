@@ -108,9 +108,9 @@ def _all(message):
 @bot.message_handler(is_admin=True)
 def _all(message):
     print("admin message", message.text)
-    number = bot.get_user_profile_photos(message.from_user.id)
-    print(number)
-    # njson = json.loads(number)
+    data = bot.get_user_profile_photos(message.from_user.id)
+    print(data)
+    njson = json.loads(data)
     # nlist = njson['photos']
     # print(nlist)
 
