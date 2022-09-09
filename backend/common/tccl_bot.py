@@ -129,7 +129,7 @@ def checkingUserProfilePhoto(message):
 
         pic_url = bot.get_file_url(fileId)
         print(pic_url)
-        filePath = '/home/user/app/data/' + fileId + '.jpg'
+        filePath = '/home/user/app/backend/data/' + fileId + '.jpg'
         if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
         with open(filePath, 'wb') as handle:
@@ -144,7 +144,7 @@ def checkingUserProfilePhoto(message):
                 handle.write(block)
         file_exists = exists(filePath)
         if file_exists:
-            result = compare_images(Image.open('/home/user/app/data/logo1.jpg'), Image.open(filePath))
+            result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
             if result != None and result < 0.2:
                 return True
             os.remove(filePath)
