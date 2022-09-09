@@ -35,3 +35,4 @@ django-redis
 # pylibmc
 pyTelegramBotAPI
 djangorestframework-simplejwt
+Pillow

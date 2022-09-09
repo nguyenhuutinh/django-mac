@@ -5,8 +5,8 @@ import sys
 from common.tccl_bot import bot
 from decouple import config
 
-# APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
-APP_URL = "https://8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io/api/tccl-bot/webhook/"
+APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
+# APP_URL = "https://8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io/api/tccl-bot/webhook/"
 
 
 if __name__ == "__main__":

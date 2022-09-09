@@ -6,6 +6,7 @@ import logging
 from telebot import types,util
 from django.http import HttpResponse, JsonResponse
 import json
+from PIL import ImageChops, ImageStat,Image
 
 
 
@@ -107,18 +108,48 @@ def _all(message):
     # moderate(message=message)
 @bot.message_handler(is_admin=True)
 def _all(message):
-    print("admin message", message.text)
+    # print("admin message", message.text)
     data = bot.get_user_profile_photos(message.from_user.id)
-    print(data)
-    njson = json.loads(data)
-    print(njson)
-    # nlist = njson['photos']
-    # print(nlist)
+    # print(data)
+    # njson = json.loads(data)
+    # print(data['result'])
+    user_photos = data.photos
+    if len(user_photos) > 0:
+
+        # photos_ids = []
+        fileId = user_photos[0][0].file_id
+        print()
+        fileUrl = bot.get_file_url(fileId)
+        print(fileUrl)
+        result = compare_images(Image.open('/home/django-mac/data/mario-circle-cs.png'), Image.open('/home/django-mac/data/mario-circle-node.png'))
+        print(result)
 
 
     # moderate(message=message)
 
+def compare_images(img1, img2):
+    """Calculate the difference between two images of the same size
+    by comparing channel values at the pixel level.
+    `delete_diff_file`: removes the diff image after ratio found
+    `diff_img_file`: filename to store diff image
 
+    Adapted from Nicolas Hahn:
+    https://github.com/nicolashahn/diffimg/blob/master/diffimg/__init__.py
+    """
+
+    # Don't compare if images are of different modes or different sizes.
+    if (img1.mode != img2.mode) \
+            or (img1.size != img2.size) \
+            or (img1.getbands() != img2.getbands()):
+        return None
+
+    # Generate diff image in memory.
+    diff_img = ImageChops.difference(img1, img2)
+    # Calculate difference as a ratio.
+    stat = ImageStat.Stat(diff_img)
+    diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
+
+    return diff_ratio * 100
 def moderate(message):
     if processCheckAndBan(message):
         banUser(message)
