@@ -36,7 +36,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./:/home/user/app/
+      - ./:/home/django-mac/data/
     env_file: backend/.env
     depends_on:
       - db
