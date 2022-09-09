@@ -111,6 +111,7 @@ def _all(message):
     data = bot.get_user_profile_photos(message.from_user.id)
     print(data)
     njson = json.loads(data)
+    print(njson)
     # nlist = njson['photos']
     # print(nlist)
 
