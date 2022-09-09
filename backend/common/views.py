@@ -66,8 +66,8 @@ from common.tccl_bot import process_request
 
 # cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 
-class IndexView(generic.TemplateView):
-    template_name = 'common/index.html'
+# class IndexView(generic.TemplateView):
+#     template_name = 'common/index.html'
 
 class TCCLBotView(viewsets.ViewSet):
     @action(

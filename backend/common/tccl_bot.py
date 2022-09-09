@@ -111,10 +111,10 @@ def photo(message):
 def _all(message):
     print("other", message.text)
     # moderate(message=message)
-@bot.message_handler(is_admin=True)
-def _all(message):
-    print("admin message", message.text)
-    checkingUserProfilePhoto(message)
+# @bot.message_handler(is_admin=True)
+# def _all(message):
+#     print("admin message", message.text)
+#     checkingUserProfilePhoto(message)
 
     # moderate(message=message)
 def checkingUserProfilePhoto(message):
@@ -158,35 +158,38 @@ def checkingUserProfilePhoto(message):
 
     return False
 
-def compare_images(img1, img2):
-    """Calculate the difference between two images of the same size
-    by comparing channel values at the pixel level.
-    `delete_diff_file`: removes the diff image after ratio found
-    `diff_img_file`: filename to store diff image
+# def compare_images(img1, img2):
+#     """Calculate the difference between two images of the same size
+#     by comparing channel values at the pixel level.
+#     `delete_diff_file`: removes the diff image after ratio found
+#     `diff_img_file`: filename to store diff image
 
-    Adapted from Nicolas Hahn:
-    https://github.com/nicolashahn/diffimg/blob/master/diffimg/__init__.py
-    """
+#     Adapted from Nicolas Hahn:
+#     https://github.com/nicolashahn/diffimg/blob/master/diffimg/__init__.py
+#     """
 
-    # Don't compare if images are of different modes or different sizes.
-    # if (img1.mode != img2.mode) \
-    #         or (img1.size != img2.size) \
-    #         or (img1.getbands() != img2.getbands()):
-    #     return None
+#     # Don't compare if images are of different modes or different sizes.
+#     # if (img1.mode != img2.mode) \
+#     #         or (img1.size != img2.size) \
+#     #         or (img1.getbands() != img2.getbands()):
+#     #     return None
 
-    # Generate diff image in memory.
-    diff_img = ImageChops.difference(img1, img2)
-    # Calculate difference as a ratio.
-    stat = ImageStat.Stat(diff_img)
-    diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
+#     # Generate diff image in memory.
+#     diff_img = ImageChops.difference(img1, img2)
+#     # Calculate difference as a ratio.
+#     stat = ImageStat.Stat(diff_img)
+#     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
-    return diff_ratio
+#     return diff_ratio
 
 def moderate(message):
-    if processCheckAndBan(message):
+    if checkingUserProfilePhoto(message):
         banUser(message)
-    if checkAndDeleteMessage(message):
+    elif processCheckAndBan(message):
+        banUser(message)
+    elif checkAndDeleteMessage(message):
         deleteMessage(message)
+
 
 def checkAndDeleteMessage(message):
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
@@ -246,15 +249,15 @@ def processCheckAndBan(message):
 
 def banUser(message):
     print("banUser")
-    # userId = message.from_user.id
-    # chatId = message.chat.id
-    # firstName = message.from_user.first_name
-    # lastName = message.from_user.last_name
+    userId = message.from_user.id
+    chatId = message.chat.id
+    firstName = message.from_user.first_name
+    lastName = message.from_user.last_name
 
-    # bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm. Mời ra đảo du lịch không hẹn ngày về ‼️ 🧞‍♂️")
-    # bot.delete_message(chatId,message_id=message.id)
-    # bot.ban_chat_member(chatId, userId)
-    # bot.send_message("-643525876", "Reported user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm. Mời ra đảo du lịch không hẹn ngày về ‼️ 🧞‍♂️")
+    bot.delete_message(chatId,message_id=message.id)
+    bot.ban_chat_member(chatId, userId)
+    bot.send_message("-643525876", "Reported user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 
 # @bot.message_handler(commands=['list'])
 # def _list(message):
@@ -262,17 +265,17 @@ def banUser(message):
 @bot.message_handler(commands=['ban_user'])
 def manualbanUser(message):
     print(message)
-    # userId = message.text.replace("/ban_user ", "")
-    # bot.ban_chat_member(-1001724937734, userId)
-    # bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
+    userId = message.text.replace("/ban_user ", "")
+    bot.ban_chat_member(-1001724937734, userId)
+    bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
 
     bot.send_message("-643525876", "Đã ban user id: " + f" {userId}")
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
     print(message)
-    # message_id = message.text.replace("/delete_message ", "")
-    # bot.delete_message(-1001724937734, message_id)
-    # bot.send_message("-643525876", "Đã Delete Message id: " + f" {message_id}")
+    message_id = message.text.replace("/delete_message ", "")
+    bot.delete_message(-1001724937734, message_id)
+    bot.send_message("-643525876", "Đã Delete Message id: " + f" {message_id}")
 
 @bot.message_handler( content_types=[
     "new_chat_members"
