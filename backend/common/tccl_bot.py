@@ -180,7 +180,7 @@ def compare_images(img1, img2):
     stat = ImageStat.Stat(diff_img)
     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
-    return diff_ratio * 100
+    return diff_ratio
 
 def moderate(message):
     if processCheckAndBan(message):
