@@ -23,7 +23,7 @@ from dateutil import parser, tz
 from faker import Faker
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from users.tasks import updateForms
+# from users.tasks import updateForms
 from werkzeug.utils import secure_filename
 
 
