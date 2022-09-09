@@ -126,13 +126,14 @@ def checkingUserProfilePhoto(message):
     if len(user_photos) > 0:
 
         # photos_ids = []
-        fileId = user_photos[0][0].file_unique_id
+        fileName = user_photos[0][0].file_unique_id
+        fileId = user_photos[0][0].file_id
 
         pic_url = bot.get_file_url(fileId)
         print(pic_url)
-        Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
+        # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
-        filePath = '/home/user/app/backend/data/' + fileId + '.jpg'
+        filePath = '/home/user/app/backend/data/' + fileName + '.jpg'
         if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
         with open(filePath, 'wb') as handle:
