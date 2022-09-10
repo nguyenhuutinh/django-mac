@@ -212,9 +212,11 @@ def processCheckAndBan(message):
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         # bot.delete_message(chatId,message_id=(message.id + 1))
         return True
+
     if "futt + spot" in f"{message.text} {message.caption}".lower():
         return True
-
+    if "whaless" in f"{message.text} {message.caption}".lower():
+        return True
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
         return True
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
@@ -222,6 +224,10 @@ def processCheckAndBan(message):
     if "TCCL".lower() in f"{firstName} {lastName}".lower() :
         return True
     if ".".lower() == f"{firstName}".lower() :
+        return True
+    if "..".lower() == f"{firstName}".lower() :
+        return True
+    if "...".lower() == f"{firstName}".lower() :
         return True
     if "tccl" in f"{username}":
         return True
@@ -239,8 +245,10 @@ def processCheckAndBan(message):
         return True
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Iược".lower() in f"{firstName} {lastName}".lower():
         return True
-    # if "Bảo".lower() in f"{firstName}".lower() and lastName == None :
+    # if "Bảo".lower() == f"{firstName}".lower() and lastName == None :
     #     return True
+    if "admin" in f"{firstName} {lastName}".lower():
+        return True
     return False
 
 def banUser(message):
