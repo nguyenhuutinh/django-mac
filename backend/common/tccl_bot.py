@@ -181,12 +181,13 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
+    print(message)
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
     isExist = TelegramUser.objects.filter(uid=message.from_user.id).exists()
     if isExist != True:
         user = TelegramUser.objects.create(uid=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "" )
 
-    Message.objects.create(message_id=message.id, user_id=message.from_user.id, text=message.text or message.caption, username=message.from_user.username, date_timestamp=message.date, status = "new")
+    Message.objects.create(message_id=message.message_id, user_id=message.from_user.id, text=message.text or message.caption, username=message.from_user.username, date_timestamp=message.date, status = "new")
 
     if processCheckAndBan(message):
         banUser(message)
@@ -210,8 +211,8 @@ def checkAndDeleteMessage(message):
 
 def deleteMessage(message):
     print(message)
-    # bot.delete_message(message.chat.id,message_id=message.id)
-    # bot.send_message("-1001349899890", f"deleted message {message.text}" )
+    bot.delete_message(message.chat.id,message_id=message.message_id)
+    bot.send_message("-1001349899890", f"deleted message {message.text}" )
 
 def processCheckAndBan(message):
     userId = message.from_user.id
