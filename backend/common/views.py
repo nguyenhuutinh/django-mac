@@ -27,6 +27,8 @@ from rest_framework.permissions import IsAuthenticated
 from werkzeug.utils import secure_filename
 from rest_framework import generics, permissions, mixins
 
+from common.models import TelegramUser
+
 
 fake = Faker()
 import os
@@ -88,6 +90,9 @@ class UsersApi(generics.GenericAPIView):
     def get(self, request, *args,  **kwargs):
         print("haha")
 
-        return Response({
-            "message": "User Created Successfully.  Now perform Login to get your token",
-        })
+
+        users = TelegramUser.objects.all()
+        # print(data)
+        usersData = serializers.serialize('json', users)
+        # print(campaign)
+        return HttpResponse(usersData, content_type="application/json")
