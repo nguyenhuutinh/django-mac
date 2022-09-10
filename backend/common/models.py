@@ -32,6 +32,10 @@ class TelegramUser(models.Model):
     isBot  = models.BooleanField(default=False)
     user_avatar_link = models.CharField(max_length=300, default="" , null=True, )
 
+class TelegramUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TelegramUser
+        fields = '__all__'
 class Message(models.Model):
     message_id = models.CharField(max_length=200 ,  primary_key=True)
     user = models.ForeignKey(
