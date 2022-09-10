@@ -23,21 +23,21 @@ class IndexedTimeStampedModel(models.Model):
 class TelegramUser(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.CharField(max_length=300, default="" )
-    firstname = models.CharField(max_length=300, default="" )
-    lastname = models.CharField(max_length=300, default="" )
-    username = models.CharField(max_length=300, default="" )
+    firstname = models.CharField(max_length=300, default="", null=True,  )
+    lastname = models.CharField(max_length=300, default="" , null=True)
+    username = models.CharField(max_length=300, default="", null=True )
     status = models.CharField(max_length=300, default="" )
     ban_reason = models.CharField(max_length=300, default="" )
     message = models.ForeignKey(
         "Message", on_delete=models.CASCADE)
     isBot  = models.BooleanField(default=False)
-    user_avatar_link = models.CharField(max_length=300, default="" )
+    user_avatar_link = models.CharField(max_length=300, default="" , null=True, )
 
 class Message(models.Model):
     id = models.AutoField(primary_key=True)
     message_id = models.CharField(max_length=200 )
     user_id = models.CharField(max_length=200 )
-    text = models.CharField(max_length=300, default="" )
+    text = models.CharField(max_length=300, default="", null=True,  )
     date_timestamp = models.CharField(max_length=300, default="" )
     status = models.CharField(max_length=300, default="" )
 
