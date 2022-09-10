@@ -183,7 +183,7 @@ def checkingUserProfilePhoto(message):
 def moderate(message):
     print(message)
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
-    Message.objects.create(message_id=message.message_id, user_id=message.from_user.id, text=message.text or message.caption, user_id=message.from_user.id, date_timestamp=message.date, status = "new")
+    Message.objects.create(message_id=message.message_id, user_id=message.from_user.id, text=message.text or message.caption, date_timestamp=message.date, status = "new")
 
     isExist = TelegramUser.objects.filter(uid=message.from_user.id).exists()
     if isExist != True:
