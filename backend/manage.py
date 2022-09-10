@@ -2,16 +2,19 @@
 
 import os
 import sys
-from common.tccl_bot import bot
+import telebot
 from decouple import config
 
+BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
 APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
 # APP_URL = "https://8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io/api/tccl-bot/webhook/"
 
+bot = telebot.TeleBot(BOT_TOKEN)
 
 if __name__ == "__main__":
     settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
-
+    bot.remove_webhook()
+    bot.set_webhook(url=APP_URL)
     if sys.argv[1] == "test":
         if settings_module:
             print(
@@ -32,5 +35,3 @@ if __name__ == "__main__":
     from django.core.management import execute_from_command_line
 
     execute_from_command_line(sys.argv)
-    bot.remove_webhook()
-    bot.set_webhook(url=APP_URL)

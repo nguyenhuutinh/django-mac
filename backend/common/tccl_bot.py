@@ -6,6 +6,7 @@ from re import M
 import telebot
 # from config import *
 import logging
+from backend.manage import bot
 from telebot import types,util
 from django.http import HttpResponse, JsonResponse
 import json
@@ -18,10 +19,8 @@ from diffimg import diff
 
 
 
-BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
 # BOT_TOKEN = "5495185707:AAFOwex3SfYxz2xhz-KA3GdyLpMVLnicUaI"
 
-bot = telebot.TeleBot(BOT_TOKEN)
 logger = telebot.logger
 
 logger.setLevel(logging.DEBUG)
