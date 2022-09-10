@@ -9,8 +9,8 @@ urlpatterns = [
     # path('fshare', views.IndexView.as_view(), name='index'),
     # path('google-form', views.IndexView.as_view(), name='index'),
     # path('ads', views.IndexView.as_view(), name='index'),
-    path('tccl-bot', views.IndexView.as_view(), name='index'),
-    path('tccl-admin', views.UsersApi.as_view()),
+    # path('tccl-bot', views.IndexView.as_view(), name='index'),
+    path('api/tccl-admin/users', views.UsersApi.as_view()),
     # path('auth/', include('knox.urls'))
 
 ]

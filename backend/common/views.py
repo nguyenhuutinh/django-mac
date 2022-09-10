@@ -83,6 +83,8 @@ class TCCLBotView(viewsets.ViewSet):
 
 
 class UsersApi(generics.GenericAPIView):
+    permission_classes = ()
+    authentication_classes = ()
     def get(self, request, *args,  **kwargs):
         print("haha")
 
