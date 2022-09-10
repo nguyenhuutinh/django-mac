@@ -21,8 +21,8 @@ class IndexedTimeStampedModel(models.Model):
 #     campaign = models.ForeignKey(
 #         "Campaign", on_delete=models.CASCADE)
 class TelegramUser(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.CharField(max_length=300, default="" )
+    # id = models.AutoField(primary_key=True)
+    user_id = models.CharField(primary_key=True, max_length=300, default="" )
     firstname = models.CharField(max_length=300, default="", null=True,  )
     lastname = models.CharField(max_length=300, default="" , null=True)
     username = models.CharField(max_length=300, default="", null=True )
