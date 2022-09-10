@@ -1,3 +1,5 @@
+from common.models import Message, TelegramUser
+
 from datetime import datetime, timedelta
 import os
 from re import M
@@ -12,7 +14,6 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 
-from common.models import Message, TelegramUser
 # from PIL import ImageChops, ImageStat,Image
 
 
