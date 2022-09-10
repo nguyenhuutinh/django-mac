@@ -20,33 +20,27 @@ class IndexedTimeStampedModel(models.Model):
 #         "GoogleFormInfo", on_delete=models.CASCADE)
 #     campaign = models.ForeignKey(
 #         "Campaign", on_delete=models.CASCADE)
-# class GoogleFormInfo(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     link = models.CharField(max_length=300, default="" )
-#     action_link = models.CharField(max_length=300, default="" )
-#     num_fields = models.IntegerField(default=1 )
-#     partial_response = models.CharField(max_length=300, default="" )
-#     fbzx = models.CharField(max_length=300, default="" )
-#     fvv  = models.CharField(max_length=300, default="" )
-#     page_history = models.CharField(max_length=300, default="" )
-#     campaign = models.ForeignKey(
-#         "Campaign", on_delete=models.CASCADE)
-# class Campaign(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=200 )
-#     file_name = models.CharField(max_length=300, default="" )
-#     start_date = models.DateTimeField(blank=True, null=True)
-#     end_date = models.DateTimeField(blank=True, null=True)
-#     start_time = models.TimeField(blank=True, null=True)
-#     end_time = models.TimeField(blank=True, null=True)
-#     status = models.CharField(max_length=50, default="")
-#     created = AutoCreatedField(_("created"), db_index=True)
-#     modified = AutoLastModifiedField(_("modified"), db_index=True)
-#     total_schedules = models.IntegerField(default= 0)
-#     total_forms = models.IntegerField(default= 0)
-#     completed_forms = models.IntegerField(default= 0)
-#     google_form_id = models.IntegerField(default= -1)
-#     last_item_id = models.IntegerField(default= -1)
+class TelegramUser(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.CharField(max_length=300, default="" )
+    firstname = models.CharField(max_length=300, default="" )
+    lastname = models.CharField(max_length=300, default="" )
+    username = models.CharField(max_length=300, default="" )
+    status = models.CharField(max_length=300, default="" )
+    ban_reason = models.CharField(max_length=300, default="" )
+    message = models.ForeignKey(
+        "Message", on_delete=models.CASCADE)
+    isBot  = models.BooleanField(default=False)
+    user_avatar_link = models.CharField(max_length=300, default="" )
+
+class Message(models.Model):
+    id = models.AutoField(primary_key=True)
+    message_id = models.CharField(max_length=200 )
+    user_id = models.CharField(max_length=200 )
+    text = models.CharField(max_length=300, default="" )
+    date_timestamp = models.CharField(max_length=300, default="" )
+    status = models.CharField(max_length=300, default="" )
+
 
 # class Schedule(models.Model):
 #     id = models.AutoField(primary_key=True)
