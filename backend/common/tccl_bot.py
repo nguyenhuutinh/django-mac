@@ -100,7 +100,7 @@ def report(message):
         messId = message.reply_to_message.id
         name =  f" {firstname} {last_name}"
         reportName = message.from_user.first_name
-        bot.send_message("-643525876", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
+        bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
@@ -200,7 +200,7 @@ def checkAndDeleteMessage(message):
 def deleteMessage(message):
     print(message)
     # bot.delete_message(message.chat.id,message_id=message.id)
-    # bot.send_message("-643525876", f"deleted message {message.text}" )
+    # bot.send_message("-1001349899890", f"deleted message {message.text}" )
 
 def processCheckAndBan(message):
     userId = message.from_user.id
@@ -253,7 +253,7 @@ def banUser(message):
     bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm. Mời ra đảo du lịch không hẹn ngày về ‼️ 🧞‍♂️")
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
-    bot.send_message("-643525876", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 
 # @bot.message_handler(commands=['list'])
 # def _list(message):
@@ -265,13 +265,13 @@ def manualbanUser(message):
     bot.ban_chat_member(-1001724937734, userId)
     bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
 
-    bot.send_message("-643525876", "Đã ban user id: " + f" {userId}")
+    bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
     print(message)
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
-    bot.send_message("-643525876", "Đã Delete Message id: " + f" {message_id}")
+    bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
 
 @bot.message_handler( content_types=[
     "new_chat_members"
@@ -284,7 +284,7 @@ def new_chat_members(message):
 def unban_user(message):
     userId = message.text.replace("/unban_user ", "")
     bot.unban_chat_member(-1001724937734, userId)
-    bot.send_message("-643525876", "Đã Mở UserId:  " + f" {userId}")
+    bot.send_message("-1001349899890", "Đã Mở UserId:  " + f" {userId}")
 
 
 
@@ -298,7 +298,7 @@ def foo(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
-    bot.send_message("-643525876", "User left : " + f" id {userId}  firstName {firstName} userName {username}")
+    bot.send_message("-1001349899890", "User left : " + f" id {userId}  firstName {firstName} userName {username}")
 
 @bot.message_handler(commands=['reset'])
 def _reset(message):
