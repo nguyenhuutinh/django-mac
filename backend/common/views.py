@@ -94,5 +94,5 @@ class UsersApi(generics.GenericAPIView):
         users = TelegramUser.objects.all()
         # print(data)
         usersData = serializers.serialize('json', users)
-        # print(campaign)
+        print(usersData)
         return HttpResponse(usersData, content_type="application/json")
