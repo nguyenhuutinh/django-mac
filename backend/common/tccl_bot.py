@@ -1,4 +1,4 @@
-# from common.models import Message, TelegramUser
+from common.models import Message, TelegramUser
 
 from datetime import datetime, timedelta
 import os
@@ -183,18 +183,18 @@ def checkingUserProfilePhoto(message):
 
 def moderate(message):
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
-    # isExist = TelegramUser.objects.filter(uid=message.from_user.id).exists()
-    # if isExist != True:
-        # user = TelegramUser.objects.create(uid=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "" )
+    isExist = TelegramUser.objects.filter(uid=message.from_user.id).exists()
+    if isExist != True:
+        user = TelegramUser.objects.create(uid=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "" )
 
-    # Message.objects.create(message_id=message.id, user_id=message.from_user.id, text=message.text or message.caption, username=message.from_user.username, date_timestamp=message.date, status = "new")
+    Message.objects.create(message_id=message.id, user_id=message.from_user.id, text=message.text or message.caption, username=message.from_user.username, date_timestamp=message.date, status = "new")
 
     if processCheckAndBan(message):
         banUser(message)
-        # TelegramUser.objects.filter(uid=message.from_user.id).update(status='banned', ban_reason='message bi cam')
+        TelegramUser.objects.filter(uid=message.from_user.id).update(status='banned', ban_reason='message bi cam')
     elif checkingUserProfilePhoto(message):
         banUser(message)
-        # TelegramUser.objects.filter(uid=message.from_user.id).update(status='banned', ban_reason='photo tccl')
+        TelegramUser.objects.filter(uid=message.from_user.id).update(status='banned', ban_reason='photo tccl')
     if checkAndDeleteMessage(message):
         deleteMessage(message)
 
