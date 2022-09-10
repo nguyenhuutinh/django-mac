@@ -6,7 +6,7 @@ from re import M
 import telebot
 # from config import *
 import logging
-from backend.manage import bot
+from manage import bot
 from telebot import types,util
 from django.http import HttpResponse, JsonResponse
 import json
