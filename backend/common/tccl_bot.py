@@ -179,6 +179,8 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
+    print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
+
     if processCheckAndBan(message):
         banUser(message)
     elif checkingUserProfilePhoto(message):
