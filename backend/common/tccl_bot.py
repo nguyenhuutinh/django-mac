@@ -192,7 +192,7 @@ def moderate(message):
             user = TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
-            Message.objects.create(message_id=message.message_id, user_id=user.user_id, text=message.text or message.caption, date_timestamp=message.date, status = "new")
+            Message.objects.create(message_id=message.message_id, user_id=user.id, text=message.text or message.caption, date_timestamp=message.date, status = "new")
 
     if processCheckAndBan(message):
         banUser(message)
