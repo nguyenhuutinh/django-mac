@@ -34,8 +34,7 @@ class TelegramUser(models.Model):
     user_avatar_link = models.CharField(max_length=300, default="" , null=True, )
 
 class Message(models.Model):
-    id = models.AutoField(primary_key=True)
-    message_id = models.CharField(max_length=200 , default="",  null=True, )
+    message_id = models.CharField(max_length=200 ,  primary_key=True)
     user_id = models.CharField(max_length=200 )
     text = models.CharField(max_length=300, default="", null=True,  )
     date_timestamp = models.CharField(max_length=300, default="" )
