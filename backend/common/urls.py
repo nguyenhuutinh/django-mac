@@ -10,6 +10,7 @@ urlpatterns = [
     # path('google-form', views.IndexView.as_view(), name='index'),
     # path('ads', views.IndexView.as_view(), name='index'),
     path('tccl-bot', views.IndexView.as_view(), name='index'),
+    path('tccl-bot/users', views.UsersApi.as_view()),
     # path('auth/', include('knox.urls'))
 
 ]

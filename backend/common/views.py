@@ -25,6 +25,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated
 # from users.tasks import updateForms
 from werkzeug.utils import secure_filename
+from rest_framework import generics, permissions, mixins
 
 
 fake = Faker()
@@ -79,3 +80,12 @@ class TCCLBotView(viewsets.ViewSet):
     @csrf_exempt
     def check_bot(self, request):
         return process_request(request)
+
+
+class UsersApi(generics.GenericAPIView):
+    def get(self, request, *args,  **kwargs):
+        print("haha")
+
+        return Response({
+            "message": "User Created Successfully.  Now perform Login to get your token",
+        })
