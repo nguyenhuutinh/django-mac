@@ -129,7 +129,7 @@ def checkingUserProfilePhoto(message):
 
         pic_url = bot.get_file_url(fileId)
         # print(pic_url)
-        TelegramUser.objects.get(user_id=message.from_user.id).update(user_avatar_link= pic_url)
+        TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
         filePath = '/home/user/app/backend/data/' + fileName + '.jpg'
