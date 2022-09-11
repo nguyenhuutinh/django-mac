@@ -185,8 +185,6 @@ def moderate(message):
     print(message)
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
     if message.message_id:
-
-
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
         if isExist != True:
             user = TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
@@ -277,11 +275,14 @@ def banUser(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
 
-    bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm. Mời ra đảo du lịch không hẹn ngày về ‼️ 🧞‍♂️")
+
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
-    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 
+    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    if isExist != True:
+        bot.reply_to(message, "🧞‍♂️ ‼️ User: " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
+    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 # @bot.message_handler(commands=['list'])
 # def _list(message):
 #     print("_list")
