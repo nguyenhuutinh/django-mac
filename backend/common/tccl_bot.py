@@ -195,9 +195,11 @@ def moderate(message):
     if processCheckAndBan(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='message bi cam')
+        Message.objects.filter(message_id=message.message_id).update(status = "deleted")
     elif checkingUserProfilePhoto(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
+        Message.objects.filter(message_id=message.message_id).update(status = "deleted")
     if checkAndDeleteMessage(message):
         deleteMessage(message)
         Message.objects.filter(message_id=message.message_id).update(status = "deleted")
