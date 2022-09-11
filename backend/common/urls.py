@@ -11,6 +11,8 @@ urlpatterns = [
     # path('ads', views.IndexView.as_view(), name='index'),
     # path('tccl-bot', views.IndexView.as_view(), name='index'),
     path('api/tccl-admin/users', views.UsersApi.as_view()),
+
+    path('api/tccl-admin/messages', views.MessageApi.as_view()),
     # path('auth/', include('knox.urls'))
 
 ]
