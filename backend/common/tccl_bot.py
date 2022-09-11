@@ -266,6 +266,8 @@ def processCheckAndBan(message):
     #     return True
     if "admin" in f"{firstName} {lastName}".lower():
         return True
+    if "admln" in f"{firstName} {lastName}".lower():
+        return True
     return False
 
 def banUser(message):
