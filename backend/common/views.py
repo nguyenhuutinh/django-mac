@@ -26,6 +26,7 @@ from rest_framework.permissions import IsAuthenticated
 # from users.tasks import updateForms
 from werkzeug.utils import secure_filename
 from rest_framework import generics, permissions, mixins
+from common.models import Message
 
 from common.models import TelegramUser
 
@@ -88,11 +89,24 @@ class UsersApi(generics.GenericAPIView):
     permission_classes = ()
     authentication_classes = ()
     def get(self, request, *args,  **kwargs):
-        print("haha")
+        # print("haha")
 
 
         users = TelegramUser.objects.all()
         # print(data)
         usersData = serializers.serialize('json', users)
-        print(usersData)
+        # print(usersData)
         return HttpResponse(usersData, content_type="application/json")
+
+class MessageApi(generics.GenericAPIView):
+    permission_classes = ()
+    authentication_classes = ()
+    def get(self, request, *args,  **kwargs):
+        # print("haha")
+
+
+        messages = Message.objects.all()
+        # print(data)
+        messagesData = serializers.serialize('json', messages)
+        # print(messagesData)
+        return HttpResponse(messagesData, content_type="application/json")
