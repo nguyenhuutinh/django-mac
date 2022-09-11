@@ -40,7 +40,7 @@ class Message(models.Model):
     message_id = models.CharField(max_length=200 ,  primary_key=True)
     user = models.ForeignKey(
         "TelegramUser", on_delete=models.CASCADE)
-    text = models.CharField(max_length=300, default="", null=True,  )
+    text = models.TextField( default="", null=True,  )
     date_timestamp = models.CharField(max_length=300, default="" )
     status = models.CharField(max_length=300, default="" )
 
