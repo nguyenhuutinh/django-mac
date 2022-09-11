@@ -200,7 +200,7 @@ def moderate(message):
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
     if checkAndDeleteMessage(message):
         deleteMessage(message)
-
+        Message.objects.filter(message_id=message.message_id).update(status = "deleted")
 
 def checkAndDeleteMessage(message):
     if "https://t.me/"  in f"{message.text} {message.caption}".lower():
