@@ -203,6 +203,8 @@ def moderate(message):
 
 
 def checkAndDeleteMessage(message):
+    if "https://t.me/"  in f"{message.text} {message.caption}".lower():
+        return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         return True
     if "follow us" in f"{message.text} {message.caption}".lower():
