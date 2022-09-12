@@ -184,7 +184,7 @@ def checkingUserProfilePhoto(message):
 def moderate(message):
     print(message)
     if message.chat.id != -1001724937734:
-        print("wrong chat group " + message.chat.id)
+        print("wrong chat group " + str(message.chat.id))
         return
 
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
