@@ -183,6 +183,10 @@ def checkingUserProfilePhoto(message):
 
 def moderate(message):
     print(message)
+    if message.chat.id != -1001724937734:
+        print("wrong chat group " + message.chat.id)
+        return
+
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
