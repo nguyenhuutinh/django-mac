@@ -44,7 +44,7 @@ bot.add_custom_filter(IsAdmin())
 
 
 def process_request(request):
-    print(request.data)
+    # print(request.data)
     json_string = request.data
     print("received message: ", json_string)
     if json_string == None or json_string == '':
@@ -115,13 +115,13 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    print(message.from_user.first_name  + " sent photo", message.caption)
+    print(message.from_user.first_name  + " sent photo with caption: " + str(message.caption))
     moderate(message=message)
 
 
 @bot.message_handler(is_admin=False)
 def allMessage(message):
-    print(message.from_user.first_name + " sent message ", message.text)
+    print(message.from_user.first_name + " sent message: " +  str( message.text))
     moderate(message=message)
 
 def checkingUserProfilePhoto(message):
@@ -148,7 +148,7 @@ def checkingUserProfilePhoto(message):
             response = requests.get(pic_url, stream=True)
 
             if not response.ok:
-                print(response)
+                print(f"{bcolors.FAIL}open file error: {response}")
 
             for block in response.iter_content(1024):
                 if not block:
@@ -161,7 +161,7 @@ def checkingUserProfilePhoto(message):
             # result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
 
 
-            if result != None and result < 0.05:
+            if result != None and result < 0.04:
                 print(f"{bcolors.OKGREEN}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 return True
             else:
@@ -234,7 +234,7 @@ def checkAndDeleteMessage(message):
         return True
 
 def _deleteMessage(message):
-    print(message)
+    print(f"delete message: {message}")
     bot.delete_message(message.chat.id,message_id=message.message_id)
     bot.send_message("-1001349899890", f"deleted message {message.text}" )
 
@@ -244,7 +244,7 @@ def processCheckAndBan(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
-    print(f"{message.text} {message.caption} - {firstName} {lastName} {userId} {chatId} ".lower())
+    print(f"{bcolors.WARNING} processCheckAndBan - text {message.text} - caption: {message.caption} - user info: {firstName} {lastName} {userId} {chatId} {bcolors.ENDC}".lower())
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         # bot.delete_message(chatId,message_id=(message.id + 1))
         return True
@@ -310,7 +310,7 @@ def banUser(message):
 #     print("_list")
 @bot.message_handler(commands=['ban_user'])
 def manualbanUser(message):
-    print(message)
+    print(f"manualbanUser {message}")
     userId = message.text.replace("/ban_user ", "")
     bot.ban_chat_member(-1001724937734, userId)
     bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
@@ -318,7 +318,7 @@ def manualbanUser(message):
     bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
-    print(message)
+    print(f"deleteMessage {message}")
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
     print(f"{bcolors.OKGREEN}deleted message  : {str(message_id)} {bcolors.ENDC}")
@@ -343,7 +343,7 @@ def unban_user(message):
 @bot.message_handler(content_types=[
     "left_chat_member"
 ])
-def foo(message):
+def left_chat_member(message):
     userId = message.from_user.id
     chatId = message.chat.id
 
