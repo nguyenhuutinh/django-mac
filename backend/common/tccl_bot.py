@@ -164,6 +164,8 @@ def checkingUserProfilePhoto(message):
             if result != None and result < 0.05:
                 print(f"{bcolors.OKGREEN}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 return True
+            else:
+                print(f"{bcolors.FAIL}diff: {str(result)} {bcolors.ENDC}")
             os.remove(filePath)
 
     return False
