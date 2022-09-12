@@ -107,7 +107,7 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot"
     if result == True:
         print("admin")
         return
@@ -117,7 +117,7 @@ def photo(message):
 
 @bot.message_handler()
 def allMessage(message):
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot"
     if result == True:
         print("admin")
         return
