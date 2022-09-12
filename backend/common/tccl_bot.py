@@ -105,14 +105,22 @@ def report(message):
         reportName = message.from_user.first_name
         bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
 
-@bot.message_handler(content_types=['photo'], is_admin=False)
+@bot.message_handler(content_types=['photo'])
 def photo(message):
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
+    if result == True:
+        print("admin")
+        return
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}\n")
     moderate(message=message)
 
 
-@bot.message_handler(is_admin=False)
+@bot.message_handler()
 def allMessage(message):
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
+    if result == True:
+        print("admin")
+        return
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
     moderate(message=message)
 
