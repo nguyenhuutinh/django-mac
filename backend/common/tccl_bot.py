@@ -106,13 +106,13 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    print("user sent photo", message.caption)
+    print(message.from_user.first_name  + " sent photo", message.caption)
     moderate(message=message)
 
 
 @bot.message_handler(is_admin=False)
 def allMessage(message):
-    print("user sent message ", message.text)
+    print(message.from_user.first_name + " sent message ", message.text)
     moderate(message=message)
 
 def checkingUserProfilePhoto(message):
