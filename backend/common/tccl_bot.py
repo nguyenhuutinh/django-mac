@@ -234,9 +234,12 @@ def checkAndDeleteMessage(message):
         return True
 
 def _deleteMessage(message):
-    print(f"delete message: {message}")
+    print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     bot.delete_message(message.chat.id,message_id=message.message_id)
-    bot.send_message("-1001349899890", f"deleted message {message.text}" )
+    bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
+    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    if isExist != True:
+        bot.reply_to(message, "🧞‍♂️ ‼️ User: " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
 
 def processCheckAndBan(message):
     userId = message.from_user.id
@@ -244,11 +247,9 @@ def processCheckAndBan(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
-    print(f"{bcolors.WARNING} processCheckAndBan - text {message.text} - caption: {message.caption} - user info: {firstName} {lastName} {userId} {chatId} {bcolors.ENDC}".lower())
+    print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption} - User info: {firstName} {lastName} -userId: {userId} -chatId: {chatId} {bcolors.ENDC}".lower())
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
-        # bot.delete_message(chatId,message_id=(message.id + 1))
         return True
-
     if "futt + spot" in f"{message.text} {message.caption}".lower():
         return True
     if "whaless" in f"{message.text} {message.caption}".lower():
@@ -281,8 +282,6 @@ def processCheckAndBan(message):
         return True
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Iược".lower() in f"{firstName} {lastName}".lower():
         return True
-    # if "Bảo".lower() == f"{firstName}".lower() and lastName == None :
-    #     return True
     if "admin" in f"{firstName} {lastName}".lower():
         return True
     if "admln" in f"{firstName} {lastName}".lower():
@@ -318,7 +317,7 @@ def manualbanUser(message):
     bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
-    print(f"deleteMessage {message}")
+    print(f"deleteMessage {message.text}")
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
     print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
