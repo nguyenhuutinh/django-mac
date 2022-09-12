@@ -32,7 +32,7 @@ class bcolors:
 
 logger = telebot.logger
 
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 class IsAdmin(telebot.custom_filters.SimpleCustomFilter):
     # Class will check whether the user is admin or creator in group or not
