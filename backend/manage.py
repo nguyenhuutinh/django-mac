@@ -17,11 +17,12 @@ class IsAdmin(telebot.custom_filters.SimpleCustomFilter):
     @staticmethod
     def check(message: telebot.types.Message):
         return bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
-bot.add_custom_filter(IsAdmin())
+
 
 
 if __name__ == "__main__":
     settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
+    bot.add_custom_filter(IsAdmin())
     bot.remove_webhook()
     bot.set_webhook(url=APP_URL)
     if sys.argv[1] == "test":
