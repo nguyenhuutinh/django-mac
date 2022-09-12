@@ -159,8 +159,10 @@ def checkingUserProfilePhoto(message):
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
             # print(result)
             # result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
-            print(result)
+
+
             if result != None and result < 0.05:
+                print(f"{bcolors.OKGREEN}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 return True
             os.remove(filePath)
 
