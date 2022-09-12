@@ -115,13 +115,13 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    print(message.from_user.first_name  + " sent photo with caption: " + str(message.caption))
+    print(f"{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}")
     moderate(message=message)
 
 
 @bot.message_handler(is_admin=False)
 def allMessage(message):
-    print(message.from_user.first_name + " sent message: " +  str( message.text))
+    print(f"{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}")
     moderate(message=message)
 
 def checkingUserProfilePhoto(message):
@@ -148,7 +148,7 @@ def checkingUserProfilePhoto(message):
             response = requests.get(pic_url, stream=True)
 
             if not response.ok:
-                print(f"{bcolors.FAIL}open file error: {response}")
+                print(f"{bcolors.FAIL}open file error: {response} {bcolors.ENDC}")
 
             for block in response.iter_content(1024):
                 if not block:
