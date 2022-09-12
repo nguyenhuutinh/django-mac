@@ -17,7 +17,16 @@ from diffimg import diff
 
 # from PIL import ImageChops, ImageStat,Image
 
-
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 # BOT_TOKEN = "5495185707:AAFOwex3SfYxz2xhz-KA3GdyLpMVLnicUaI"
 
@@ -184,7 +193,7 @@ def checkingUserProfilePhoto(message):
 def moderate(message):
     print(message)
     if message.chat.id != -1001724937734:
-        print("wrong chat group " + str(message.chat.id))
+        print(f"{bcolors.FAIL} wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
 
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
