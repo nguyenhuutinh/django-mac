@@ -235,11 +235,10 @@ def checkAndDeleteMessage(message):
 
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
+    bot.reply_to(message, "🧞‍♂️ ‼️ User: " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
     bot.delete_message(message.chat.id,message_id=message.message_id)
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
-    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
-    if isExist != True:
-        bot.reply_to(message, "🧞‍♂️ ‼️ User: " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
+
 
 def processCheckAndBan(message):
     userId = message.from_user.id
