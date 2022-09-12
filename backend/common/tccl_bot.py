@@ -201,7 +201,7 @@ def moderate(message):
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
         Message.objects.filter(message_id=message.message_id).update(status = "deleted")
     if checkAndDeleteMessage(message):
-        deleteMessage(message)
+        _deleteMessage(message)
         Message.objects.filter(message_id=message.message_id).update(status = "deleted")
 
 def checkAndDeleteMessage(message):
@@ -216,7 +216,7 @@ def checkAndDeleteMessage(message):
     if "fut" in f"{message.text} {message.caption}".lower() and "spot" in f"{message.text} {message.caption}".lower():
         return True
 
-def deleteMessage(message):
+def _deleteMessage(message):
     print(message)
     bot.delete_message(message.chat.id,message_id=message.message_id)
     bot.send_message("-1001349899890", f"deleted message {message.text}" )
