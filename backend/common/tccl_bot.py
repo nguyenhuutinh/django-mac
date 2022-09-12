@@ -115,13 +115,13 @@ def report(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
-    print(f"{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}\n")
     moderate(message=message)
 
 
 @bot.message_handler(is_admin=False)
 def allMessage(message):
-    print(f"{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
     moderate(message=message)
 
 def checkingUserProfilePhoto(message):
