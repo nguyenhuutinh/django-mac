@@ -104,7 +104,7 @@ LOGGING = {
         "django.request": {"handlers": ["mail_admins"], "level": "ERROR", "propagate": True,},
         "log_request_id.middleware": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": "ERROR",
             "propagate": False,
         },
     },
