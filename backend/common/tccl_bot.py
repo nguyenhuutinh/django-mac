@@ -162,10 +162,10 @@ def checkingUserProfilePhoto(message):
 
 
             if result != None and result < 0.04:
-                print(f"{bcolors.OKGREEN}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 return True
             else:
-                print(f"{bcolors.FAIL}diff: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
             os.remove(filePath)
 
     return False
@@ -299,7 +299,7 @@ def banUser(message):
 
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
-    print(f"{bcolors.OKGREEN}banned user : {str(userId)} {bcolors.ENDC}")
+    print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
@@ -321,7 +321,7 @@ def deleteMessage(message):
     print(f"deleteMessage {message}")
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
-    print(f"{bcolors.OKGREEN}deleted message  : {str(message_id)} {bcolors.ENDC}")
+    print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
 
