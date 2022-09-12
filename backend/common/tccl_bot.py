@@ -193,7 +193,7 @@ def checkingUserProfilePhoto(message):
 def moderate(message):
     print(message)
     if message.chat.id != -1001724937734:
-        print(f"{bcolors.FAIL} wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
 
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
@@ -295,6 +295,7 @@ def banUser(message):
 
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
+    print(f"{bcolors.OKGREEN}banned user : {str(userId)} {bcolors.ENDC}")
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
@@ -316,6 +317,8 @@ def deleteMessage(message):
     print(message)
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
+    print(f"{bcolors.OKGREEN}deleted message  : {str(message_id)} {bcolors.ENDC}")
+
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
 
 @bot.message_handler( content_types=[
