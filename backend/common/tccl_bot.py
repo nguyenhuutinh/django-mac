@@ -246,7 +246,7 @@ def processCheckAndBan(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
-    print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption} - User info: {firstName} {lastName} -userId: {userId} -chatId: {chatId} {bcolors.ENDC}".lower())
+    print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption}  {bcolors.ENDC} \nUser info: {firstName} {lastName} -userId: {userId} -chatId: {chatId}".lower())
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         return True
     if "futt + spot" in f"{message.text} {message.caption}".lower():
