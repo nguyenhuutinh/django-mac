@@ -110,3 +110,7 @@ class MessageApi(generics.GenericAPIView):
         messagesData = serializers.serialize('json', messages)
         # print(messagesData)
         return HttpResponse(messagesData, content_type="application/json")
+
+
+
+
