@@ -230,8 +230,8 @@ def checkAndDeleteMessage(message):
         return True
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
         return True
-    if "fut" in f"{message.text} {message.caption}".lower() and "spot" in f"{message.text} {message.caption}".lower():
-        return True
+    # if "fut" in f"{message.text} {message.caption}".lower() and "spot" in f"{message.text} {message.caption}".lower():
+    #     return True
 
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
