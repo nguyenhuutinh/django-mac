@@ -222,7 +222,7 @@ def moderate(message):
         Message.objects.filter(message_id=message.message_id).update(status = "deleted")
 
 def checkAndDeleteMessage(message):
-    if "https://t.me/"  in f"{message.text} {message.caption}".lower():
+    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in f"{message.text}" == False):
         return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         return True
