@@ -191,7 +191,7 @@ def moderate(message):
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
     # print(message.text)
-    # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
+    print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
         if isExist != True:
