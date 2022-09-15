@@ -92,19 +92,6 @@ def chat_m(message: types.ChatMemberUpdated):
 #     bot.send_message(message.chat.id, "Successfully added!")
 #     user_states.update_state(message, user_states.START)
 
-@bot.message_handler(commands=['report'])
-def report(message):
-    # print ('reported', message)
-    if message.reply_to_message:
-        firstname = message.reply_to_message.from_user.first_name
-        last_name = message.reply_to_message.from_user.last_name
-        uid = message.reply_to_message.from_user.id
-        mess = message.reply_to_message.text
-        messId = message.reply_to_message.id
-        name =  f" {firstname} {last_name}"
-        reportName = message.from_user.first_name
-        bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
-
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
@@ -297,6 +284,23 @@ def banUser(message):
 # @bot.message_handler(commands=['list'])
 # def _list(message):
 #     print("_list")
+
+
+@bot.message_handler(commands=['report'])
+def report(message):
+    # print ('reported', message)
+    if message.reply_to_message:
+        firstname = message.reply_to_message.from_user.first_name
+        last_name = message.reply_to_message.from_user.last_name
+        uid = message.reply_to_message.from_user.id
+        mess = message.reply_to_message.text
+        messId = message.reply_to_message.id
+        name =  f" {firstname} {last_name}"
+        reportName = message.from_user.first_name
+        bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
+
+
+
 @bot.message_handler(commands=['ban_user'])
 def manualbanUser(message):
     print(f"manualbanUser {message}")
