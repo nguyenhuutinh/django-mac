@@ -117,7 +117,7 @@ def photo(message):
 
 @bot.message_handler()
 def allMessage(message):
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot"
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
     if result == True:
         print("admin")
         return
