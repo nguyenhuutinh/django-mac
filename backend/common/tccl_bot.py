@@ -115,15 +115,6 @@ def photo(message):
     moderate(message=message)
 
 
-@bot.message_handler()
-def allMessage(message):
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
-    if result == True:
-        print("admin")
-        return
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
-    moderate(message=message)
-
 def checkingUserProfilePhoto(message):
     data = bot.get_user_profile_photos(message.from_user.id)
     # print(data)
@@ -314,6 +305,7 @@ def manualbanUser(message):
     bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
 
     bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
+
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
     print(f"deleteMessage {message.text}")
@@ -322,6 +314,15 @@ def deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
+
+@bot.message_handler()
+def allMessage(message):
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
+    if result == True:
+        print("admin")
+        return
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
+    moderate(message=message)
 
 @bot.message_handler( content_types=[
     "new_chat_members"
