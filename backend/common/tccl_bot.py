@@ -249,8 +249,8 @@ def processCheckAndBan(message):
     print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption}  {bcolors.ENDC} \nUser info: {firstName} {lastName} -userId: {userId} -chatId: {chatId}".lower())
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         return True
-    if "futt + spot" in f"{message.text} {message.caption}".lower():
-        return True
+    # # if "futt + spot" in f"{message.text} {message.caption}".lower():
+    #     return True
     if "whaless" in f"{message.text} {message.caption}".lower():
         return True
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
