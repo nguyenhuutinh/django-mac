@@ -288,7 +288,7 @@ def banUser(message):
 
 @bot.message_handler(commands=['report'])
 def report(message):
-    # print ('reported', message)
+    print ('reported', message)
     if message.reply_to_message:
         firstname = message.reply_to_message.from_user.first_name
         last_name = message.reply_to_message.from_user.last_name
@@ -319,6 +319,13 @@ def deleteMessage(message):
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
 
+@bot.message_handler(commands=['unban_user'])
+def unban_user(message):
+    userId = message.text.replace("/unban_user ", "")
+    bot.unban_chat_member(-1001724937734, userId)
+    bot.send_message("-1001349899890", "Đã Mở UserId:  " + f" {userId}")
+
+
 @bot.message_handler()
 def allMessage(message):
     result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
@@ -333,13 +340,6 @@ def allMessage(message):
 ])
 def new_chat_members(message):
     print("WELCOME", message)
-
-
-@bot.message_handler(commands=['unban_user'])
-def unban_user(message):
-    userId = message.text.replace("/unban_user ", "")
-    bot.unban_chat_member(-1001724937734, userId)
-    bot.send_message("-1001349899890", "Đã Mở UserId:  " + f" {userId}")
 
 
 
