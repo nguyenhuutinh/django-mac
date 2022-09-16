@@ -194,10 +194,10 @@ def moderate(message):
     elif checkingUserProfilePhoto(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
-        Message.objects.filter(message_id=message.message_id).update(status = "deleted")
+        # Message.objects.filter(message_id=message.message_id).update(status = "deleted")
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
-        Message.objects.filter(message_id=message.message_id).update(status = "deleted")
+        # Message.objects.filter(message_id=message.message_id).update(status = "deleted")
 
 def checkAndDeleteMessage(message):
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in f"{message.text}" == False):
@@ -273,14 +273,16 @@ def banUser(message):
     lastName = message.from_user.last_name
 
 
-    bot.delete_message(chatId,message_id=message.id)
-    bot.ban_chat_member(chatId, userId)
-    print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
+
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+
+    bot.delete_message(chatId,message_id=message.id)
+    bot.ban_chat_member(chatId, userId)
+    print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
 # @bot.message_handler(commands=['list'])
 # def _list(message):
 #     print("_list")
