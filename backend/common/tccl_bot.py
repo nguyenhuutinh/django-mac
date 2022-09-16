@@ -272,9 +272,6 @@ def banUser(message):
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
 
-
-
-
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
