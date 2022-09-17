@@ -32,7 +32,7 @@ class bcolors:
 
 logger = telebot.logger
 
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 
 def process_request(request):
