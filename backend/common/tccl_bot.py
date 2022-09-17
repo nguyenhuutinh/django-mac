@@ -142,7 +142,6 @@ def checkingUserProfilePhoto(message):
                 return True
             else:
                 print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
-            os.remove(filePath)
             #compare Bao's Photo
             result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -150,6 +149,7 @@ def checkingUserProfilePhoto(message):
 
             if result != None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
                 return True
             else:
                 print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
