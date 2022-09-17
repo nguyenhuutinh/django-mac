@@ -221,6 +221,7 @@ def checkAndDeleteMessage(message):
         return True
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
+        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
         return True
 
 def _deleteMessage(message):
