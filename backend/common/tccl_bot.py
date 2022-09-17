@@ -208,12 +208,16 @@ def moderate(message):
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in f"{message.text}" == False):
+        print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
     if "follow us" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
@@ -234,51 +238,70 @@ def processCheckAndBan(message):
     username = message.from_user.username
     print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption}  {bcolors.ENDC} \nUser info: {firstName} {lastName} -userId: {userId} -chatId: {chatId}".lower())
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
     # # if "futt + spot" in f"{message.text} {message.caption}".lower():
     #     return True
     if "whaless" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
     if "TCCL".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
         return True
     if ".".lower() == f"{firstName}".lower() :
+        print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
         return True
     if "..".lower() == f"{firstName}".lower() :
+        print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
         return True
     if "...".lower() == f"{firstName}".lower() :
+        print(f"{bcolors.WARNING}case 8  {bcolors.ENDC}")
         return True
     if "tccl" in f"{username}":
+        print(f"{bcolors.WARNING}case 9  {bcolors.ENDC}")
         return True
     if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
         return True
     if "Bảo Đỗ".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 11  {bcolors.ENDC}")
         return True
     if "Trung Kim Son".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 12  {bcolors.ENDC}")
         return True
     if "Trade Coin Chiến Lược".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 13  {bcolors.ENDC}")
         return True
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Chiến Lược".lower() in f"{firstName} {lastName}".lower():
+        print(f"{bcolors.WARNING}case 14  {bcolors.ENDC}")
         return True
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Lược".lower() in f"{firstName} {lastName}".lower():
+        print(f"{bcolors.WARNING}case 15  {bcolors.ENDC}")
         return True
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Iược".lower() in f"{firstName} {lastName}".lower():
+        print(f"{bcolors.WARNING}case 16  {bcolors.ENDC}")
         return True
     if "admin" in f"{firstName} {lastName}".lower():
+        print(f"{bcolors.WARNING}case 17  {bcolors.ENDC}")
         return True
     if "admln" in f"{firstName} {lastName}".lower():
+        print(f"{bcolors.WARNING}case 18  {bcolors.ENDC}")
         return True
     return False
 
 def banUser(message):
-    print("banUser")
-    userId = message.from_user.id
     chatId = message.chat.id
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
+    userId = message.from_user.id
+
+
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
@@ -287,7 +310,8 @@ def banUser(message):
 
     bot.delete_message(chatId,message_id=message.id)
     bot.ban_chat_member(chatId, userId)
-    print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
+    print(f"{bcolors.BOLD}banned {userId} {firstName} {bcolors.ENDC}")
+    # print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
 # @bot.message_handler(commands=['list'])
 # def _list(message):
 #     print("_list")
@@ -295,8 +319,9 @@ def banUser(message):
 
 @bot.message_handler(commands=['report'])
 def report(message):
-    print ('reported', message)
+
     if message.reply_to_message:
+
         firstname = message.reply_to_message.from_user.first_name
         last_name = message.reply_to_message.from_user.last_name
         uid = message.reply_to_message.from_user.id
@@ -304,6 +329,7 @@ def report(message):
         messId = message.reply_to_message.id
         name =  f" {firstname} {last_name}"
         reportName = message.from_user.first_name
+        print (f"{bcolors.BOLD}reported  {mess} {bcolors.ENDC}")
         bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
 
 
