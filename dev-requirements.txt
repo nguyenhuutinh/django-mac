@@ -18,7 +18,7 @@ bandit==1.7.4
     # via -r dev-requirements.in
 black==22.8.0
     # via -r dev-requirements.in
-certifi==2022.6.15
+certifi==2022.9.14
     # via requests
 cfgv==3.3.1
     # via pre-commit
@@ -30,6 +30,8 @@ click==8.1.3
     #   safety
 coverage==6.4.4
     # via -r dev-requirements.in
+diffimg==0.3.0
+    # via -r dev-requirements.in
 dill==0.3.5.1
     # via pylint
 distlib==0.3.6
@@ -40,7 +42,7 @@ django==4.1.1
     #   model-bakery
 dodgy==0.2.1
     # via prospector
-dparse==0.5.2
+dparse==0.6.0
     # via safety
 filelock==3.8.0
     # via virtualenv
@@ -56,7 +58,7 @@ gitpython==3.1.27
     # via bandit
 identify==2.5.5
     # via pre-commit
-idna==3.3
+idna==3.4
     # via requests
 isort==5.10.1
     # via
@@ -85,6 +87,8 @@ pbr==5.10.0
     # via stevedore
 pep8-naming==0.10.0
     # via prospector
+pillow==9.2.0
+    # via diffimg
 platformdirs==2.5.2
     # via
     #   black

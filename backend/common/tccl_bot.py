@@ -116,7 +116,6 @@ def checkingUserProfilePhoto(message):
 
         pic_url = bot.get_file_url(fileId)
         # print(pic_url)
-        TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
         filePath = '/home/user/app/backend/data/' + fileName + '.jpg'
@@ -135,15 +134,26 @@ def checkingUserProfilePhoto(message):
         file_exists = exists(filePath)
         if file_exists:
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
-            # print(result)
-            # result = compare_images(Image.open('/home/user/app/backend/data/logo1.jpg'), Image.open(filePath))
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url, profile_score= result)
 
+            if result != None and result < 0.04:
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
+                return True
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            os.remove(filePath)
+            #compare Bao's Photo
+            result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
             if result != None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 return True
             else:
                 print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+
             os.remove(filePath)
 
     return False
@@ -177,27 +187,23 @@ def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
+    if checkAndDeleteMessage(message):
+        _deleteMessage(message)
     # print(message.text)
     # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
         if isExist != True:
-            user = TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
+            TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
         else :
-            user = TelegramUser.objects.get(user_id=message.from_user.id)
-        # Message.objects.create(message_id=message.message_id, user_id=user.id, text=message.text or message.caption, date_timestamp=message.date, status = "new")
+            TelegramUser.objects.get(user_id=message.from_user.id)
 
     if processCheckAndBan(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='message bi cam')
-        # Message.objects.filter(message_id=message.message_id).update(status = "deleted")
     elif checkingUserProfilePhoto(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
-        # Message.objects.filter(message_id=message.message_id).update(status = "deleted")
-    if checkAndDeleteMessage(message):
-        _deleteMessage(message)
-        # Message.objects.filter(message_id=message.message_id).update(status = "deleted")
 
 def checkAndDeleteMessage(message):
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in f"{message.text}" == False):
@@ -207,6 +213,9 @@ def checkAndDeleteMessage(message):
     if "follow us" in f"{message.text} {message.caption}".lower():
         return True
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
+        return True
+    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
+    if isExist:
         return True
     # if "fut" in f"{message.text} {message.caption}".lower() and "spot" in f"{message.text} {message.caption}".lower():
     #     return True
