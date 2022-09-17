@@ -26,8 +26,8 @@ from common.models import Campaign
 from common.models import UserFormInfo
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
-from oauth2client import client, file, tools
-from oauth2client.file import Storage
+# from oauth2client import client, file, tools
+# from oauth2client.file import Storage
 from celery import current_task
 from macos import celery_app
 
