@@ -48,9 +48,7 @@ services:
     build:
       dockerfile: backend/Dockerfile
       context: .
-    # command: python manage.py celery
-    command: celery -A macos worker -l info
-
+    command: python manage.py celery
     volumes:
       - ./:/home/user/app/
     env_file: backend/.env
