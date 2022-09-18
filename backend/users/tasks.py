@@ -15,7 +15,7 @@ from macos import celery_app
 
 @celery_app.task
 def updateForms():
-    # print("scheduled_posts")
+    print("scheduled_posts")
     scheduled_posts = UserFormInfo.objects.filter(
         sent=False,
         target_date__lt = datetime.now()
@@ -26,7 +26,7 @@ def updateForms():
         formList = scheduled_posts
         if len(scheduled_posts) > 5 :
             formList = scheduled_posts[:5]
-        # print(f"available list {len(formList)}")
+        print(f"available list {len(formList)}")
         for form in formList:
             UserFormInfo.objects.filter(auto_increment_id=form.auto_increment_id).update(status='queued')
             googleSubmitForm.apply_async(kwargs={ "id":form.auto_increment_id}, countdown = random.randint(2, 15))
