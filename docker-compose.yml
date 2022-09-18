@@ -14,7 +14,7 @@ services:
       - dbdata:/var/lib/postgresql/data:delegated
 
   broker:
-    image: "rabbitmq:alpine"
+    image: "redis:alpine"
 
   result:
     image: "redis:alpine"
