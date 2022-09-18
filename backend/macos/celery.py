@@ -7,6 +7,7 @@ from celery import Celery
 from decouple import config
 
 from .celerybeat_schedule import CELERY_BEAT_SCHEDULE
+from celery.schedules import crontab
 
 settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
 if settings_module is None:
@@ -22,6 +23,6 @@ app = Celery("macos")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])
 app.conf.beat_schedule = {
-    "form-every-60-seconds": {"schedule": 60.0, "task": "users.tasks.updateForms"},
+    "form-every-60-seconds": {"schedule": crontab(minute="*/1"), "task": "users.tasks.updateForms"},
 }
 print("hell")
