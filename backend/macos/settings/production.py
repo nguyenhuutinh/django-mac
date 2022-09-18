@@ -13,7 +13,7 @@ from .base import *  # noqa
 # }
 
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = config("SECRET_KEY")
 
