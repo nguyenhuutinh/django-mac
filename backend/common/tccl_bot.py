@@ -207,7 +207,8 @@ def moderate(message):
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
-    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in f"{message.text}" == False):
+    print('https://t.me/tcclchat' in message.text == False)
+    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ('https://t.me/tcclchat' in message.text == False) :
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
