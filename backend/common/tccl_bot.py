@@ -253,16 +253,16 @@ def processCheckAndBan(message):
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
-    if "TCCL".lower() in f"{firstName} {lastName}".lower() :
+    if "TCCL".lower() in f"{firstName} {lastName}".lower():
         print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
         return True
-    if ".".lower() == f"{firstName}".lower() :
+    if ".".lower() == f"{firstName}".lower() and None == lastName:
         print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
         return True
-    if "..".lower() == f"{firstName}".lower() :
+    if "..".lower() == f"{firstName}".lower() and None == lastName:
         print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
         return True
-    if "...".lower() == f"{firstName}".lower() :
+    if "...".lower() == f"{firstName}".lower() and None == lastName:
         print(f"{bcolors.WARNING}case 8  {bcolors.ENDC}")
         return True
     if "tccl" in f"{username}":
