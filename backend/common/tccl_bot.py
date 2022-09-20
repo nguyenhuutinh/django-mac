@@ -183,8 +183,8 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-    print(TelegramUser.objects.filter(user_id=5748879225))
-    print(TelegramUser.objects.filter(user_id='5748879225'))
+    us = TelegramUser.objects.filter(user_id=5748879225).update(status='banned', ban_reason='photo tccl')
+    print(us.status)
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
