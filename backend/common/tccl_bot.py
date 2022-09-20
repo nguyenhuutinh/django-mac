@@ -302,6 +302,7 @@ def processCheckAndBan(message):
     return False
 
 def banUser(message):
+    print("start ban user")
     chatId = message.chat.id
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
@@ -311,11 +312,11 @@ def banUser(message):
     bot.ban_chat_member(chatId, userId)
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    print(f"banned ?: {isExist}")
     if isExist != True:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
+
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
-
-
     print(f"{bcolors.OKGREEN}banned {userId} {firstName} {bcolors.ENDC}")
 
 
