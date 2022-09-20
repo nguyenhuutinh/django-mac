@@ -183,9 +183,9 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-    # if message.chat.id != -1001724937734:
-    #     print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
-    #     return
+    if message.chat.id != -1001724937734:
+        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+        return
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
@@ -208,8 +208,7 @@ def moderate(message):
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
-    print("https://t.me/tcclchat" in message.text)
-    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) :
+    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
