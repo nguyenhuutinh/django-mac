@@ -344,7 +344,7 @@ def report(message):
 
 @bot.message_handler(commands=['ban_user'])
 def manualbanUser(message):
-    if message.chat.id != 1517328776:
+    if message.chat.id != -1001349899890:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
     print(f"manualbanUser {message}")
@@ -356,7 +356,7 @@ def manualbanUser(message):
 
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
-    if message.chat.id != 1517328776:
+    if message.chat.id != -1001349899890:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
     print(f"deleteMessage {message.text}")
@@ -368,7 +368,7 @@ def deleteMessage(message):
 
 @bot.message_handler(commands=['unban_user'])
 def unban_user(message):
-    if message.chat.id != 1517328776:
+    if message.chat.id != -1001349899890:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
     userId = message.text.replace("/unban_user ", "")
