@@ -15,7 +15,6 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
-from datetime import datetime, timedelta
 
 
 # from PIL import ImageChops, ImageStat,Image
@@ -236,6 +235,7 @@ def _deleteMessage(message):
 
 @shared_task
 def deleteMessageTask(chat_id, message_id):
+    print("deleteMessageTask")
     print(f"{bcolors.OKGREEN}deleted message: {chat_id} {message_id}{bcolors.ENDC}")
     bot.delete_message(chat_id,message_id=message_id)
 
@@ -357,7 +357,7 @@ def manualbanUser(message):
     bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
 
 @bot.message_handler(commands=['delete_message'])
-def deleteMessage(message):
+def manualDeleteMessage(message):
     if message.chat.id != -1001349899890:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
