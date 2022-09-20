@@ -14,6 +14,8 @@ import requests
 from os.path import exists
 from pathlib import Path
 from diffimg import diff
+from celery import shared_task
+from django.utils.timezone import now
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -228,9 +230,12 @@ def checkAndDeleteMessage(message):
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
-    bot.delete_message(message.chat.id,message_id=message.message_id)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, eta=now() + timedelta(seconds=3))
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
 
+@shared_task
+def deleteMessageTask(chat_id, message_id):
+    bot.delete_message(chat_id,message_id=message_id)
 
 def processCheckAndBan(message):
     userId = message.from_user.id
@@ -304,7 +309,8 @@ def banUser(message, error_text):
     lastName = message.from_user.last_name
     userId = message.from_user.id
 
-    bot.delete_message(chatId,message_id=message.id)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, eta=now() + timedelta(seconds=3))
+
     bot.ban_chat_member(chatId, userId)
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
@@ -338,6 +344,9 @@ def report(message):
 
 @bot.message_handler(commands=['ban_user'])
 def manualbanUser(message):
+    if message.chat.id != 1517328776:
+        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+        return
     print(f"manualbanUser {message}")
     userId = message.text.replace("/ban_user ", "")
     bot.ban_chat_member(-1001724937734, userId)
@@ -347,6 +356,9 @@ def manualbanUser(message):
 
 @bot.message_handler(commands=['delete_message'])
 def deleteMessage(message):
+    if message.chat.id != 1517328776:
+        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+        return
     print(f"deleteMessage {message.text}")
     message_id = message.text.replace("/delete_message ", "")
     bot.delete_message(-1001724937734, message_id)
@@ -356,6 +368,9 @@ def deleteMessage(message):
 
 @bot.message_handler(commands=['unban_user'])
 def unban_user(message):
+    if message.chat.id != 1517328776:
+        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+        return
     userId = message.text.replace("/unban_user ", "")
     bot.unban_chat_member(-1001724937734, userId)
     bot.send_message("-1001349899890", "Đã Mở UserId:  " + f" {userId}")
