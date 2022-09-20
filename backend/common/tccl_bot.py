@@ -183,21 +183,21 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-    us = TelegramUser.objects.filter(user_id=5748879225).update(status='banned', ban_reason='photo tccl')
-    print(us.status)
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
-    # print(message.text)
-    # print(os.environ['DJANGO_SETTINGS_MODULE']) # /Users/mkyong
+
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
+        print(f"checking user {message.from_user.id} exist : {isExist}")
         if isExist != True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
+            print(f"create user to db")
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
+            print(f"checking user status : {message.from_user.id} - {user.status}")
             if user.status == 'banned':
                 _deleteMessage(message)
 
@@ -207,6 +207,7 @@ def moderate(message):
     elif checkingUserProfilePhoto(message):
         banUser(message)
         TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
+
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
@@ -306,20 +307,17 @@ def banUser(message):
     lastName = message.from_user.last_name
     userId = message.from_user.id
 
-
+    bot.delete_message(chatId,message_id=message.id)
+    bot.ban_chat_member(chatId, userId)
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if isExist != True:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
 
-    bot.delete_message(chatId,message_id=message.id)
-    bot.ban_chat_member(chatId, userId)
-    print(f"{bcolors.BOLD}banned {userId} {firstName} {bcolors.ENDC}")
-    # print(f"{bcolors.FAIL}banned user : {str(userId)} {bcolors.ENDC}")
-# @bot.message_handler(commands=['list'])
-# def _list(message):
-#     print("_list")
+
+    print(f"{bcolors.OKGREEN}banned {userId} {firstName} {bcolors.ENDC}")
+
 
 
 @bot.message_handler(commands=['report'])
