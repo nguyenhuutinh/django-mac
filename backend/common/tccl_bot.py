@@ -362,7 +362,8 @@ def deleteMessage(message):
         return
     print(f"deleteMessage {message.text}")
     message_id = message.text.replace("/delete_message ", "")
-    bot.delete_message(-1001724937734, message_id)
+    # bot.delete_message(-1001724937734, message_id)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": -1001724937734,'message_id': message_id}, eta=now() + timedelta(seconds=3))
     print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
