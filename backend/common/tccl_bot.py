@@ -183,7 +183,8 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-
+    print(TelegramUser.objects.filter(user_id=5748879225))
+    print(TelegramUser.objects.filter(user_id='5748879225'))
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
@@ -195,8 +196,8 @@ def moderate(message):
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
         if isExist != True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
-        else :
-            TelegramUser.objects.get(user_id=message.from_user.id)
+        # else :
+        #     TelegramUser.objects.get(user_id=message.from_user.id)
 
     if processCheckAndBan(message):
         banUser(message)
