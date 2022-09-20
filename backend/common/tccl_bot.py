@@ -136,7 +136,7 @@ def checkingUserProfilePhoto(message):
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url, profile_score= result)
 
-            if result != None and result < 0.04:
+            if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -147,7 +147,7 @@ def checkingUserProfilePhoto(message):
 
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result != None and result < 0.04:
+            if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -192,7 +192,7 @@ def moderate(message):
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
         print(f"checking user {message.from_user.id} exist : {isExist}")
-        if isExist != True:
+        if isExist is not True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
             print(f"create user to db")
         else :
@@ -202,12 +202,9 @@ def moderate(message):
                 _deleteMessage(message)
 
     if processCheckAndBan(message):
-        banUser(message)
-        TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='message bi cam')
+        banUser(message, 'message bi cam')
     elif checkingUserProfilePhoto(message):
-        banUser(message)
-        TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
-
+        banUser(message, 'photo tccl')
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
@@ -301,7 +298,7 @@ def processCheckAndBan(message):
         return True
     return False
 
-def banUser(message):
+def banUser(message, error_text):
     print("start ban user")
     chatId = message.chat.id
     firstName = message.from_user.first_name
@@ -313,11 +310,12 @@ def banUser(message):
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     print(f"banned ?: {isExist}")
-    if isExist != True:
+    if not isExist:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
 
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     print(f"{bcolors.OKGREEN}banned {userId} {firstName} {bcolors.ENDC}")
+    TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
 
 
 
