@@ -6,7 +6,7 @@ from django.apps import apps
 from celery import Celery
 from decouple import config
 
-from .celerybeat_schedule import CELERY_BEAT_SCHEDULE
+# from .celerybeat_schedule import CELERY_BEAT_SCHEDULE
 from celery.schedules import crontab
 
 settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
