@@ -314,8 +314,9 @@ def banUser(message, error_text):
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
 
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    print(TelegramUser.objects.filter(user_id=userId))
+    TelegramUser.objects.filter(user_id=userId).update(status='banned', ban_reason=error_text)
     print(f"{bcolors.OKGREEN}banned {userId} {firstName} {bcolors.ENDC}")
-    TelegramUser.objects.filter(user_id=message.from_user.id).update(status='banned', ban_reason='photo tccl')
 
 
 
