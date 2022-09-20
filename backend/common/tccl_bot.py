@@ -15,7 +15,8 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
-from django.utils.timezone import now
+from datetime import datetime, timedelta
+
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -230,7 +231,7 @@ def checkAndDeleteMessage(message):
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
-    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, eta=now() + timedelta(seconds=3))
+    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, eta=datetime.now() + timedelta(seconds=3))
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
 
 @shared_task
@@ -310,7 +311,7 @@ def banUser(message, error_text):
     lastName = message.from_user.last_name
     userId = message.from_user.id
 
-    deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, eta=now() + timedelta(seconds=3))
+    deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, eta=datetime.now() + timedelta(seconds=3))
 
     bot.ban_chat_member(chatId, userId)
 
@@ -363,7 +364,7 @@ def deleteMessage(message):
     print(f"deleteMessage {message.text}")
     message_id = message.text.replace("/delete_message ", "")
     # bot.delete_message(-1001724937734, message_id)
-    deleteMessageTask.apply_async(kwargs={ "chat_id": -1001724937734,'message_id': message_id}, eta=now() + timedelta(seconds=3))
+    deleteMessageTask.apply_async(kwargs={ "chat_id": -1001724937734,'message_id': message_id}, eta=datetime.now() + timedelta(seconds=3))
     print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
