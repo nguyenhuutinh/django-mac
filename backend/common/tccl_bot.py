@@ -254,6 +254,7 @@ def processCheckAndBan(message):
     if "whaless" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
+
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
@@ -302,6 +303,10 @@ def processCheckAndBan(message):
     if "admln" in f"{firstName} {lastName}".lower():
         print(f"{bcolors.WARNING}case 18  {bcolors.ENDC}")
         return True
+    if "glcapital1" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 19  {bcolors.ENDC}")
+        return True
+        
     return False
 
 def banUser(message, error_text):
