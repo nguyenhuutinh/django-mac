@@ -1,4 +1,4 @@
-from .views import TCCLBotView, UsersApi
+# from .views import TCCLBotView, UsersApi
 from .views_google_docs import GoogleFormViewSet
 routes = [
     # {'regex': r'tccl-bot', 'viewset': TCCLBotView, 'basename': 'TCCLBotView'},
