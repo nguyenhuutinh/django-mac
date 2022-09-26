@@ -34,7 +34,7 @@ services:
       dockerfile: backend/Dockerfile
       context: .
     ports:
-      - "8000:8000"
+      - "8000:8001"
     volumes:
       - ./:/home/user/app/
     env_file: backend/.env
