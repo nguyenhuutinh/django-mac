@@ -5,11 +5,11 @@ import sys
 import telebot
 from decouple import config
 
-BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
-APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
+# BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
+# APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
 # APP_URL = "https://8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io/api/tccl-bot/webhook/"
 
-bot = telebot.TeleBot(BOT_TOKEN)
+# bot = telebot.TeleBot(BOT_TOKEN)
 
 # class IsAdmin(telebot.custom_filters.SimpleCustomFilter):
 #     # Class will check whether the user is admin or creator in group or not
@@ -25,8 +25,8 @@ bot = telebot.TeleBot(BOT_TOKEN)
 if __name__ == "__main__":
     settings_module = config("DJANGO_SETTINGS_MODULE", default=None)
     # bot.add_custom_filter(IsAdmin())
-    bot.remove_webhook()
-    bot.set_webhook(url=APP_URL)
+    # bot.remove_webhook()
+    # bot.set_webhook(url=APP_URL)
     if sys.argv[1] == "test":
         if settings_module:
             print(
