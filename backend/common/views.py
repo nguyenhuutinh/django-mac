@@ -56,7 +56,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 
-from common.tccl_bot import process_request
+# from common.tccl_bot import process_request
 # from common.ads_shorten_task import shorten
 
 
@@ -73,16 +73,16 @@ from common.tccl_bot import process_request
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
 
-class TCCLBotView(viewsets.ViewSet):
-    @action(
-        detail=False,
-        methods=['post'],
-        permission_classes=[AllowAny],
-        url_path='webhook',
-    )
-    @csrf_exempt
-    def check_bot(self, request):
-        return process_request(request)
+# class TCCLBotView(viewsets.ViewSet):
+#     @action(
+#         detail=False,
+#         methods=['post'],
+#         permission_classes=[AllowAny],
+#         url_path='webhook',
+#     )
+#     @csrf_exempt
+#     def check_bot(self, request):
+#         return process_request(request)
 
 
 class UsersApi(generics.GenericAPIView):
