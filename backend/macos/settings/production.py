@@ -20,7 +20,7 @@ SECRET_KEY = config("SECRET_KEY")
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["auto-forms.xyz", 'localhost', '0.0.0.0',]
 
 
 STATIC_ROOT = base_dir_join("staticfiles")
