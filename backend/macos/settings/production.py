@@ -20,7 +20,7 @@ SECRET_KEY = config("SECRET_KEY")
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
-ALLOWED_HOSTS = ["139.180.185.245", "tele-check.xyz", 'localhost', '0.0.0.0', '8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io']
+ALLOWED_HOSTS = ['*']
 
 
 STATIC_ROOT = base_dir_join("staticfiles")
