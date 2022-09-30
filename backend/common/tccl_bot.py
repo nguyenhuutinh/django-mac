@@ -222,6 +222,13 @@ def checkAndDeleteMessage(message):
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
+    if "lồn" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
+        return True
+    if "địt" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
+        return True
+
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
         print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
