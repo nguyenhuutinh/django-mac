@@ -1,3 +1,4 @@
+from soupsieve import iselect
 from common.models import Message, TelegramUser
 
 from datetime import datetime, timedelta
@@ -223,20 +224,23 @@ def checkAndDeleteMessage(message):
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
     if "lồn" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
+        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
         return True
     if "địt" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
+        print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
         return True
 
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
-        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
+        print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
         return True
 
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
-    bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
+    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    if not isExist:
+        bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
+        
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=3)
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
 
