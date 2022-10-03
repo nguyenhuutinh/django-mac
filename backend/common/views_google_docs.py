@@ -14,6 +14,7 @@ from django.utils.timezone import now
 from django.views import generic
 
 from celery.result import AsyncResult
+from users.serializer import UserSerializer
 from common.models import GoogleFormField
 from common.models import GoogleFormInfoSerializer
 from common.models import GoogleFormInfo
@@ -26,6 +27,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated
 from users.tasks import updateForms
 from werkzeug.utils import secure_filename
+from rest_framework.generics import RetrieveAPIView
 
 
 fake = Faker()
@@ -67,6 +69,17 @@ def randomTimes(stime, etime, n):
     return timeRange
 
 
+class CampaignListViewSet(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get(self, request):
+        uid = self.request.user.id
+        data = Campaign.objects.filter(owner__user_id = uid).select_related("owner").order_by('-created')
+
+        # print(data)
+        campaign = serializers.serialize('json', data)
+        return HttpResponse(campaign, content_type="application/json")
 class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
@@ -327,14 +340,7 @@ class GoogleFormViewSet(viewsets.ViewSet):
 
         url_path='campaign-list',
     )
-    @csrf_exempt
-    def campaignList(self, request):
-        data = Campaign.objects.all().order_by('-created')
 
-        # print(data)
-        campaign = serializers.serialize('json', data)
-        print(campaign)
-        return HttpResponse(campaign, content_type="application/json")
 
 
     @action(

@@ -91,8 +91,15 @@ class Campaign(models.Model):
     completed_forms = models.IntegerField(default= 0)
     google_form_id = models.IntegerField(default= -1)
     last_item_id = models.IntegerField(default= -1)
+    owner = models.ForeignKey(
+        "Owner", on_delete=models.CASCADE, null=True)
 
-
+class Owner(models.Model):
+    id = models.AutoField(primary_key=True)
+    campaign_id = models.IntegerField(default= -1)
+    user_id = models.IntegerField(default= -1)
+    role = models.CharField(max_length=50, default="admin")
+    status = models.CharField(max_length=50, default="active")
 
 class CampaignSerializer(serializers.ModelSerializer):
     class Meta:

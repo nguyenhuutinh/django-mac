@@ -4,6 +4,7 @@ from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
 # import django_js_reverse.views
 from rest_framework.routers import DefaultRouter
+from users.views import UserApi
 from users.views import RegisterApi
 
 from common.routes import routes as common_routes
@@ -25,5 +26,6 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterApi.as_view()),
 
+    path('api/user/me', UserApi.as_view()),
 
 ]

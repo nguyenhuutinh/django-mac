@@ -5,6 +5,6 @@ routes = [
     # {'regex': r'tccl-admin', 'viewset': UsersApi, 'basename': 'UsersApi'},
 
     #{'regex': r'fshare', 'viewset': FshareViewSet, 'basename': 'Fshare'},
-    {'regex': r'google-form', 'viewset': GoogleFormViewSet, 'basename': 'GoogleForm'},
+    # {'regex': r'google-form', 'viewset': GoogleFormViewSet, 'basename': 'GoogleForm'},
     # {'regex': r'ads', 'viewset': AdsViewSet, 'basename': 'Fshare'},
 ]

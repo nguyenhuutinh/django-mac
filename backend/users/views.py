@@ -6,44 +6,21 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions, mixins
 from users.serializer import RegisterSerializer, UserSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from rest_framework.generics import RetrieveAPIView
 
 from users.models import User  # noqa
 
 
 # Create your views here.
-class AuthView(APIView):
-    """
-    """
+class UserApi(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
-    def get(self, request, format=None):
-        return Response({'detail': "GET Response"})
+    def get_object(self):
+        return self.request.user
 
-    def post(self, request, format=None):
-        try:
-            data = request.DATA
-        except ParseError as error:
-            return Response(
-                'Invalid JSON - {0}'.format(error.detail),
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        if "user" not in data or "password" not in data:
-            return Response(
-                'Wrong credentials',
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        user = User.objects.first()
-        if not user:
-            return Response(
-                'No default user, please create one',
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        token = Token.objects.get_or_create(user=user)
-
-        return Response({'detail': 'POST answer', 'token': token[0].key})
 
 
 class RegisterApi(generics.GenericAPIView):
