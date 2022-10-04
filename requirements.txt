@@ -36,7 +36,7 @@ celery[redis]==5.2.7
     #   celery-redbeat
 celery-redbeat==2.0.0
     # via -r requirements.in
-certifi==2022.9.14
+certifi==2022.9.24
     # via
     #   requests
     #   sentry-sdk
@@ -73,6 +73,7 @@ django==3.2.15
     #   -r requirements.in
     #   dj-database-url
     #   django-cors-headers
+    #   django-filter
     #   django-import-export
     #   django-js-reverse
     #   django-log-request-id
@@ -83,6 +84,8 @@ django==3.2.15
 django-cors-headers==3.13.0
     # via -r requirements.in
 django-debreach==2.1.0
+    # via -r requirements.in
+django-filter==22.1
     # via -r requirements.in
 django-import-export==2.9.0
     # via -r requirements.in
@@ -96,23 +99,23 @@ django-redis==5.2.0
     # via -r requirements.in
 django-webpack-loader==1.6.0
     # via -r requirements.in
-djangorestframework==3.13.1
+djangorestframework==3.14.0
     # via
     #   -r requirements.in
     #   djangorestframework-simplejwt
-djangorestframework-simplejwt==5.2.0
+djangorestframework-simplejwt==5.2.1
     # via -r requirements.in
 et-xmlfile==1.1.0
     # via openpyxl
-executing==1.0.0
+executing==1.1.0
     # via stack-data
-faker==14.2.0
+faker==15.0.0
     # via -r requirements.in
 google-api-core==2.10.1
     # via google-api-python-client
-google-api-python-client==2.61.0
+google-api-python-client==2.63.0
     # via -r requirements.in
-google-auth==2.11.0
+google-auth==2.12.0
     # via
     #   google-api-core
     #   google-api-python-client
@@ -154,7 +157,7 @@ openpyxl==3.0.10
     # via tablib
 packaging==21.3
     # via redis
-pandas==1.4.4
+pandas==1.5.0
     # via -r requirements.in
 parso==0.8.3
     # via jedi
@@ -168,7 +171,7 @@ prompt-toolkit==3.0.31
     # via
     #   click-repl
     #   ipython
-protobuf==4.21.6
+protobuf==4.21.7
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -190,7 +193,7 @@ pycparser==2.21
     # via cffi
 pygments==2.13.0
     # via ipython
-pyjwt==2.4.0
+pyjwt==2.5.0
     # via djangorestframework-simplejwt
 pyparsing==3.0.9
     # via packaging
@@ -203,7 +206,7 @@ python-dateutil==2.8.2
     #   pandas
 python-decouple==3.6
     # via -r requirements.in
-pytz==2022.2.1
+pytz==2022.4
     # via
     #   -r requirements.in
     #   apscheduler
@@ -226,7 +229,7 @@ requests==2.28.1
     #   pytelegrambotapi
 rsa==4.9
     # via google-auth
-sentry-sdk==1.9.8
+sentry-sdk==1.9.10
     # via -r requirements.in
 six==1.16.0
     # via
@@ -238,13 +241,13 @@ six==1.16.0
     #   python-dateutil
 soupsieve==2.3.2.post1
     # via beautifulsoup4
-sqlparse==0.4.2
+sqlparse==0.4.3
     # via django
-stack-data==0.5.0
+stack-data==0.5.1
     # via ipython
 tablib[html,ods,xls,xlsx,yaml]==3.2.1
     # via django-import-export
-tenacity==8.0.1
+tenacity==8.1.0
     # via celery-redbeat
 traitlets==5.4.0
     # via
@@ -252,7 +255,7 @@ traitlets==5.4.0
     #   matplotlib-inline
 typish==1.9.3
     # via jsons
-tzdata==2022.2
+tzdata==2022.4
     # via pytz-deprecation-shim
 tzlocal==4.2
     # via apscheduler

@@ -37,3 +37,4 @@ pyTelegramBotAPI
 djangorestframework-simplejwt
 #Pillow
 diffimg
+django-filter

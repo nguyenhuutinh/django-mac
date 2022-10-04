@@ -96,7 +96,6 @@ class Campaign(models.Model):
 
 class Owner(models.Model):
     id = models.AutoField(primary_key=True)
-    campaign_id = models.IntegerField(default= -1)
     user_id = models.IntegerField(default= -1)
     role = models.CharField(max_length=50, default="admin")
     status = models.CharField(max_length=50, default="active")

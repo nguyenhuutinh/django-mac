@@ -12,8 +12,11 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.views import generic
+from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 from celery.result import AsyncResult
+from common.models import Owner
 from users.serializer import UserSerializer
 from common.models import GoogleFormField
 from common.models import GoogleFormInfoSerializer
@@ -28,6 +31,9 @@ from rest_framework.permissions import IsAuthenticated
 from users.tasks import updateForms
 from werkzeug.utils import secure_filename
 from rest_framework.generics import RetrieveAPIView
+from rest_framework import generics
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 
 fake = Faker()
@@ -69,71 +75,174 @@ def randomTimes(stime, etime, n):
     return timeRange
 
 
-class CampaignListViewSet(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
 
-    def get(self, request):
+class CampaignListViewSet(viewsets.ModelViewSet):
+    queryset = Campaign.objects.filter(owner__user_id = 4).select_related("owner")
+
+    serializer_class = CampaignSerializer
+
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter, )
+    ordering_fields = '__all__'
+    ordering = ('created')
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[IsAuthenticated,],
+
+        url_path='campaign-list',
+    )
+    @csrf_exempt
+    def lst(self, request):
+
+
         uid = self.request.user.id
-        data = Campaign.objects.filter(owner__user_id = uid).select_related("owner").order_by('-created')
 
+
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        # print(serializer.data)
+        return Response(serializer.data)
+        # return JsonResponse({"success": True, "campaign_id" : 1 }, status=200)
+
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[IsAuthenticated,],
+
+        url_path='add-campaign',
+    )
+    @csrf_exempt
+    def post(self, request):
+        uid = self.request.user.id
+        default_date = datetime.combine(datetime.now(),
+                                time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+
+        # try:
+        name = request.data.get('name')
+        if name == None:
+            return JsonResponse({"error_message": "name parameter is required" }, status=400)
+        # print(name)
+        startDate = request.data.get("start_date")
+        if startDate == None:
+            return JsonResponse({"error_message": "startDate parameter is required" }, status=400)
+        # print(startDate)
+        convertedSD = parser.parse(startDate, default =default_date)
+        if convertedSD == None:
+            return JsonResponse({"error_message": "convertedSD parameter is required" }, status=400)
+
+        # print(convertedSD)
+        endDate = request.data.get("end_date")
+        if endDate == None:
+            return JsonResponse({"error_message": "endDate parameter is required" }, status=400)
+        # print(endDate)
+        convertedED = parser.parse(endDate, default =default_date)
+        if convertedED == None:
+            return JsonResponse({"error_message": "convertedED parameter is required" }, status=400)
+
+        startTime = request.data.get("start_time")
+        if startTime == None:
+            return JsonResponse({"error_message": "startTime parameter is required" }, status=400)
+
+        convertedST = parser.parse(startTime, default =default_date)
+        if convertedST == None:
+            return JsonResponse({"error_message": "convertedST parameter is required" }, status=400)
+        # print(startTime)
+        endTime = request.data.get("end_time")
+        if endTime == None:
+            return JsonResponse({"error_message": "endTime parameter is required" }, status=400)
+        # print(endTime)
+        convertedET = parser.parse(endTime, default =default_date)
+        if convertedET == None:
+            return JsonResponse({"error_message": "convertedET parameter is required" }, status=400)
+
+
+        owner = Owner.objects.create(user_id=uid, role= 'owner', status="active")
+
+        record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED, start_time= convertedST, end_time= convertedET, status = "new_init", owner = owner)
+
+        data = Campaign.objects.get(id=record.id)
         # print(data)
-        campaign = serializers.serialize('json', data)
-        return HttpResponse(campaign, content_type="application/json")
+        isValid = add_schedule(data, convertedST, convertedET , request)
+        # print(isValid)
+        if(isValid != True):
+            return isValid
+
+
+        isValid = add_google_form(data, request)
+        # print(isValid)
+        if(isValid != True):
+            return isValid
+
+        campaign = CampaignSerializer(instance=data).data
+
+        # print(campaign)
+        json_object = json.dumps(campaign)
+
+
+
+        # print(converted)
+        return HttpResponse(json_object, content_type="application/json")
+
 class GoogleFormViewSet(viewsets.ViewSet):
     @action(
         detail=False,
         methods=['put'],
         # authentication_classes = [SessionAuthentication, BasicAuthentication],
         # permission_classes=[IsAuthenticated],
-        permission_classes=[AllowAny],
+        permission_classes=[IsAuthenticated,],
 
         url_path='regenerate-date',
     )
     @csrf_exempt
     def regenerateDate(self, request):
         print()
-        default_date = datetime.combine(datetime.now(),
-                                time(0, tzinfo=tz.gettz("Asia/Jakarta")))
+        # default_date = datetime.combine(datetime.now(),
+        #                         time(0, tzinfo=tz.gettz("Asia/Jakarta")))
 
-        campaignId = request.data['campaign_id']
+        # campaignId = request.data['campaign_id']
 
-        targetDate = request.data.get("target_date")
+        # targetDate = request.data.get("target_date")
 
-        # print(startDate)
-        convertedDate = parser.parse(targetDate, default =default_date)
+        # # print(startDate)
+        # convertedDate = parser.parse(targetDate, default =default_date)
 
-        data = UserFormInfo.objects.filter(~Q(status = 'queued'), sent=False, campaign_id= campaignId, target_date__date = convertedDate ).order_by('auto_increment_id')
-        # print(data)
-        if len(data) == 0:
-            return JsonResponse({"error": f"{campaignId} không có dữ liệu form" }, status=400, json_dumps_params={'ensure_ascii':False})
-
-
-
-
-        startTime = request.data.get("start_time")
-        convertedST = parser.parse(startTime, default =default_date)
-        # print(startTime)
-        endTime = request.data.get("end_time")
-        # print(endTime)
-        convertedET = parser.parse(endTime, default =default_date)
+        # data = UserFormInfo.objects.filter(~Q(status = 'queued'), sent=False, campaign_id= campaignId, target_date__date = convertedDate ).order_by('auto_increment_id')
+        # # print(data)
+        # if len(data) == 0:
+        #     return JsonResponse({"error": f"{campaignId} không có dữ liệu form" }, status=400, json_dumps_params={'ensure_ascii':False})
 
 
 
-        startDate = convertedDate.replace(hour=convertedST.hour,minute = convertedST.minute, second = convertedST.second)
-        endDate = convertedDate.replace(hour=convertedET.hour,minute = convertedET.minute, second = convertedET.second)
 
-        timeRange = randomTimes( startDate, endDate, len(data))
+        # startTime = request.data.get("start_time")
+        # convertedST = parser.parse(startTime, default =default_date)
+        # # print(startTime)
+        # endTime = request.data.get("end_time")
+        # # print(endTime)
+        # convertedET = parser.parse(endTime, default =default_date)
 
-        for form in data:
 
-            targetDate = timeRange.pop(0)
 
-            form.target_date = targetDate.strftime('%Y-%m-%d %H:%M:%S')
+        # startDate = convertedDate.replace(hour=convertedST.hour,minute = convertedST.minute, second = convertedST.second)
+        # endDate = convertedDate.replace(hour=convertedET.hour,minute = convertedET.minute, second = convertedET.second)
 
-            form.save()
+        # timeRange = randomTimes( startDate, endDate, len(data))
 
-        return JsonResponse({"success": True, "campaign_id" : campaignId }, status=200)
+        # for form in data:
+
+        #     targetDate = timeRange.pop(0)
+
+        #     form.target_date = targetDate.strftime('%Y-%m-%d %H:%M:%S')
+
+        #     form.save()
+
+        return JsonResponse({"success": True, "campaign_id" : 1 }, status=200)
 
     @action(
         detail=False,
@@ -432,7 +541,6 @@ class GoogleFormViewSet(viewsets.ViewSet):
         convertedET = parser.parse(endTime, default =default_date)
 
 
-
         record = Campaign.objects.create(name=name, start_date= convertedSD, end_date=convertedED, start_time= convertedST, end_time= convertedET, status = "new_init")
 
         data = Campaign.objects.get(id=record.id)
@@ -483,6 +591,12 @@ def add_schedule(campaign, convertedST, convertedET, request):
 
 def add_google_form(campaign, request):
     url = request.data['google_form_link']
+    val = URLValidator()
+    try:
+        val(url)
+    except:
+        return JsonResponse({"error_message": "link is not valid" }, status=400)
+
     # print(url)
     return getFormResponse(campaign, url)
 
