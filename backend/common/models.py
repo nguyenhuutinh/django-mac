@@ -139,3 +139,7 @@ class UserFormInfo(models.Model):
     modified = AutoLastModifiedField(_("modified"), db_index=True)
     campaign = models.ForeignKey(
         "Campaign", on_delete=models.CASCADE)
+class UserFormInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFormInfo
+        fields = '__all__'
