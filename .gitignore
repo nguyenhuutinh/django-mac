@@ -31,8 +31,8 @@ npm-debug.log
 *.map
 
 # General
-/macos-venv/
-/macos-env/
+/gform-venv/
+/gform-env/
 /venv/
 /.venv/
 /env/
@@ -46,3 +46,4 @@ spritesmith.scss
 
 # templated email
 tmp_email/
+backend/.env
