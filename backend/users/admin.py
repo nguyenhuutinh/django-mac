@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
+from backend.gform.models import UserFormInfo
+
+from gform.models import GoogleFormField, GoogleFormInfo, Campaign, Schedule,Owner
 # from common.models import TokenInfo
 # the module name is app_name.models
 # from common.models import DownloadInfo
@@ -29,3 +32,12 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
+# admin.site.register(GoogleFormField, CustomUserAdmin)
+# admin.site.register(GoogleFormInfo, CustomUserAdmin)
+# admin.site.register(Campaign, CustomUserAdmin)
+# admin.site.register(UserFormInfo, CustomUserAdmin)
+# admin.site.register(Schedule, CustomUserAdmin)
+# admin.site.register(Owner, CustomUserAdmin)
+
+
+

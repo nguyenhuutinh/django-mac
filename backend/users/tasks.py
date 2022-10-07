@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 import random
 from django.core import management
-from common.models import Campaign
-from common.google_form_submit import googleSubmitForm
-from common.models import UserFormInfo
+from gform.models import Campaign
+from gform.google_form_submit import googleSubmitForm
+from gform.models import UserFormInfo
 
 from gform import celery_app
 

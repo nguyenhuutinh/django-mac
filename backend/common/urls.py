@@ -1,8 +1,8 @@
-from django.urls import include, path
+# from django.urls import include, path
 
-from common.views_google_docs import CampaignListViewSet
+# from common.views_google_docs import CampaignListViewSet
 
-from . import views
+# from ..gform import views
 
 app_name = 'common'
 urlpatterns = [

@@ -13,12 +13,12 @@ from django.shortcuts import render
 from django.utils.timezone import now
 from django.views import generic
 from celery.result import AsyncResult
-# from common.models import GoogleFormField
-# from common.models import GoogleFormInfoSerializer
-# from common.models import GoogleFormInfo
-# from common.google_form import getFormResponse
-# from common.google_form_submit import googleSubmitForm
-# from common.models import CampaignSerializer, Schedule
+# from .models import GoogleFormField
+# from .models import GoogleFormInfoSerializer
+# from .models import GoogleFormInfo
+# from .google_form import getFormResponse
+# from .google_form_submit import googleSubmitForm
+# from .models import CampaignSerializer, Schedule
 from dateutil import parser, tz
 from faker import Faker
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
@@ -26,9 +26,9 @@ from rest_framework.permissions import IsAuthenticated
 # from users.tasks import updateForms
 from werkzeug.utils import secure_filename
 from rest_framework import generics, permissions, mixins
-from common.models import Message
+from .models import Message
 
-from common.models import TelegramUser
+from .models import TelegramUser
 
 
 fake = Faker()
@@ -46,27 +46,27 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from celery.result import AsyncResult
-# from common.models import Campaign, UserFormInfo
-# from common.api_captcha import RestCaptchaSerializer
+# from .models import Campaign, UserFormInfo
+# from .api_captcha import RestCaptchaSerializer
 from gform.settings import base
-# from common.file_info_task import checkfileInfoTask
+# from .file_info_task import checkfileInfoTask
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 
-# from common.tccl_bot import process_request
-# from common.ads_shorten_task import shorten
+# from .tccl_bot import process_request
+# from .ads_shorten_task import shorten
 
 
 
 
-# from common.download_direct_task import downloadDirectFshare
-# from common.download_zip_task import downloadZipFShare
+# from .download_direct_task import downloadDirectFshare
+# from .download_zip_task import downloadZipFShare
 
 
-# from common.file_info_task import checkaccountInfoTask
+# from .file_info_task import checkaccountInfoTask
 
 # cache_template = base.REST_CAPTCHA["CAPTCHA_CACHE_KEY"]
 

@@ -3,12 +3,20 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
-from common.models import IndexedTimeStampedModel
 
 from .managers import UserManager
 from rest_framework import serializers
 
+
+
+class IndexedTimeStampedModel(models.Model):
+    created = AutoCreatedField(_("created"), db_index=True)
+    modified = AutoLastModifiedField(_("modified"), db_index=True)
+
+    class Meta:
+        abstract = True
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
     email = models.EmailField(max_length=255, unique=True)

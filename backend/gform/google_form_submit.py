@@ -19,11 +19,11 @@ import httplib2
 import requests
 import celery
 from celery import shared_task
-from common.models import GoogleFormInfo
-from common.models import GoogleFormField
-from common.models import Campaign
-# from common.fshare import FS
-from common.models import UserFormInfo
+from .models import GoogleFormInfo
+from .models import GoogleFormField
+from .models import Campaign
+# from .fshare import FS
+from .models import UserFormInfo
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 # from oauth2client import client, file, tools

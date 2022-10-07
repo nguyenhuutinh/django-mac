@@ -9,11 +9,11 @@ from rest_framework.routers import DefaultRouter
 from users.views import UserApi
 from users.views import RegisterApi
 
-from common.routes import routes as common_routes
+from .routes import routes as gform_routes
 
 router = DefaultRouter()
 
-routes = common_routes
+routes = gform_routes
 for route in routes:
     router.register(route['regex'], route['viewset'], basename=route['basename'])
 

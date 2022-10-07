@@ -16,15 +16,15 @@ from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 from celery.result import AsyncResult
-from common.models import UserFormInfoSerializer
-from common.models import Owner
+from gform.models import UserFormInfoSerializer
+from gform.models import Owner
 from users.serializer import UserSerializer
-from common.models import GoogleFormField
-from common.models import GoogleFormInfoSerializer
-from common.models import GoogleFormInfo
-from common.google_form import getFormResponse
-from common.google_form_submit import googleSubmitForm
-from common.models import CampaignSerializer, Schedule
+from gform.models import GoogleFormField
+from gform.models import GoogleFormInfoSerializer
+from gform.models import GoogleFormInfo
+from gform.google_form import getFormResponse
+from gform.google_form_submit import googleSubmitForm
+from gform.models import CampaignSerializer, Schedule
 from dateutil import parser, tz
 from faker import Faker
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
@@ -52,10 +52,10 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from celery.result import AsyncResult
-from common.models import Campaign, UserFormInfo
-# from common.api_captcha import RestCaptchaSerializer
+from gform.models import Campaign, UserFormInfo
+# from gform.api_captcha import RestCaptchaSerializer
 from gform.settings import base
-# from common.file_info_task import checkfileInfoTask
+# from gform.file_info_task import checkfileInfoTask
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
