@@ -1,8 +1,8 @@
 {
-  "name": "macos-frontend",
+  "name": "gform-frontend",
   "version": "0.0.1",
   "private": true,
-  "description": "macos frontend.",
+  "description": "gform frontend.",
   "main": "index.js",
   "prettier": "eslint-config-vinta/prettier",
   "engines": {

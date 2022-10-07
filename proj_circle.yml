@@ -2,7 +2,7 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/macos
+    working_directory: ~/gform
     docker:
       - image: circleci/python:3.7-stretch-node-browsers # remeber to update those!
     steps:
@@ -68,12 +68,12 @@ jobs:
       - run:
           command: (cd backend; python manage.py makemigrations --check --dry-run --ignore authtools)
           environment:
-            DJANGO_SETTINGS_MODULE: 'macos.settings.local_base'
+            DJANGO_SETTINGS_MODULE: 'gform.settings.local_base'
             DATABASE_URL: 'sqlite:///'
       - run:
           command: (cd backend; python manage.py check --deploy)
           environment:
-            DJANGO_SETTINGS_MODULE: 'macos.settings.production'
+            DJANGO_SETTINGS_MODULE: 'gform.settings.production'
             SECRET_KEY: "$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)')"
             DATABASE_URL: 'sqlite:///'
             ALLOWED_HOSTS: '.example.org'

@@ -101,7 +101,7 @@ After completing ALL of the above, remove this `Project bootstrap` section from 
 - Open a new command line window and go to the project's directory
 - Create a new virtualenv with either [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) or only virtualenv: `mkvirtualenv macos` or `python -m venv macos-venv`
   > If you're using Python's virtualenv (the latter option), make sure to create the environment with the suggested name, otherwise it will be added to version control.
-- Make sure the virtualenv is activated `workon macos` or `source macos-venv/bin/activate`
+- Make sure the virtualenv is activated `workon macos` or `source gform-venv/bin/activate`
 - Run `make compile_install_requirements` to install the requirements
   > Please make sure you have already setup PostgreSQL on your environment before installing the requirements
 

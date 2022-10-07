@@ -1,5 +1,5 @@
 {
-  "name": "macos",
+  "name": "gform",
   "description": "{{project_name|title}} Heroku app.",
   "env": {
     "ALLOWED_HOSTS": {
@@ -19,7 +19,7 @@
     },
     "DJANGO_SETTINGS_MODULE": {
       "description": "Django settings Python import path",
-      "value": "macos.settings.production"
+      "value": "gform.settings.production"
     },
     "SECRET_KEY": {
       "description": "Django SECRET_KEY setting",

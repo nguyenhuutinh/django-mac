@@ -34,7 +34,7 @@ compile_install_requirements:
 
 # Commands for Docker version
 docker_setup:
-	docker volume create macos_dbdata
+	docker volume create gform_dbdata
 	docker-compose build --no-cache backend
 	#docker-compose run frontend npm install
 

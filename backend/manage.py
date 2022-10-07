@@ -31,9 +31,9 @@ if __name__ == "__main__":
         if settings_module:
             print(
                 "Ignoring config('DJANGO_SETTINGS_MODULE') because it's test. "
-                "Using 'macos.settings.test'"
+                "Using 'gform.settings.test'"
             )
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "macos.settings.test")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gform.settings.test")
     else:
         if settings_module is None:
             print(

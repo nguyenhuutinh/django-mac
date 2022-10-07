@@ -26,4 +26,4 @@ ADD backend/ /home/user/app/backend
 # RUN mkdir /home/user/app/data
 # RUN chown user:user /home/user/app/data
 USER user
-CMD gunicorn macos.wsgi --log-file - -b 0.0.0.0:8000 --reload
+CMD gunicorn gform.wsgi --log-file - -b 0.0.0.0:8000 --reload

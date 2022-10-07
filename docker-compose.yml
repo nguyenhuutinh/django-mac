@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_USER=macos
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=macos
+      - POSTGRES_DB=googleforms
 
     ports:
       - "5432:5432"
@@ -49,7 +49,7 @@ services:
       dockerfile: backend/Dockerfile
       context: .
     # command: python manage.py celery
-    command: celery -A macos worker -B -l info
+    command: celery -A gform worker -B -l info
 
     volumes:
       - ./:/home/user/app/
@@ -68,4 +68,4 @@ services:
 volumes:
   dbdata:
     external:
-      name: macos_dbdata
+      name: gform_dbdata

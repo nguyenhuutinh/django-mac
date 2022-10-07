@@ -5,7 +5,7 @@ from common.models import Campaign
 from common.google_form_submit import googleSubmitForm
 from common.models import UserFormInfo
 
-from macos import celery_app
+from gform import celery_app
 
 
 # @celery_app.task
