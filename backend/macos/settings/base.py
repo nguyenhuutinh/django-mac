@@ -99,7 +99,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     # 'rest_captcha',
     # "django.contrib.admin",
-'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -130,6 +131,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 
 ROOT_URLCONF = "macos.urls"
@@ -233,8 +235,8 @@ SESSION_COOKIE_SAMESITE = None
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ALGORITHM': 'HS256',
 
 }
