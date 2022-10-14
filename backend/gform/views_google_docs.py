@@ -140,6 +140,38 @@ class CampaignListViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         # print(serializer.data)
         return Response(serializer.data)
+
+
+    @action(
+            detail=False,
+            methods=['get'],
+            permission_classes=[IsAuthenticated,],
+            serializer_class = UserFormInfoSerializer,
+
+            url_path='stats-summary',
+        )
+    @csrf_exempt
+    def stats_sum(self, request):
+
+        is_admin = self.request.user.is_superuser
+        uid = self.request.user.id
+        if is_admin == False:
+            return JsonResponse({"error_message": "unauthorized" }, status=401)
+
+        queryset = Campaign.objects.filter(owner__user_id = uid).select_related("owner")
+        finished_list = list(filter(lambda p: p.status == "finished", queryset))
+        running_list = list(filter(lambda p: p.status == "running", queryset))
+        print(finished_list)
+        size = len(queryset)
+        finished_size = len(finished_list)
+        running_list_size = len(running_list)
+
+
+        # print(serializer.data)
+        return JsonResponse({"data": {"finished_cp": finished_size,  "total_cp": size, "running_cp" : running_list_size}}, status=200)
+
+
+
     @action(
         detail=False,
         methods=['post'],
