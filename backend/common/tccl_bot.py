@@ -37,6 +37,7 @@ logger = telebot.logger
 
 logger.setLevel(logging.ERROR)
 
+ban_reason = ""
 
 def process_request(request):
     # print(request.data)
@@ -240,7 +241,7 @@ def _deleteMessage(message):
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if not isExist:
         bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
-        
+
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=3)
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
 
