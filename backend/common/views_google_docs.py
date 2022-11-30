@@ -45,7 +45,7 @@ from apscheduler.triggers.cron import CronTrigger
 from celery.result import AsyncResult
 from common.models import Campaign, UserFormInfo
 # from common.api_captcha import RestCaptchaSerializer
-from macos.settings import base
+from telegrambot.settings import base
 # from common.file_info_task import checkfileInfoTask
 from rest_framework import status, viewsets
 from rest_framework.decorators import action

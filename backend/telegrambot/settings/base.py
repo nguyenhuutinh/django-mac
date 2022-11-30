@@ -133,7 +133,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "macos.urls"
+ROOT_URLCONF = "telegrambot.urls"
 
 TEMPLATES = [
     {
@@ -161,7 +161,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "macos.wsgi.application"
+WSGI_APPLICATION = "telegrambot.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
@@ -212,7 +212,7 @@ CELERY_TIMEZONE = TIME_ZONE
 
 
 # Celery
-CELERY_IMPORTS = ("macos")
+CELERY_IMPORTS = ("telegrambot")
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_SEND_TASK_ERROR_EMAILS = True
