@@ -166,9 +166,9 @@ def checkingUserProfilePhoto(message):
 #     return diff_ratio
 
 def moderate(message):
-    if message.chat.id != -1001724937734:
-        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
-        return
+    # if message.chat.id != -1001724937734:
+    #     print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+    #     return
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
