@@ -255,6 +255,9 @@ def processCheckAndBan(message):
     if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
+    if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "nhắn" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
