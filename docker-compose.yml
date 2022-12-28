@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_USER=macos
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=macos2
+      - POSTGRES_DB=macos
 
     ports:
       - "5432:5432"
