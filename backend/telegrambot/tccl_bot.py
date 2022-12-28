@@ -1,5 +1,5 @@
 from soupsieve import iselect
-from common.models import Message, TelegramUser
+from telegrambot.models import Message, TelegramUser
 
 from datetime import datetime, timedelta
 import os
@@ -49,27 +49,6 @@ def process_request(request):
     bot.process_new_updates([update])
     return JsonResponse({"result": "ok" }, status=200)
 
-
-
-# @bot.message_handler(commands=['start', 'help'])
-# def _start(message):
-    # print(message)
-    # user_name = message.from_user.username
-    # start_message = f'Hello, {user_name}! You can add your places with /add command.\n' \
-    #                 f'Type /list to show 10 last places you added' \
-    #                 f'You can delete all your places with /reset command.' \
-    #                 f'Try typing /add <wanted address> to add your first place'
-#     bot.reply_to(message, start_message)
-
-
-# When user types /add we send him to state 2 - ADD_ADDRESS and ask him to write address
-# @bot.message_handler(commands=['add'])
-# def _add_start(message):
-#     print( "add_start")
-    # clear address global variable
-#     user_states.ADDRESS = ''
-#     bot.send_message(message.chat.id, "Write address that you want to save")
-#     user_states.update_state(message, user_states.ADD_ADDRESS)
 
 @bot.chat_member_handler()
 def chat_m(message: types.ChatMemberUpdated):
@@ -270,6 +249,12 @@ def processCheckAndBan(message):
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
+    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
+        return True
+    if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
@@ -291,8 +276,14 @@ def processCheckAndBan(message):
     if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
         return True
+    if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
+        return True
     if "Bảo Đỗ".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 11  {bcolors.ENDC}")
+        return True
+    if "Bảo".lower() in f"{firstName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
+        print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
         return True
     if "Trung Kim Son".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 12  {bcolors.ENDC}")

@@ -6,16 +6,16 @@ from rest_framework_simplejwt import views as jwt_views
 from rest_framework.routers import DefaultRouter
 from users.views import RegisterApi
 
-from common.routes import routes as common_routes
+from telegrambot.routes import routes as bot_routes
 
 router = DefaultRouter()
 
-routes = common_routes
+routes = bot_routes
 for route in routes:
     router.register(route['regex'], route['viewset'], basename=route['basename'])
 
 urlpatterns = [
-    path("", include("common.urls"), name="common"),
+    # path("", include("common.urls"), name="common"),
 
     # path("admin/", admin.site.urls, name="admin"),
     # path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),

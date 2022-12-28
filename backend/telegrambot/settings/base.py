@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     "common",
     "users",
     'corsheaders',
+    'telegrambot'
 
 ]
 
@@ -191,7 +192,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-STATICFILES_DIRS = (base_dir_join("../frontend"),)
+# STATICFILES_DIRS = (base_dir_join("../frontend"),)
 
 # Webpack
 WEBPACK_LOADER = {
