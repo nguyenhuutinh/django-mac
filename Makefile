@@ -61,4 +61,4 @@ docker_makemigrations:
 	docker-compose run --rm backend python manage.py makemigrations
 
 docker_migrate:
-	docker-compose run --rm backend python manage.py migrate
+	docker-compose run --rm backend python manage.py migrate --run-syncdb
