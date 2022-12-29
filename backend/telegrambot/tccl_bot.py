@@ -234,9 +234,10 @@ def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     if not isExist:
+        print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "🧞‍♂️ ‼️ " + message.from_user.first_name + " sử dụng message bị cấm ‼️ 🧞‍♂️")
 
-    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=3)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=5)
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
 
 @shared_task
@@ -346,6 +347,7 @@ def banUser(message, error_text):
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     print(f"banned ?: {isExist}")
     if not isExist:
+        print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "🧞‍♂️ ‼️ " + firstName + " sử dụng message bị cấm ‼️ 🧞‍♂️. 🏖🌴🌴🌴🏖")
 
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
