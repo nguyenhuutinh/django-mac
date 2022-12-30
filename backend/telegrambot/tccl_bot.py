@@ -354,7 +354,7 @@ def banUser(message, error_text):
     print(f"banned ?: {isExist}")
     if not isExist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ " + firstName + " sử dụng message bị cấm ‼️ 🏖🌴")
+        bot.reply_to(message, "‼️" + firstName + "bị ban vì hành vi lừa đảo‼️ \n👉⚠️TCCL KHÔNG có group VIP, KHÔNG thu khoản phí nào, các admin KHÔNG bao giờ DM trước⚠️\n👉🔸Hãy luôn cẩn thận với tài sản 💰 của mình")
 
     bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     print(TelegramUser.objects.filter(user_id=userId))
