@@ -307,7 +307,10 @@ def processCheckAndBan(message):
         print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
         return True
     if "Bả0".lower() in f"{firstName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
-        print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
+        print(f"{bcolors.WARNING}case 202  {bcolors.ENDC}")
+        return True
+    if "Bả0".lower() in f"{firstName.replace('.','')}".lower() and  "Đỗ".lower() in f"{firstName.replace('.','')}".lower():
+        print(f"{bcolors.WARNING}case 201  {bcolors.ENDC}")
         return True
     if "Trung Kim Son".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 12  {bcolors.ENDC}")
