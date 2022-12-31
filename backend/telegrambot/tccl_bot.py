@@ -327,7 +327,7 @@ def processCheckAndBan(message):
     if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Iược".lower() in f"{firstName} {lastName}".lower():
         print(f"{bcolors.WARNING}case 16  {bcolors.ENDC}")
         return True
-    if "admin" in f"{firstName} {lastName}".lower():
+    if "admin none" == f"{firstName} {lastName}".lower() or "none admin" == f"{firstName} {lastName}".lower():
         print(f"{bcolors.WARNING}case 17  {bcolors.ENDC}")
         return True
     if "admln" in f"{firstName} {lastName}".lower():
