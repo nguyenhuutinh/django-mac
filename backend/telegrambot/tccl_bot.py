@@ -261,10 +261,8 @@ def processCheckAndBan(message):
     if "whaless" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
-    if "anh" in f"{message.text} {message.caption}".lower() and "em" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "ad" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 333  {bcolors.ENDC}")
-        return True
-    if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() :
+
+    if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
     if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
