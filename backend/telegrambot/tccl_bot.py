@@ -86,6 +86,8 @@ def photo(message):
 
 
 def checkingUserProfilePhoto(message):
+    print(f"checking user photo {message.from_user.id}")
+
     data = bot.get_user_profile_photos(message.from_user.id)
     # print(data)
     # njson = json.loads(data)
@@ -119,7 +121,7 @@ def checkingUserProfilePhoto(message):
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url, profile_score= result)
 
-            if result is not None and result < 0.02:
+            if result is not None and result < 0.07:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -130,7 +132,7 @@ def checkingUserProfilePhoto(message):
 
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.02:
+            if result is not None and result < 0.07:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -142,7 +144,7 @@ def checkingUserProfilePhoto(message):
 
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.02:
+            if result is not None and result < 0.07:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -224,7 +226,9 @@ def checkAndDeleteMessage(message):
     if "địt" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
         return True
-
+    if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "nhắn" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
         print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
@@ -268,12 +272,16 @@ def processCheckAndBan(message):
     if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
         return True
-    if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vlp" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+        return True
+    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "v1p" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+        return True
+    if  "vào" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
-    if  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "nhắn" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
+
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
