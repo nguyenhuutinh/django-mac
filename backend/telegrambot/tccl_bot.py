@@ -16,7 +16,9 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
-from telegrambot.settings.base import MSG_COUNTER, MSG_MAX
+
+MSG_COUNTER = 0
+MSG_MAX = 30
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -421,12 +423,15 @@ def unban_user(message):
 
 @bot.message_handler()
 def allMessage(message):
+    global MSG_COUNTER, MSG_MAX
+
     result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram" or message.from_user.first_name == "Channel"
     if result == True:
         print("admin")
         return
+
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}\n")
-    MSG_COUNTER += 1
+    MSG_COUNTER = MSG_COUNTER + 1
     if MSG_COUNTER >= MSG_MAX:
         MSG_COUNTER = 0
         bot.reply_to(message, "‼️ 🆘💢 Cảnh báo lừa đảo 💢🆘 ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG thu khoản phí nào.\n👉 ⚠️Các admin KHÔNG bao giờ DM trước.\n👉 Hãy luôn cẩn thận với tài sản của mình.🦮🦮🦮")
