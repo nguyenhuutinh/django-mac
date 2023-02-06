@@ -425,7 +425,7 @@ def allMessage(message):
     if result == True:
         print("admin")
         return
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {warning_count}\n")
     warning_count += 1
     if warning_count >= warning_max:
         warning_count = 0
