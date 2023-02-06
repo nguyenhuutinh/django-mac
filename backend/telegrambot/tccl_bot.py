@@ -38,7 +38,7 @@ logger = telebot.logger
 logger.setLevel(logging.ERROR)
 
 ban_reason = ""
-warning_max = 30
+warning_max = 20
 warning_count = 0
 def process_request(request):
     # print(request.data)
