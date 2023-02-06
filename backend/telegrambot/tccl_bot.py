@@ -18,7 +18,7 @@ from diffimg import diff
 from celery import shared_task
 
 MSG_COUNTER = 0
-MSG_MAX = 20
+MSG_MAX = 30
 
 # from PIL import ImageChops, ImageStat,Image
 
