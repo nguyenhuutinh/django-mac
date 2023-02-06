@@ -38,7 +38,8 @@ logger = telebot.logger
 logger.setLevel(logging.ERROR)
 
 ban_reason = ""
-
+warning_max = 30
+warning_count = 0
 def process_request(request):
     # print(request.data)
     json_string = request.data
@@ -425,6 +426,11 @@ def allMessage(message):
         print("admin")
         return
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC}\n")
+    warning_count += 1
+    if warning_count >= warning_max:
+        warning_count = 0
+        bot.reply_to(message, "‼️ 🆘💢 Cảnh báo lừa đảo 💢🆘 ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG thu khoản phí nào.\n👉 ⚠️Các admin KHÔNG bao giờ DM trước.\n👉 Hãy luôn cẩn thận với tài sản của mình.🦮🦮🦮")
+
     moderate(message=message)
 
 @bot.message_handler( content_types=[
