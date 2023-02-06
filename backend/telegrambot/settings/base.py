@@ -14,6 +14,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
 
+MSG_COUNTER =  0
+MSG_MAX = 30
 
 SITE_ID = 1
 
