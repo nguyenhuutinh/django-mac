@@ -16,7 +16,7 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
-from settings.base import MSG_COUNTER, MSG_MAX
+from telegrambot.settings.base import MSG_COUNTER, MSG_MAX
 
 # from PIL import ImageChops, ImageStat,Image
 
