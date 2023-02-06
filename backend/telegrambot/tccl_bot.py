@@ -434,7 +434,7 @@ def allMessage(message):
     MSG_COUNTER = MSG_COUNTER + 1
     if MSG_COUNTER >= MSG_MAX:
         MSG_COUNTER = 0
-        bot.send_message("-1001724937734", "‼️ 🆘💢 Cảnh báo lừa đảo 💢🆘 ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG thu khoản phí nào.\n👉 ⚠️Các admin KHÔNG bao giờ DM trước.\n👉 Hãy luôn cẩn thận với tài sản của mình.🦮🦮🦮")
+        bot.send_message("-1001724937734", "[Tin Nhắn Tự Động]\n\n‼️ 🆘💢 Cảnh báo các hành vi giả danh admin lừa đảo 💢🆘 ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ DM trước.\n👉 Hãy luôn cẩn thận với tài sản của mình.")
 
     moderate(message=message)
 
