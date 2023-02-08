@@ -124,7 +124,7 @@ def checkingUserProfilePhoto(message):
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url, profile_score= result)
 
-            if result is not None and result < 0.07:
+            if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -135,7 +135,7 @@ def checkingUserProfilePhoto(message):
 
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.07:
+            if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -147,7 +147,7 @@ def checkingUserProfilePhoto(message):
 
             TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.07:
+            if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
@@ -203,7 +203,7 @@ def moderate(message):
 
     if processCheckAndBan(message):
         banUser(message, 'message bi cam')
-    elif checkingUserProfilePhoto(message):
+    elif checkingUserProfilePhoto(message) and len(message.text) < 5:
         banUser(message, 'photo tccl')
 
 def checkAndDeleteMessage(message):
