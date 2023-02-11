@@ -7,6 +7,7 @@ isort
 model-bakery
 pre-commit
 
-prospector[with-vulture]
-#safety
+prospector[with-vulture]==1.8.3
+
+safety
 diffimg
