@@ -9,5 +9,5 @@ pre-commit
 
 prospector[with-vulture]==1.8.3
 
-safety
+#safety
 diffimg
