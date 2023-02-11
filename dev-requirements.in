@@ -8,5 +8,5 @@ model-bakery
 pre-commit
 
 prospector[with-vulture]
-safety
+#safety
 diffimg
