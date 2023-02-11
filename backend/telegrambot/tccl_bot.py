@@ -186,6 +186,8 @@ def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
+
+
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
@@ -200,6 +202,8 @@ def moderate(message):
             print(f"checking user status : {message.from_user.id} - {user.status}")
             if user.status == 'banned':
                 _deleteMessage(message)
+                clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
+
 
     if processCheckAndBan(message):
         banUser(message, 'message bi cam')
@@ -249,6 +253,9 @@ def deleteMessageTask(chat_id, message_id):
     print("deleteMessageTask")
     print(f"{bcolors.OKGREEN}deleted message: {chat_id} {message_id}{bcolors.ENDC}")
     bot.delete_message(chat_id,message_id=message_id)
+@shared_task
+def clearDBRecord(user_id):
+    TelegramUser.objects.filter(user_id=user_id).delete()
 
 def processCheckAndBan(message):
     userId = message.from_user.id
@@ -397,6 +404,11 @@ def manualbanUser(message):
     bot.kick_chat_member(chat_id =-1001724937734,user_id=userId)
 
     bot.send_message("-1001349899890", "Đã ban user id: " + f" {userId}")
+
+@bot.message_handler(commands=['clear_db'])
+def clearDB(message):
+    TelegramUser.objects.all().delete()
+    bot.send_message("-1001349899890", "Đã clear db: ")
 
 @bot.message_handler(commands=['delete_message'])
 def manualDeleteMessage(message):
