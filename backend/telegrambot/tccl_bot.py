@@ -349,7 +349,12 @@ def processCheckAndBan(message):
     if "glcapital1" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 19  {bcolors.ENDC}")
         return True
-
+    if "aecryptodhchat" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 29  {bcolors.ENDC}")
+        return True
+    if "qua đây trao đổi với mình" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 30  {bcolors.ENDC}")
+        return True
     return False
 
 def banUser(message, error_text):
