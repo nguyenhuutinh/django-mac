@@ -207,7 +207,7 @@ def moderate(message):
 
     if processCheckAndBan(message):
         banUser(message, 'message bi cam')
-    elif checkingUserProfilePhoto(message) and len(message.text) < 5:
+    elif checkingUserProfilePhoto(message) and (message.text == None or len(message.text) < 5):
         banUser(message, 'photo tccl')
 
 def checkAndDeleteMessage(message):
