@@ -154,6 +154,41 @@ def checkingUserProfilePhoto(message):
             else:
                 print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
+            #tèo
+
+            result = diff('/home/user/app/backend/data/teo1.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+
+            if result is not None and result < 0.04:
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
+                return True
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+
+            result = diff('/home/user/app/backend/data/teo2.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+
+            if result is not None and result < 0.04:
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
+                return True
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+
+            result = diff('/home/user/app/backend/data/teo3.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+
+            if result is not None and result < 0.04:
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
+                return True
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+
             os.remove(filePath)
 
     return False
@@ -354,6 +389,10 @@ def processCheckAndBan(message):
         return True
     if "qua đây trao đổi với mình" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 30  {bcolors.ENDC}")
+        return True
+
+    if "chưa vào" in f"{message.text} {message.caption}".lower() and  "nhắn ad" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 31  {bcolors.ENDC}")
         return True
     return False
 
