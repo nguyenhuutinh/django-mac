@@ -1,505 +1,508 @@
-# import json
-# import io
-# import logging
+import json
+import io
+import logging
 
-# from requests.api import head
-# from lxml import html
-# import math
-# import ntpath
-# import os
-# import requests
-# from common.models import TokenInfo
+from requests.api import head
+from lxml import html
+import math
+import ntpath
+import os
+import requests
+from common.models import TokenInfo
 
-# ID_COOKIE_2 = "59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17968929%2C%22Zb5Y1cu3jmvTbCq76URkunJU_rfe6Ij9%22%2C1634889338%5D%22%3B%7D"
-
-
-# # ID_COOKIE_1 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
+ID_COOKIE_2 = "59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17968929%2C%22Zb5Y1cu3jmvTbCq76URkunJU_rfe6Ij9%22%2C1634889338%5D%22%3B%7D"
 
 
-# ID_COOKIE_1 = "f59df4c2d24c75abd62276f6b8264069c6de32fd3a07c34141e839862a9ae768a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B14260924%2C%22N3EF-GqSHZEQQJD0h2KrU-Tbr4CNCHWo%22%2C1640130186%5D%22%3B%7D"
+# ID_COOKIE_1 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
 
 
-# USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
-
-# cookies = None
-# class FS:
-#     """
-#     Get link Fshare with your account. If you have VIP, you will get
-#     premium download link.
-#     """
-#     def __init__(self, server):
-#         if int(server) == 1:
-#             self.idenCookie = ID_COOKIE_1
-#         elif int(server) == 3:
-#             self.idenCookie = ID_COOKIE_3
-#         else :
-#             self.idenCookie = ID_COOKIE_2
-#         # print("id",int(server) == 1, self.idenCookie)
-#         # self.email = email
-#         # self.password = password
-#         self.s = requests.Session()
-#         self.login_url = "https://www.fshare.vn/site/login"
-#         self.bypass_url = "https://www.fshare.vn/file/{}?token={}"
-#         self.user_agent = (
-#             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-#         )
-#         self.folder_api = (
-#             'https://www.fshare.vn/api/v3/files/'
-#             'folder?linkcode={}&sort=type,name'
-#         )
-#         self.file_url = 'https://www.fshare.vn/file/{}'
-#         self.media_api = (
-#             'https://www.fshare.vn/api/v3/files/'
-#             'download?dl_type=media&linkcode={}'
-#         )
-#         self.token = ""
+ID_COOKIE_1 = "f59df4c2d24c75abd62276f6b8264069c6de32fd3a07c34141e839862a9ae768a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B14260924%2C%22N3EF-GqSHZEQQJD0h2KrU-Tbr4CNCHWo%22%2C1640130186%5D%22%3B%7D"
 
 
-#     def get_token(self, response):
-#         """
-#         Get csrf token for POST requests.
-#         """
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
 
-#         try:
-#             tree = html.fromstring(response.content)
-#             token = tree.xpath('//*[@name="csrf-token"]')[0].get('content')
-#             return token
-#         except Exception:
-#             raise Exception('No token for url {}'.format(response.url))
-
-#     def getTitle(self, response):
-#             """
-#             Get Title for POST requests.
-#             """
-#             try:
-#                 tree = html.fromstring(response.content)
-#                 token = tree.xpath('/html/head/title/text()')
-#                 return token
-#             except Exception:
-#                 raise Exception('No token for url {}'.format(response.url))
-
-#     def bypass(self, filecode, password, token, app, passToken):
-#             global cookies
-#             print("bypass", filecode, password, token, app, passToken, cookies)
-
-#             headers_api = {
-#                 "x-csrf-token": token,
-#                 # 'User-Agent': str(USER_AGENT),
-#                 'Cookie':'fshare-app={}'.format(app) ,
-#                 # 'Content-Type': 'application/x-www-form-urlencoded'
-#             }
-#             self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-#             # print(passToken)
-#             url = self.bypass_url.format(filecode, passToken)
-#             print(url)
-#             r = self.s.get(url, cookies = cookies, headers=headers_api)
-#             print(r.url)
-#             # print(r.status_code)
-#             # print(r.request.body)
-#             # print(r.request.headers)
-#             # print(r.cookies)
-#             # self.cookies= r.cookies
-
-#             if r.url != self.bypass_url.format(filecode, passToken):
-#                 self.token = self.get_token(r)
-#                 if r.cookies.get("fshare-app"):
-#                     newApp = r.cookies.get("fshare-app")
-#                 else :
-#                     newApp = app
-#             else :
-#                 newApp = app
-#             print("new-token", self.token)
-#             print("new-app", newApp)
-#             # self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
-#             self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-#             headers_api = {
-#                 'User-Agent': str(USER_AGENT),
-#                 # 'Content-Type': 'application/x-www-form-urlencoded'
-#             }
-#             data = {
-#                 '_csrf-app': self.token,
-#                 'DownloadPasswordForm[password]': password,
-#             }
-
-#             res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api,allow_redirects=False)
-#             # print(res.url)
-#             # print(res.request.headers)
-
-#             print(res.status_code)
-#             if res.status_code == 200:
-#                 title = self.getTitle(res)
-#                 print(title)
-#                 self.token = self.get_token(res)
-#                 print(self.token, res.cookies)
-#                 return self.updateToDB(self.idenCookie, self.token, newApp)
-#             elif res.status_code == 201 and res.content != None:
-#                 # title = self.getTitle(res)
-#                 # print(title)
-#                 # self.token = self.get_token(res)
-#                 # print(self.token, res.cookies, res.content)
-#                 return self.updateToDB(self.idenCookie, self.token, newApp)
-#                 # pass
-#             else :
-#                 pass
-
-#     def login(self):
-#         global cookies
-#         print("login")
-#         if(self.idenCookie == ""):
-#             raise Exception("identity Cookie empty")
-
-#         self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
-
-#         # self.s.headers.update({'Cookie': "fshare-app=qaedt5nfdjpg810vak0cqn4ir7;police=26ef0cc684c5b335d79b6450a596392fbb9928b55c4264ffff05849595c915f9a%3A2%3A%7Bi%3A0%3Bs%3A6%3A%22police%22%3Bi%3A1%3Bi%3A1%3B%7D"})
-
-#         # print("login")
-#         # r = requests.get(self.login_url)
-#         # print("email" , self.email, self.password)
-#         # token = self.get_token(r)
-#         # cookies = r.cookies
-#         # data = {
-#         #     '_csrf-app': token,
-#         #     'LoginForm[email]': self.email,
-#         #     'LoginForm[password]': self.password,
-#         #     'LoginForm[rememberMe]': 1,
-#         # }
-#         # print("data", data)
-#         # res = self.s.post(self.login_url, cookies=cookies, data=data)
-#         print("self.idenCookie", self.idenCookie)
-#         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-
-#         r = self.s.get('https://www.fshare.vn/file/manager')
-#         print(r.status_code)
-#         tree = html.fromstring(r.content)
-#         if tree.xpath('//*[@href="/signup"]'):
-#             raise Exception('Login failed. Please check your email & password')
-#         else:
-#             if r.cookies.get("fshare-app") == None:
-#                 raise Exception('Login failed. Empty Cookie')
-#             self.token = self.get_token(r)
-#             self.cookies = r.cookies
-#             cookies = r.cookies
-#             print("login success with " + self.token, self.cookies.get("fshare-app"))
-#             return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
+cookies = None
+class FS:
+    """
+    Get link Fshare with your account. If you have VIP, you will get
+    premium download link.
+    """
+    def __init__(self, server):
+        if int(server) == 1:
+            self.idenCookie = ID_COOKIE_1
+        elif int(server) == 3:
+            self.idenCookie = ID_COOKIE_3
+        else :
+            self.idenCookie = ID_COOKIE_2
+        # print("id",int(server) == 1, self.idenCookie)
+        # self.email = email
+        # self.password = password
+        self.s = requests.Session()
+        self.login_url = "https://www.fshare.vn/site/login"
+        self.bypass_url = "https://www.fshare.vn/file/{}?token={}"
+        self.user_agent = (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+        )
+        self.folder_api = (
+            'https://www.fshare.vn/api/v3/files/'
+            'folder?linkcode={}&sort=type,name'
+        )
+        self.file_url = 'https://www.fshare.vn/file/{}'
+        self.media_api = (
+            'https://www.fshare.vn/api/v3/files/'
+            'download?dl_type=media&linkcode={}'
+        )
+        self.token = ""
 
 
+    def get_token(self, response):
+        """
+        Get csrf token for POST requests.
+        """
 
-#     def updateToDB(self, idenCookie, token , app):
-#         if(app == None):
-#             raise Exception("shareapp Cookie empty")
-#         update_values = {"account_id": idenCookie, "cookie_share_app": app, "cookie_csrf": token}
-#         tokenInfo, created = TokenInfo.objects.get_or_create(account_id=idenCookie, defaults =update_values)
-#         if created:
-#             print("created")
-#             return self.readCookieDB()
-#         else :
-#             print(getattr(tokenInfo,"account_id"))
-#             newSharedApp = app
-#             newToken = token
-#             tokenInfo.cookie_csrf = newToken
-#             tokenInfo.cookie_share_app = newSharedApp
-#             tokenInfo.save(update_fields=['cookie_share_app', "cookie_csrf"])
-#             return tokenInfo
+        try:
+            tree = html.fromstring(response.content)
+            token = tree.xpath('//*[@name="csrf-token"]')[0].get('content')
+            return token
+        except Exception:
+            raise Exception('No token for url {}'.format(response.url))
 
-#     def readCookieDB(self):
-#         if TokenInfo.objects.filter(account_id = self.idenCookie).exists():
-#             return TokenInfo.objects.filter(account_id = self.idenCookie).first()
-#         else:
-#             pass
+    def getTitle(self, response):
+            """
+            Get Title for POST requests.
+            """
+            try:
+                tree = html.fromstring(response.content)
+                token = tree.xpath('/html/head/title/text()')
+                return token
+            except Exception:
+                raise Exception('No token for url {}'.format(response.url))
 
-#     def get_media_link(self, media_id):
-#         """
-#         Get direct link for video file from your storage account.
-#         """
-#         url = self.media_api.format(media_id)
+    def bypass(self, filecode, password, token, app, passToken):
+            global cookies
+            print("bypass", filecode, password, token, app, passToken, cookies)
 
-#         authorization_code = self.s.cookies.get_dict()['fshare-app']
-#         headers = {
-#             'User-Agent': self.user_agent,
-#             'Accept': 'application/json, text/plain, */*',
-#             'Accept-Language': 'en-US,en;q=0.8,vi;q=0.6',
-#             'Accept-Encoding': 'gzip, deflate, br',
-#             'Referer': 'https://www.fshare.vn/file/manager',
-#             'Connection': 'keep-alive',
-#             'Host': 'www.fshare.vn',
-#             'Authorization': 'Bearer {}'.format(authorization_code)
-#         }
+            headers_api = {
+                "x-csrf-token": token,
+                # 'User-Agent': str(USER_AGENT),
+                'Cookie':'fshare-app={}'.format(app) ,
+                # 'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+            # print(passToken)
+            url = self.bypass_url.format(filecode, passToken)
+            print(url)
+            r = self.s.get(url, cookies = cookies, headers=headers_api)
+            print(r.url)
+            # print(r.status_code)
+            # print(r.request.body)
+            # print(r.request.headers)
+            # print(r.cookies)
+            # self.cookies= r.cookies
 
-#         r = self.s.get(url, headers=headers)
+            if r.url != self.bypass_url.format(filecode, passToken):
+                self.token = self.get_token(r)
+                if r.cookies.get("fshare-app"):
+                    newApp = r.cookies.get("fshare-app")
+                else :
+                    newApp = app
+            else :
+                newApp = app
+            print("new-token", self.token)
+            print("new-app", newApp)
+            # self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+            self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+            headers_api = {
+                'User-Agent': str(USER_AGENT),
+                # 'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            data = {
+                '_csrf-app': self.token,
+                'DownloadPasswordForm[password]': password,
+            }
 
-#         try:
-#             link = r.json()
-#             return link
-#         except json.decoder.JSONDecodeError:
-#             print(r.status_code, r.text, self.movie_token, data)
-#             raise Exception('Get media link failed.')
+            res = self.s.post(r.url, data=data,cookies = cookies, headers=headers_api,allow_redirects=False)
+            # print(res.url)
+            # print(res.request.headers)
 
-#     def get_link(self, url):
-#         print("get link")
-#         if self.is_exist(url):
-#             token = self.token
-#             fshareApp = self.cookies.get("fshare-app")
-#             print(fshareApp, token)
-#             if fshareApp == None:
-#                 return
+            print(res.status_code)
+            if res.status_code == 200:
+                title = self.getTitle(res)
+                print(title)
+                self.token = self.get_token(res)
+                print(self.token, res.cookies)
+                return self.updateToDB(self.idenCookie, self.token, newApp)
+            elif res.status_code == 201 and res.content != None:
+                # title = self.getTitle(res)
+                # print(title)
+                # self.token = self.get_token(res)
+                # print(self.token, res.cookies, res.content)
+                return self.updateToDB(self.idenCookie, self.token, newApp)
+                # pass
+            else :
+                pass
 
-#             headers = {
-#                         'User-Agent': self.user_agent,
-#                         'Accept': 'application/json, text/plain, */*',
-#                         'Accept-Language': 'en-US,en;q=0.8,vi;q=0.6',
-#                         'Accept-Encoding': 'gzip, deflate, br',
-#                         'Referer': 'https://www.fshare.vn/file/manager',
-#                         'Connection': 'keep-alive',
-#                         'Host': 'www.fshare.vn',
-#                         'x-csrf-token': token,
-#                         'Cookie':'fshare-app='+ fshareApp
-#                     }
-#             file_id = url.split("/")[-1]
-#             dl_data = {
-#                 # '_csrf-app': token,
-#                 "fcode5": "0",
-#                 "linkcode": file_id,
-#                 "withFcode5": 0,
-#             }
-#             for c in self.cookies:
-#                 print(c.name, c.value)
-#             print("token", dl_data )
+    def login(self):
+        global cookies
+        print("login")
+        if(self.idenCookie == ""):
+            raise Exception("identity Cookie empty")
 
-#             r = self.s.post("https://www.fshare.vn/download/get",
-#                             data=dl_data, headers=headers)
-#             print(r.json())
-#             # try:
-#             #     link = r.json()
-#             #     return link.get('url')
-#             # except json.decoder.JSONDecodeError:
-#             #     raise Exception('Get link failed.')
-#         else:
-#             return 'aaa'
+        self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
 
-#     def extract_links(self, folder_url):
-#         """
-#         Get all links in Fshare folder.
-#         Return list of all item with info of each.
-#         """
-#         folder_id = folder_url.split('/')[-1]
-#         data = self.s.get(self.folder_api.format(folder_id)).json()
+        # self.s.headers.update({'Cookie': "fshare-app=qaedt5nfdjpg810vak0cqn4ir7;police=26ef0cc684c5b335d79b6450a596392fbb9928b55c4264ffff05849595c915f9a%3A2%3A%7Bi%3A0%3Bs%3A6%3A%22police%22%3Bi%3A1%3Bi%3A1%3B%7D"})
 
-#         folder_data = [
-#             {
-#                 'file_name': d['name'],
-#                 'file_url': self.file_url.format(d['linkcode']),
-#                 'file_size': d['size']
-#             }
-#             for d in data['items']
-#         ]
-#         return folder_data
+        # print("login")
+        r = requests.get(self.login_url)
+        self.email =  "druzhinin89@dronesmart.net"
+        self.password =  "druzhinin89@dronesmart.net"
+        # print("email" , self.email, self.password)
+        token = self.get_token(r)
+        cookies = r.cookies
+        data = {
+            '_csrf-app': token,
+            'LoginForm[email]': self.email,
+            'LoginForm[password]': self.password,
+            'LoginForm[rememberMe]': 1,
+        }
+        # print("data", data)
+        res = self.s.post(self.login_url, cookies=cookies, data=data)
+        print("res", res.status_code, res.headers, res.cookies)
+        # self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
 
-#     def getUrl(self, url):
-#         global cookies
-#         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-#         self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
-#         print("get url", url)
-#         """
-#         Strip extra space out of file's name
-#         """
-#         r = requests.get(url, cookies=cookies, allow_redirects=True)
-#         if r.status_code == 200:
-#             return r
-#         elif r.is_redirect:
-#             return self.getUrl(r.headers["Location"])
-#         else:
-#             return "error"
+        # rr = self.s.get('https://www.fshare.vn/file/manager', cookies=cookies)
+        # print("res", rr.cookies)
+        # print(r.status_code)
+        # tree = html.fromstring(r.content)
+        # if tree.xpath('//*[@href="/signup"]'):
+        #     raise Exception('Login failed. Please check your email & password')
+        # else:
+        #     if r.cookies.get("fshare-app") == None:
+        #         raise Exception('Login failed. Empty Cookie')
+        #     self.token = self.get_token(r)
+        #     self.cookies = r.cookies
+        #     cookies = r.cookies
+        #     print("login success with " + self.token, self.cookies.get("fshare-app"))
+        #     return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
 
-#     def get_file_name(self, resp):
-#         tree = html.fromstring(resp.content)
-#         file_name = None
-#         try:
-#             file_name = tree.xpath(
-#                 '//*[@property="og:title"]'
-#             )[0].get('content').split(' - Fshare')[0]
-#         except Exception:
-#             pass
-#         if file_name:
-#             return file_name
-#         else:
-#             pass
-#     def get_file_size(self, resp):
-#         tree = html.fromstring(resp.content)
-#         file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
-#         if(len(file_size) == 0):
-#             file_size = tree.xpath('//*[@class="full-width event-cus tool-tip mdc-button-primary mdc-button mdc-button--raised mdc-ripple-upgraded down-s-btn-cus"]/text()')
-#         print("file_size",file_size)
-#         if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
-#             return file_size[0].split("|")[1].strip()
-#         if file_size and len(file_size) > 0 and  len(file_size[1].split("|")) > 1:
-#             return file_size[1].split("|")[1].strip()
-#         else:
-#             pass
-#     def is_file_protected(self, resp):
-#         tree = html.fromstring(resp.content)
-#         password = tree.xpath('.//p[contains(text(),"Tập tin yêu cầu mật khẩu")]')
-#         print("password",password)
-#         if password and len(password) > 0:
-#             return True
-#         else:
-#             return False
-#     def get_folder_name(self, folder_url):
-#         """
-#         Get folder name (title)
-#         """
-#         r = self.s.get(folder_url)
-#         tree = html.fromstring(r.content)
-#         title = tree.xpath('//title/text()')
-#         if title:
-#             return title[0].strip('Fshare - ')
-#         else:
-#             return r.url
 
-#     def is_alive(self, url):
-#         """
-#         Check if link is alive.
-#         """
-#         r = self.s.head(url, allow_redirects=True)
-#         if r.ok:
-#             return True
-#         else:
-#             return False
 
-#     def is_exist(self, url):
-#         global cookies
-#         # print("is_exist", url)
-#         # self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-#         # self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
-#         r = requests.get(url, allow_redirects=True)
-#         if r.is_redirect:
-#             print("is_redirect", r.headers["Location"])
-#             r = requests.get(r.headers["Location"], allow_redirects=True)
-#         print("r", r.status_code)
-#         if r.ok:
-#             tree = html.fromstring(r.content)
-#             title = tree.xpath('//title/text()')[0]
-#             if title == 'Not Found - Fshare':
-#                 return False
-#             else:
-#                 # print("r", r.content)
-#                 return r
-#         else:  # In case auto download is enable in account setting
-#             return False
+    def updateToDB(self, idenCookie, token , app):
+        if(app == None):
+            raise Exception("shareapp Cookie empty")
+        update_values = {"account_id": idenCookie, "cookie_share_app": app, "cookie_csrf": token}
+        tokenInfo, created = TokenInfo.objects.get_or_create(account_id=idenCookie, defaults =update_values)
+        if created:
+            print("created")
+            return self.readCookieDB()
+        else :
+            print(getattr(tokenInfo,"account_id"))
+            newSharedApp = app
+            newToken = token
+            tokenInfo.cookie_csrf = newToken
+            tokenInfo.cookie_share_app = newSharedApp
+            tokenInfo.save(update_fields=['cookie_share_app', "cookie_csrf"])
+            return tokenInfo
 
-#     def log_out(self):
-#         self.s.get('https://www.fshare.vn/site/logout')
+    def readCookieDB(self):
+        if TokenInfo.objects.filter(account_id = self.idenCookie).exists():
+            return TokenInfo.objects.filter(account_id = self.idenCookie).first()
+        else:
+            pass
 
-#     def upload_file(self, file_path, secured=0):
+    def get_media_link(self, media_id):
+        """
+        Get direct link for video file from your storage account.
+        """
+        url = self.media_api.format(media_id)
 
-#         UPLOAD_URL = 'https://www.fshare.vn/api/session/upload'
-#         file_name = ntpath.basename(file_path)
-#         file_size = str(os.path.getsize(file_path))
-#         try:
-#             data = io.open(file_path, 'rb', buffering=25000000)
-#         except FileNotFoundError:
-#             raise Exception('File does not exist!')
+        authorization_code = self.s.cookies.get_dict()['fshare-app']
+        headers = {
+            'User-Agent': self.user_agent,
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'en-US,en;q=0.8,vi;q=0.6',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': 'https://www.fshare.vn/file/manager',
+            'Connection': 'keep-alive',
+            'Host': 'www.fshare.vn',
+            'Authorization': 'Bearer {}'.format(authorization_code)
+        }
 
-#         r1 = self.s.get('https://www.fshare.vn/home?upload=1')
-#         tree = html.fromstring(r1.content)
-#         token_data = tree.xpath('//*[@class="pull-left breadscum"]')
-#         if token_data:
-#             token = token_data[0].get('data-token')
-#         else:
-#             raise Exception('Can not get token')
+        r = self.s.get(url, headers=headers)
 
-#         payload = {'SESSID': dict(self.s.cookies).get('session_id'),
-#                    'name': file_name,
-#                    'path': '/',
-#                    'secured': secured,
-#                    'size': file_size,
-#                    'token': token}
+        try:
+            link = r.json()
+            return link
+        except json.decoder.JSONDecodeError:
+            print(r.status_code, r.text, self.movie_token, data)
+            raise Exception('Get media link failed.')
 
-#         res = self.s.post(UPLOAD_URL, data=json.dumps(payload))
-#         body = res.json()
+    def get_link(self, url):
+        print("get link")
+        if self.is_exist(url):
+            token = self.token
+            fshareApp = self.cookies.get("fshare-app")
+            print(fshareApp, token)
+            if fshareApp == None:
+                return
 
-#         if body.get('code') != 200:
-#             raise Exception('Initial handshake errors %r', body)
+            headers = {
+                        'User-Agent': self.user_agent,
+                        'Accept': 'application/json, text/plain, */*',
+                        'Accept-Language': 'en-US,en;q=0.8,vi;q=0.6',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Referer': 'https://www.fshare.vn/file/manager',
+                        'Connection': 'keep-alive',
+                        'Host': 'www.fshare.vn',
+                        'x-csrf-token': token,
+                        'Cookie':'fshare-app='+ fshareApp
+                    }
+            file_id = url.split("/")[-1]
+            dl_data = {
+                # '_csrf-app': token,
+                "fcode5": "0",
+                "linkcode": file_id,
+                "withFcode5": 0,
+            }
+            for c in self.cookies:
+                print(c.name, c.value)
+            print("token", dl_data )
 
-#         location = body['location']
+            r = self.s.post("https://www.fshare.vn/download/get",
+                            data=dl_data, headers=headers)
+            print(r.json())
+            # try:
+            #     link = r.json()
+            #     return link.get('url')
+            # except json.decoder.JSONDecodeError:
+            #     raise Exception('Get link failed.')
+        else:
+            return 'aaa'
 
-#         # OPTIONS for chunk upload configuration
-#         max_chunk_size = 25000000
-#         chunk_total = math.ceil(int(file_size)/max_chunk_size)
+    def extract_links(self, folder_url):
+        """
+        Get all links in Fshare folder.
+        Return list of all item with info of each.
+        """
+        folder_id = folder_url.split('/')[-1]
+        data = self.s.get(self.folder_api.format(folder_id)).json()
 
-#         for i in range(chunk_total):
-#             chunk_number = i + 1
-#             sent = last_index = i * max_chunk_size
-#             remaining = int(file_size) - sent
-#             if remaining < max_chunk_size:
-#                 current_chunk = remaining
-#             else:
-#                 current_chunk = max_chunk_size
+        folder_data = [
+            {
+                'file_name': d['name'],
+                'file_url': self.file_url.format(d['linkcode']),
+                'file_size': d['size']
+            }
+            for d in data['items']
+        ]
+        return folder_data
 
-#             next_index = last_index + current_chunk
+    def getUrl(self, url):
+        global cookies
+        self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+        self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
+        print("get url", url)
+        """
+        Strip extra space out of file's name
+        """
+        r = requests.get(url, cookies=cookies, allow_redirects=True)
+        if r.status_code == 200:
+            return r
+        elif r.is_redirect:
+            return self.getUrl(r.headers["Location"])
+        else:
+            return "error"
 
-#             chunk_params = {
-#                 'flowChunkNumber': chunk_number,
-#                 'flowChunkSize': max_chunk_size,
-#                 'flowCurrentChunkSize': current_chunk,
-#                 'flowTotalSize': file_size,
-#                 'flowIdentifier': '{0}-{1}'.format(current_chunk, file_name),
-#                 'flowFilename': file_name,
-#                 'flowRelativePath': file_name,
-#                 'flowTotalChunks': chunk_total
-#             }
+    def get_file_name(self, resp):
+        tree = html.fromstring(resp.content)
+        file_name = None
+        try:
+            file_name = tree.xpath(
+                '//*[@property="og:title"]'
+            )[0].get('content').split(' - Fshare')[0]
+        except Exception:
+            pass
+        if file_name:
+            return file_name
+        else:
+            pass
+    def get_file_size(self, resp):
+        tree = html.fromstring(resp.content)
+        file_size = tree.xpath('//*[@class="mdc-button mdc-button--raised mdc-ripple-upgraded full-width event-cus event-cus-no"]/a/text()')
+        if(len(file_size) == 0):
+            file_size = tree.xpath('//*[@class="full-width event-cus tool-tip mdc-button-primary mdc-button mdc-button--raised mdc-ripple-upgraded down-s-btn-cus"]/text()')
+        print("file_size",file_size)
+        if file_size and len(file_size) > 0 and  len(file_size[0].split("|")) > 1:
+            return file_size[0].split("|")[1].strip()
+        if file_size and len(file_size) > 0 and  len(file_size[1].split("|")) > 1:
+            return file_size[1].split("|")[1].strip()
+        else:
+            pass
+    def is_file_protected(self, resp):
+        tree = html.fromstring(resp.content)
+        password = tree.xpath('.//p[contains(text(),"Tập tin yêu cầu mật khẩu")]')
+        print("password",password)
+        if password and len(password) > 0:
+            return True
+        else:
+            return False
+    def get_folder_name(self, folder_url):
+        """
+        Get folder name (title)
+        """
+        r = self.s.get(folder_url)
+        tree = html.fromstring(r.content)
+        title = tree.xpath('//title/text()')
+        if title:
+            return title[0].strip('Fshare - ')
+        else:
+            return r.url
 
-#             res = self.s.options(location, params=chunk_params)
+    def is_alive(self, url):
+        """
+        Check if link is alive.
+        """
+        r = self.s.head(url, allow_redirects=True)
+        if r.ok:
+            return True
+        else:
+            return False
 
-#             # POST upload data
-#             headers = {
-#                 'Host': 'up.fshare.vn',
-#                 'User-Agent': self.user_agent,
-#                 'Accept': '*/*',
-#                 'Accept-Language': 'en-US,en;q=0.5',
-#                 'Accept-Encoding': 'gzip, deflate, br',
-#                 'Referer': 'https://www.fshare.vn/transfer',
-#                 'Content-Range': 'bytes {0}-{1}/{2}'.format(
-#                     last_index,
-#                     next_index - 1,
-#                     file_size),
-#                 'Content-Length': str(current_chunk),
-#                 'Origin': 'https://www.fshare.vn',
-#                 'DNT': '1',
-#                 'Connection': 'keep-alive'
-#             }
-#             res = self.s.post(location,
-#                               params=chunk_params,
-#                               headers=headers,
-#                               data=data.read(max_chunk_size))
-#             try:
-#                 if res.json():
-#                     return res.json()
-#                 pass
-#             except Exception:
-#                 pass
-#         data.close()
+    def is_exist(self, url):
+        global cookies
+        # print("is_exist", url)
+        # self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+        # self.s.headers.update({'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "sec-ch-ua-platform":"macOS","sec-ch-ua-mobile":"?0","sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\""})
+        r = requests.get(url, allow_redirects=True)
+        if r.is_redirect:
+            print("is_redirect", r.headers["Location"])
+            r = requests.get(r.headers["Location"], allow_redirects=True)
+        print("r", r.status_code)
+        if r.ok:
+            tree = html.fromstring(r.content)
+            title = tree.xpath('//title/text()')[0]
+            if title == 'Not Found - Fshare':
+                return False
+            else:
+                # print("r", r.content)
+                return r
+        else:  # In case auto download is enable in account setting
+            return False
 
-#     def checkAccountStorage(self, server):
-#         token = self.readCookieDB()
-#         global cookies
-#         print("fs getAccountStorage")
-#         """
-#         Strip extra space out of file's name
-#         """
-#         self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-#         if(token != None and token.cookie_share_app):
-#             self.s.cookies.set("share-app", token.cookie_share_app)
-#         r1 = self.s.get("https://www.fshare.vn/account/inforesource",  allow_redirects=False)
-#         print(r1.status_code)
-#         # return {"error":"error"}
-#         if r1.status_code == 200:
-#             tree = html.fromstring(r1.content)
-#             content = tree.xpath('//*[@id="down-traffic-profile"]/div/div/div[@class="account-storage"]/span')
-#             used = ""
-#             available = ""
-#             if(len(content) == 2):
-#                 used = content[0].text.replace("Sử dụng:","").strip()
-#                 available = content[1].text.replace("Còn khả dụng:","").strip()
-#             return {"used": used, "available" : available}
-#         else:
-#             return {"error":"error"}
+    def log_out(self):
+        self.s.get('https://www.fshare.vn/site/logout')
+
+    def upload_file(self, file_path, secured=0):
+
+        UPLOAD_URL = 'https://www.fshare.vn/api/session/upload'
+        file_name = ntpath.basename(file_path)
+        file_size = str(os.path.getsize(file_path))
+        try:
+            data = io.open(file_path, 'rb', buffering=25000000)
+        except FileNotFoundError:
+            raise Exception('File does not exist!')
+
+        r1 = self.s.get('https://www.fshare.vn/home?upload=1')
+        tree = html.fromstring(r1.content)
+        token_data = tree.xpath('//*[@class="pull-left breadscum"]')
+        if token_data:
+            token = token_data[0].get('data-token')
+        else:
+            raise Exception('Can not get token')
+
+        payload = {'SESSID': dict(self.s.cookies).get('session_id'),
+                   'name': file_name,
+                   'path': '/',
+                   'secured': secured,
+                   'size': file_size,
+                   'token': token}
+
+        res = self.s.post(UPLOAD_URL, data=json.dumps(payload))
+        body = res.json()
+
+        if body.get('code') != 200:
+            raise Exception('Initial handshake errors %r', body)
+
+        location = body['location']
+
+        # OPTIONS for chunk upload configuration
+        max_chunk_size = 25000000
+        chunk_total = math.ceil(int(file_size)/max_chunk_size)
+
+        for i in range(chunk_total):
+            chunk_number = i + 1
+            sent = last_index = i * max_chunk_size
+            remaining = int(file_size) - sent
+            if remaining < max_chunk_size:
+                current_chunk = remaining
+            else:
+                current_chunk = max_chunk_size
+
+            next_index = last_index + current_chunk
+
+            chunk_params = {
+                'flowChunkNumber': chunk_number,
+                'flowChunkSize': max_chunk_size,
+                'flowCurrentChunkSize': current_chunk,
+                'flowTotalSize': file_size,
+                'flowIdentifier': '{0}-{1}'.format(current_chunk, file_name),
+                'flowFilename': file_name,
+                'flowRelativePath': file_name,
+                'flowTotalChunks': chunk_total
+            }
+
+            res = self.s.options(location, params=chunk_params)
+
+            # POST upload data
+            headers = {
+                'Host': 'up.fshare.vn',
+                'User-Agent': self.user_agent,
+                'Accept': '*/*',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Referer': 'https://www.fshare.vn/transfer',
+                'Content-Range': 'bytes {0}-{1}/{2}'.format(
+                    last_index,
+                    next_index - 1,
+                    file_size),
+                'Content-Length': str(current_chunk),
+                'Origin': 'https://www.fshare.vn',
+                'DNT': '1',
+                'Connection': 'keep-alive'
+            }
+            res = self.s.post(location,
+                              params=chunk_params,
+                              headers=headers,
+                              data=data.read(max_chunk_size))
+            try:
+                if res.json():
+                    return res.json()
+                pass
+            except Exception:
+                pass
+        data.close()
+
+    def checkAccountStorage(self, server):
+        token = self.readCookieDB()
+        global cookies
+        print("fs getAccountStorage")
+        """
+        Strip extra space out of file's name
+        """
+        self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
+        if(token != None and token.cookie_share_app):
+            self.s.cookies.set("share-app", token.cookie_share_app)
+        r1 = self.s.get("https://www.fshare.vn/account/inforesource",  allow_redirects=False)
+        print(r1.status_code)
+        # return {"error":"error"}
+        if r1.status_code == 200:
+            tree = html.fromstring(r1.content)
+            content = tree.xpath('//*[@id="down-traffic-profile"]/div/div/div[@class="account-storage"]/span')
+            used = ""
+            available = ""
+            if(len(content) == 2):
+                used = content[0].text.replace("Sử dụng:","").strip()
+                available = content[1].text.replace("Còn khả dụng:","").strip()
+            return {"used": used, "available" : available}
+        else:
+            return {"error":"error"}
