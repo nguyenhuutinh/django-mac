@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y tesseract-ocr python3-pip
+RUN apt-get update && apt-get install -y tesseract-ocr python3-pip opencv-python
 
 RUN apt-get update \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
