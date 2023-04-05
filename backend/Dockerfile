@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:alex-p/tesseract-ocr5
+RUN apt-add-repository ppa:~alex-p/tesseract-ocr-devel
 RUN apt-get update \
   && apt-get -y install tesseract-ocr \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
