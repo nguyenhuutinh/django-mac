@@ -38,4 +38,4 @@ djangorestframework-simplejwt
 #Pillow
 diffimg
 pytesseract
-opencv-python
+# opencv-python
