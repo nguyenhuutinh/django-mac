@@ -286,37 +286,36 @@ def checkingPhoto(message):
                 os.remove(filePath)
                 return 1
 
-            # img = cv2.imread(filePath)
+            img = cv2.imread(filePath)
 
-            # # Load the pre-trained neural network model for nudity detection
-            # model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
+            # Load the pre-trained neural network model for nudity detection
+            model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
 
-            # # Define the classes for the neural network model
-            # classes = ['background', 'person']
-            # if img is None or img.shape[0] == 0 or img.shape[1] == 0:
-            #     raise ValueError('Invalid input image')
-            # # Convert the image to a blob
-            # input_size = (300, 300)
+            # Define the classes for the neural network model
+            classes = ['background', 'person']
+            if img is None or img.shape[0] == 0 or img.shape[1] == 0:
+                raise ValueError('Invalid input image')
+            # Convert the image to a blob
+            input_size = (300, 300)
 
-            # blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
+            blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
 
-            # # Set the input for the neural network model
-            # model.setInput(blob)
+            # Set the input for the neural network model
+            model.setInput(blob)
 
-            # # Perform forward pass to get the output from the neural network model
-            # output = model.forward()
-            # print('Checking if any of the detected objects are classified as a person')
-            # # Check if any of the detected objects are classified as a person
-            # for i in range(output.shape[2]):
-            #     confidence = output[0, 0, i, 2]
-            #     if confidence > 0.5 and classes[int(output[0, 0, i, 1])] == 'person':
-            #         print('Nudity detected')
-            #         os.remove(filePath)
-            #         return 2
-            # os.remove(filePath)
-            # print('No Nudity detected')
-            # return -1
+            # Perform forward pass to get the output from the neural network model
+            output = model.forward()
+            print('Checking if any of the detected objects are classified as a person')
+            # Check if any of the detected objects are classified as a person
+            for i in range(output.shape[2]):
+                confidence = output[0, 0, i, 2]
+                if confidence > 0.5 and classes[int(output[0, 0, i, 1])] == 'person':
+                    print('Nudity detected')
+                    os.remove(filePath)
+                    return 2
             os.remove(filePath)
+            print('No Nudity detected')
+            return -1
     print(-1)
     return -1
 
