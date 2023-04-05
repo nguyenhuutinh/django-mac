@@ -268,7 +268,7 @@ def checkingPhoto(message):
         print(file_exists)
         if file_exists:
 
-            img = Image.open("/home/user/app/backend/data/teo3.jpg")
+            img = Image.open("/home/user/app/backend/data/test.jpg")
 
             # Use pytesseract to convert the image to text
             print("start convert", img)
@@ -290,7 +290,10 @@ def checkingPhoto(message):
 
             # Resize the image using the calculated size
             resized_img = img.resize((new_width, new_height))
+            print(pytesseract.image_to_string(img))
+
             text = pytesseract.image_to_string(resized_img)
+
             print("end convert")
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
             print("converted to text: ", text)
