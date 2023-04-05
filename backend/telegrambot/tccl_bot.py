@@ -273,7 +273,7 @@ def checkingPhoto(message):
             # Use pytesseract to convert the image to text
             text = pytesseract.image_to_string(img)
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
-
+            print("converted to text: ", text)
             # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
             match = re.search(pattern, text)
 
@@ -302,7 +302,7 @@ def checkingPhoto(message):
 
             # Perform forward pass to get the output from the neural network model
             output = model.forward()
-
+            print('Checking if any of the detected objects are classified as a person')
             # Check if any of the detected objects are classified as a person
             for i in range(output.shape[2]):
                 confidence = output[0, 0, i, 2]
@@ -311,6 +311,8 @@ def checkingPhoto(message):
                     os.remove(filePath)
                     return 2
             os.remove(filePath)
+            print('No Nudity detected')
+            return -1
     print(-1)
     return -1
 
