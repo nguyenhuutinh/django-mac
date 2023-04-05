@@ -271,7 +271,9 @@ def checkingPhoto(message):
             img = Image.open(filePath)
 
             # Use pytesseract to convert the image to text
+            print("start convert", img)
             text = pytesseract.image_to_string(img)
+            print("end convert")
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
             print("converted to text: ", text)
             # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
