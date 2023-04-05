@@ -274,8 +274,8 @@ def checkingPhoto(message):
             print("start convert", img)
 
             # Set the maximum width and height for the resized image
-            max_width = 500
-            max_height = 500
+            max_width = 100
+            max_height = 100
 
             # Get the current width and height of the image
             width, height = img.size
