@@ -244,3 +244,12 @@ This project, as other Vinta open-source projects, is used in products of Vinta 
 Copyright (c) 2021 Vinta Serviços e Soluções Tecnológicas Ltda.
 
 [MIT License](LICENSE.txt)
+
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+
+source /System/Volumes/Data/Users/nguyenhuutinh/Library/Python/3.9/bin/virtualenvwrapper.sh
+
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+mkvirtualenv macos

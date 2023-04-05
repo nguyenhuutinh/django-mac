@@ -1,8 +1,11 @@
 from soupsieve import iselect
 from telegrambot.models import Message, TelegramUser
+import uuid
 
 from datetime import datetime, timedelta
 import os
+import cv2
+import re
 from re import M
 import telebot
 # from config import *
@@ -16,6 +19,9 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
+
+import pytesseract
+from PIL import Image
 
 MSG_COUNTER = 0
 MSG_MAX = 60
@@ -86,6 +92,30 @@ def photo(message):
         return
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}\n")
     moderate(message=message)
+
+
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
+    full_name = f"{first_name}{last_name}"
+
+    res = checkingPhoto(message=message)
+    if res == 1:
+        userId = message.from_user.id
+        chatId = message.chat.id
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+
+        # bot.ban_chat_member(chatId, userId)
+        bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng hình ảnh bị cấm. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        bot.send_message("-1001349899890", "SCAM-HÌNH ẢNH - Đã ban user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    elif res == 2:
+        userId = message.from_user.id
+        chatId = message.chat.id
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+        bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng hình ảnh bị cấm. ‼️")
+        bot.send_message("-1001349899890", "SPAM ẢNH SEX - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    else:
+        print("check photo and it is valid")
+
 
 
 def checkingUserProfilePhoto(message):
@@ -193,6 +223,93 @@ def checkingUserProfilePhoto(message):
 
     return False
 
+
+def checkingPhoto(message):
+    # print(f"checking user photo {message.from_user.id}")
+
+    # data = bot.get_user_profile_photos(message.from_user.id)
+    # print(data)
+    # njson = json.loads(data)
+    # print(data['result'])
+    file_id = message.photo[-1].file_id
+    if message.photo != None and message.photo[-1] != None:
+
+        # photos_ids = []
+        # fileName = message.photo[-1].file_unique_id
+        fileId = message.photo[-1].file_id
+
+        pic_url = bot.get_file_url(fileId)
+        file_info = bot.get_file(file_id)
+
+        # downloaded_file = bot.download_file(file_info.file_path)
+        file_extension = '.' + file_info.file_path.split('.')[-1]
+        fileName = str(uuid.uuid4()) + file_extension
+
+
+        # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
+
+        filePath = '/home/user/app/backend/data/' + fileName
+        print(filePath)
+        if not os.path.exists(filePath):
+            with open(filePath, 'w'): pass
+        with open(filePath, 'wb') as handle:
+            response = requests.get(pic_url, stream=True)
+
+            if not response.ok:
+                print(f"{bcolors.FAIL}open file error: {response} {bcolors.ENDC}")
+
+            for block in response.iter_content(1024):
+                if not block:
+                    break
+                handle.write(block)
+        file_exists = exists(filePath)
+        if file_exists:
+
+            img = Image.open(filePath)
+
+            # Use pytesseract to convert the image to text
+            text = pytesseract.image_to_string(img)
+            pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
+
+            # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
+            match = re.search(pattern, text)
+
+            # If a percentage value greater than or equal to 1000 is found, print it
+            if match:
+                print(f"Percentage value greater than or equal to 1000 found: {match.group(0)}")
+                os.remove(filePath)
+                return 1
+
+            img = cv2.imread(filePath)
+
+            # Load the pre-trained neural network model for nudity detection
+            model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
+
+            # Define the classes for the neural network model
+            classes = ['background', 'person']
+            if img is None or img.shape[0] == 0 or img.shape[1] == 0:
+                raise ValueError('Invalid input image')
+            # Convert the image to a blob
+            input_size = (300, 300)
+
+            blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
+
+            # Set the input for the neural network model
+            model.setInput(blob)
+
+            # Perform forward pass to get the output from the neural network model
+            output = model.forward()
+
+            # Check if any of the detected objects are classified as a person
+            for i in range(output.shape[2]):
+                confidence = output[0, 0, i, 2]
+                if confidence > 0.5 and classes[int(output[0, 0, i, 1])] == 'person':
+                    print('Nudity detected')
+                    os.remove(filePath)
+                    return 2
+            os.remove(filePath)
+    return -1
+
 # def compare_images(img1, img2):
 #     """Calculate the difference between two images of the same size
 #     by comparing channel values at the pixel level.
@@ -276,12 +393,15 @@ def checkAndDeleteMessage(message):
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
+    full_name = f"{first_name}{last_name}"
     if not isExist:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ Tin nhắn " + message.from_user.first_name + " sử dụng từ ngữ bị cấm. ‼️")
+        bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng từ ngữ bị cấm. ‼️")
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=5)
-    bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {message.from_user.first_name}" )
+    bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {full_name}" )
 
 @shared_task
 def deleteMessageTask(chat_id, message_id):
@@ -423,8 +543,9 @@ def processCheckAndBan(message):
 def banUser(message, error_text):
     print("start ban user")
     chatId = message.chat.id
-    firstName = message.from_user.first_name
-    lastName = message.from_user.last_name
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
+    full_name = f"{first_name}{last_name}"
     userId = message.from_user.id
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
@@ -435,12 +556,12 @@ def banUser(message, error_text):
     print(f"banned ?: {isExist}")
     if not isExist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ " + firstName + " bị ban vì hành vi SCAM / LỪA ĐẢO ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        bot.reply_to(message, "‼️ " + full_name + " bị ban vì hành vi SCAM / LỪA ĐẢO ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
 
-    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{firstName}" + " - lastname: "+ f"{lastName}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     print(TelegramUser.objects.filter(user_id=userId))
     TelegramUser.objects.filter(user_id=userId).update(status='banned', ban_reason=error_text)
-    print(f"{bcolors.OKGREEN} banned {userId} {firstName} {bcolors.ENDC}")
+    print(f"{bcolors.OKGREEN} banned {userId} {full_name} {bcolors.ENDC}")
 
 
 
@@ -451,13 +572,14 @@ def report(message):
 
         firstname = message.reply_to_message.from_user.first_name
         last_name = message.reply_to_message.from_user.last_name
+        last_name = message.reply_to_message.last_name if message.reply_to_message.last_name is not None else ''
+        full_name = f"{firstname}{last_name}"
         uid = message.reply_to_message.from_user.id
         mess = message.reply_to_message.text
         messId = message.reply_to_message.id
-        name =  f" {firstname} {last_name}"
         reportName = message.from_user.first_name
         print (f"{bcolors.BOLD}reported  {mess} {bcolors.ENDC}")
-        bot.send_message("-1001349899890", f"{reportName} reported {uid} - {name}:  mess :{messId} {mess}" )
+        bot.send_message("-1001349899890", f"{reportName} reported {uid} - {full_name}:  mess :{messId} {mess}" )
 
 
 
