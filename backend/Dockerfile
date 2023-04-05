@@ -9,7 +9,6 @@ RUN apt-get update \
   && apt-get -y install tesseract-ocr \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
 
-RUN apt-get install tesseract-ocr
 RUN apt-get install -y libgl1-mesa-glx
 # Install system dependencies
 RUN apt-get update && apt-get install gcc build-essential libpq-dev -y && \
