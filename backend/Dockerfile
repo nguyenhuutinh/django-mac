@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
-
+RUN add-apt-repository ppa:alex-p/tesseract-ocr-devel
 RUN apt-get install tesseract-ocr
 RUN apt-get install -y libgl1-mesa-glx
 # Install system dependencies
