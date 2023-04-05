@@ -13,7 +13,7 @@ import re
 from users.models import User  # noqa
 import pytesseract
 from PIL import Image
-import cv2
+# import cv2
 
 
 # Create your views here.
