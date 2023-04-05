@@ -4,7 +4,7 @@ import uuid
 
 from datetime import datetime, timedelta
 import os
-# import cv2
+import cv2
 import re
 from re import M
 import telebot
@@ -268,32 +268,12 @@ def checkingPhoto(message):
         print(file_exists)
         if file_exists:
 
-            img = Image.open("/home/user/app/backend/data/test.jpg")
+            img = Image.open(filePath)
 
             # Use pytesseract to convert the image to text
             print("start convert", img)
 
-            # Set the maximum width and height for the resized image
-            max_width = 100
-            max_height = 100
-
-            # Get the current width and height of the image
-            width, height = img.size
-
-            # Calculate the new size while maintaining the aspect ratio
-            if width > height:
-                new_width = max_width
-                new_height = int(height * (max_width / width))
-            else:
-                new_height = max_height
-                new_width = int(width * (max_height / height))
-
-            # Resize the image using the calculated size
-            resized_img = img.resize((new_width, new_height))
-            # print(pytesseract.image_to_string(img))
-
-            text = pytesseract.image_to_string(resized_img,  lang='eng')
-
+            text = pytesseract.image_to_string(img)
             print("end convert")
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
             print("converted to text: ", text)
@@ -333,9 +313,10 @@ def checkingPhoto(message):
             #         print('Nudity detected')
             #         os.remove(filePath)
             #         return 2
-            os.remove(filePath)
+            # os.remove(filePath)
             # print('No Nudity detected')
             # return -1
+            os.remove(filePath)
     print(-1)
     return -1
 
