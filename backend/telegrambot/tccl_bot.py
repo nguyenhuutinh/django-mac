@@ -241,7 +241,8 @@ def checkingPhoto(message):
 
         pic_url = bot.get_file_url(fileId)
         file_info = bot.get_file(file_id)
-
+        print(pic_url)
+        print(file_info)
         # downloaded_file = bot.download_file(file_info.file_path)
         file_extension = '.' + file_info.file_path.split('.')[-1]
         fileName = str(uuid.uuid4()) + file_extension
@@ -264,6 +265,7 @@ def checkingPhoto(message):
                     break
                 handle.write(block)
         file_exists = exists(filePath)
+        print(file_exists)
         if file_exists:
 
             img = Image.open(filePath)
@@ -309,6 +311,7 @@ def checkingPhoto(message):
                     os.remove(filePath)
                     return 2
             os.remove(filePath)
+    print(-1)
     return -1
 
 # def compare_images(img1, img2):
