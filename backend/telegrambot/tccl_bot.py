@@ -268,7 +268,7 @@ def checkingPhoto(message):
         print(file_exists)
         if file_exists:
 
-            img = Image.open(filePath)
+            img = Image.open("/home/user/app/backend/data/teo3.jpg")
 
             # Use pytesseract to convert the image to text
             print("start convert", img)
