@@ -4,7 +4,7 @@ import uuid
 
 from datetime import datetime, timedelta
 import os
-import cv2
+# import cv2
 import re
 from re import M
 import telebot
