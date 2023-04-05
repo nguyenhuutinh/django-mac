@@ -7,7 +7,8 @@ WORKDIR /home/user/app/backend
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
-RUN add-apt-repository ppa:alex-p/tesseract-ocr-devel && \ apt-get install tesseract-ocr
+RUN add-apt-repository ppa:alex-p/tesseract-ocr-devel
+RUN apt-get install tesseract-ocr
 RUN apt-get install -y libgl1-mesa-glx
 # Install system dependencies
 RUN apt-get update && apt-get install gcc build-essential libpq-dev -y && \
