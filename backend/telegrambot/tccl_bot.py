@@ -225,15 +225,16 @@ def checkingUserProfilePhoto(message):
 
 
 def checkingPhoto(message):
-    # print(f"checking user photo {message.from_user.id}")
+    print(f"checking photo")
 
     # data = bot.get_user_profile_photos(message.from_user.id)
     # print(data)
     # njson = json.loads(data)
     # print(data['result'])
     file_id = message.photo[-1].file_id
+    print(message.photo)
     if message.photo != None and message.photo[-1] != None:
-
+        print("photo existed")
         # photos_ids = []
         # fileName = message.photo[-1].file_unique_id
         fileId = message.photo[-1].file_id
