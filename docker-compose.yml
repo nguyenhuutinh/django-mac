@@ -28,7 +28,9 @@ services:
   #     - /app/node_modules
   #   ports:
   #     - "3000:3000"
-
+  tesseract:
+    image: tesseractshadow/tesseract4re
+    container_name: t4re
   backend:
     build:
       dockerfile: backend/Dockerfile
