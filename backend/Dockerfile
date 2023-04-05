@@ -9,8 +9,12 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y tesseract-ocr python3-pip
+
 RUN apt-get update \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
+
+RUN pip3 install pytesseract
 
 RUN apt-get install -y libgl1-mesa-glx
 
@@ -25,9 +29,7 @@ RUN pip-compile requirements.in > requirements.txt && \
 
 RUN pip install -r requirements.txt && \
     pip install -r dev-requirements.txt  && \
-    pip install psycopg2-binary && \
-    pip install pytesseract
-
+    pip install psycopg2-binary
 # Clean the house
 RUN apt-get purge libpq-dev -y && apt-get autoremove -y && \
     rm /var/lib/apt/lists/* rm -rf /var/cache/apt/*

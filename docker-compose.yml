@@ -28,9 +28,10 @@ services:
   #     - /app/node_modules
   #   ports:
   #     - "3000:3000"
-  tesseract:
-    image: tesseractshadow/tesseract4re
-    container_name: t4re
+  # tesseract:
+  #   image: ricktorzynski/ocr-tesseract-docker
+  #   ports:
+  #     - "5000:5000"
   backend:
     build:
       dockerfile: backend/Dockerfile
@@ -43,7 +44,7 @@ services:
     depends_on:
       - db
       - broker
-      - tesseract
+      # - tesseract
       # - result
       # - frontend
 
