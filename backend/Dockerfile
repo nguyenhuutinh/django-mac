@@ -4,21 +4,16 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
+
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update -oAcquire::AllowInsecureRepositories=true
-RUN apt-get install notesalexp-keyring -oAcquire::AllowInsecureRepositories=true
-
-RUN wget -O - https://notesalexp.org/debian/alexp_key.asc | sudo apt-key add -
-
-RUN apt-add-repository ppa:~alex-p/tesseract-ocr-devel
 RUN apt-get update \
-  && apt-get -y install tesseract-ocr \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
 
 RUN apt-get install -y libgl1-mesa-glx
+
 # Install system dependencies
 RUN apt-get update && apt-get install gcc build-essential libpq-dev -y && \
     python3 -m pip install --no-cache-dir pip-tools
