@@ -4,6 +4,10 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN add-apt-repository ppa:alex-p/tesseract-ocr-devel
 RUN apt-get update \
   && apt-get -y install tesseract-ocr \
