@@ -111,7 +111,7 @@ def photo(message):
         userId = message.from_user.id
         chatId = message.chat.id
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        bot.reply_to(message, "‼️ Post hình 3X là ra dảo nha ‼️")
+        bot.reply_to(message, "‼️ Đăng hình 3X là ra dảo nha ‼️")
         bot.send_message("-1001349899890", "SPAM ẢNH SEX - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     else:
         print("check photo and it is valid")
