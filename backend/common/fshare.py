@@ -10,7 +10,7 @@ import os
 import requests
 from common.models import TokenInfo
 
-ID_COOKIE_2 = "59c108aa4c43567619a72dc33330726179d26678b721b33c78e3ee75cefe1181a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B17968929%2C%22Zb5Y1cu3jmvTbCq76URkunJU_rfe6Ij9%22%2C1634889338%5D%22%3B%7D"
+ID_COOKIE_2 = "f59df4c2d24c75abd62276f6b8264069c6de32fd3a07c34141e839862a9ae768a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A56%3A%22%5B14260924%2C%22N3EF-GqSHZEQQJD0h2KrU-Tbr4CNCHWo%22%2C1640130186%5D%22%3B%7D"
 
 
 # ID_COOKIE_1 = "811fca809ca392717e052e50701d47aa9a84e0e83b20958544912aeb49599493a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_identity-app%22%3Bi%3A1%3Bs%3A55%3A%22%5B6565416%2C%22HRTqYQSx0tOWmSo9tbqX7IZc8tTBjbOg%22%2C1637910010%5D%22%3B%7D"
@@ -156,7 +156,7 @@ class FS:
         r = requests.get(self.login_url)
         self.email =  "druzhinin89@dronesmart.net"
         self.password =  "druzhinin89@dronesmart.net"
-        # print("email" , self.email, self.password)
+        # # print("email" , self.email, self.password)
         token = self.get_token(r)
         cookies = r.cookies
         data = {
@@ -165,27 +165,28 @@ class FS:
             'LoginForm[password]': self.password,
             'LoginForm[rememberMe]': 1,
         }
-        # print("data", data)
+        # # print("data", data)
         res = self.s.post(self.login_url, cookies=cookies, data=data)
-        print("res", res.status_code, res.headers, res.cookies)
-        # self.s.cookies.set("_identity-app", self.idenCookie, domain="www.fshare.vn" ,expires=" 3273977798.958045")
-
-        # rr = self.s.get('https://www.fshare.vn/file/manager', cookies=cookies)
-        # print("res", rr.cookies)
-        # print(r.status_code)
-        # tree = html.fromstring(r.content)
-        # if tree.xpath('//*[@href="/signup"]'):
-        #     raise Exception('Login failed. Please check your email & password')
-        # else:
-        #     if r.cookies.get("fshare-app") == None:
-        #         raise Exception('Login failed. Empty Cookie')
-        #     self.token = self.get_token(r)
-        #     self.cookies = r.cookies
-        #     cookies = r.cookies
-        #     print("login success with " + self.token, self.cookies.get("fshare-app"))
-        #     return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
 
 
+        r = self.s.get('https://fshare.vn/file/manager', cookies=res.cookies)
+
+
+        print("res", r.cookies)
+        print(r.status_code)
+        tree = html.fromstring(r.content)
+        if tree.xpath('//*[@href="/signup"]'):
+            raise Exception('Login failed. Please check your email & password')
+        else:
+            if res.cookies.get("fshare-app") == None:
+                raise Exception('Login failed. Empty Cookie')
+            self.token = self.get_token(r)
+            self.cookies = res.cookies
+            cookies = res.cookies
+            print("login success with " + self.token, self.cookies.get("fshare-app"))
+            return self.updateToDB(self.idenCookie, self.token, self.cookies.get("fshare-app"))
+
+    
 
     def updateToDB(self, idenCookie, token , app):
         if(app == None):

@@ -4,8 +4,13 @@ import json
 import pprint
 import random
 import sys
+from babel.numbers import format_decimal
+
 from datetime import date, datetime, time, timedelta
 from io import StringIO
+from openpyxl import load_workbook
+import pandas as pd
+
 from django.db.models import Q
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -13,6 +18,7 @@ from django.shortcuts import render
 from django.utils.timezone import now
 from django.views import generic
 import subprocess
+from rest_framework.parsers import MultiPartParser
 
 from celery.result import AsyncResult
 from common.models import GoogleFormField
@@ -844,4 +850,118 @@ def add_google_form(campaign, request):
     # print(url)
     return getFormResponse(campaign, url)
 
+
+
+
+
+
+class ExcelViewSet(viewsets.ViewSet):
+    @action(
+        detail=False,
+        methods=['post'],
+        # authentication_classes = [SessionAuthentication, BasicAuthentication],
+        # permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
+        parser_classes=[MultiPartParser],
+
+        url_path='report',
+    )
+    @csrf_exempt
+    def regenerateDate(self, request):
+
+        file_obj = request.FILES['file']
+        wb = load_workbook(filename=file_obj, data_only = True)
+        ws = wb.active
+        # Create a dictionary to map column names to indices
+        col_map = {col_letter: col_idx for col_idx, col_letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', start=1) if col_idx <= 26 }
+
+        # Define the column name you want to read from
+        column_po_no_name = ''
+
+        # Get the column index from the dictionary
+
+
+        column_po_date_name = ''
+
+        column_supplier_name = ''
+
+        column_po_amount_name = ''
+
+        # Create an empty dictionary to store the grouped rows
+        grouped_rows = {}
+
+
+        df = pd.DataFrame(columns=['D', 'M', 'Y', 'PO No', 'Supplier', 'Material', 'Subtotal', 'VAT', 'Total'])
+        df['VAT'] = df['VAT'].astype(float)
+        df['Total'] = df['Total'].astype(float)
+
+        for cell in ws[10]:
+
+            if cell.value != None and cell.value.strip() == "PO no.":
+                column_po_no_name = cell.column_letter
+            if cell.value != None and cell.value.strip() == "PO date":
+                column_po_date_name = cell.column_letter
+            if cell.value != None and cell.value.strip() == "Supplier":
+                column_supplier_name = cell.column_letter
+            if cell.value != None and cell.value.strip() == "Amount":
+                column_po_amount_name = cell.column_letter
+
+        column_po_no_index = col_map[column_po_no_name]
+        column_po_date_index = col_map[column_po_date_name]
+        column_supplier_index = col_map[column_supplier_name]
+        column_po_amount_index = col_map[column_po_amount_name]
+
+
+        # Loop through each row and read the cell in the specified column
+        for row in ws.iter_rows(min_row=12, max_row= 100):
+            po_no = row[column_po_no_index - 1].value
+            date = row[column_po_date_index - 1].value
+            date_str = datetime.strptime(date, '%d.%m.%Y') if date is not None and isinstance(date, str) else ""
+
+
+            if (po_no, date_str) in grouped_rows:
+                grouped_rows[(po_no, date_str)].append(row)
+            else:
+                grouped_rows[(po_no, date_str)] = [row]
+            # Do something with the cell value
+        # Do something with the grouped rows
+        for group_value, rows in grouped_rows.items():
+            print(f"Rows with value '{group_value}':")
+            sumPrice = 0
+            date_object = None
+            for row in rows:
+                cell_value = row[column_po_amount_index - 1].value
+                # print(cell_value)
+                if cell_value != None:
+                    sumPrice += cell_value
+                date_value = row[column_po_date_index - 1].value
+                if date_value is not None and isinstance(date_value, str):
+                    date_object = datetime.strptime(date_value, '%d.%m.%Y')  # Assumes date is in format "yyyy-mm-dd"
+                    # Print the date object
+                    # print(date_object.day, date_object.month, date_object.year)
+            # print(sumPrice)
+            formatted_value = 'sumPrice'
+
+            if date_object != None:
+
+                vat_formula = formatted_value * 0.1
+
+                df.loc[len(df)] = [date_object.day, date_object.month, date_object.year, row[column_po_no_index - 1].value , row[column_supplier_index - 1].value , 'Widget A', formatted_value, vat_formula, 120.00]
+                df['VAT'] =float(sumPrice) * 0.1
+                for i, formula_str in enumerate(df['Subtotal']):
+                    print(formula_str)
+                    subtotal3 = eval(formula_str)
+                    vat_formula = subtotal3 * 0.1
+                    df.at[i, 'Subtotal'] = subtotal3
+                    df.at[i, 'VAT'] = vat_formula
+
+        df.style.format({'Subtotal': '_(* #.##0_);_(* (#.##0);_(* "-"??_);_(@_)'})
+
+        df.to_excel('my_file11.xlsx', index=False)
+
+
+
+
+
+        return JsonResponse({"error_message": "" }, status=200)
 

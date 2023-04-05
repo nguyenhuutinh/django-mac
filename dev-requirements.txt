@@ -22,7 +22,7 @@ django==4.1.7
     # via
     #   -r dev-requirements.in
     #   model-bakery
-filelock==3.10.0
+filelock==3.10.3
     # via virtualenv
 gitdb==4.0.10
     # via gitpython

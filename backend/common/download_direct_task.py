@@ -63,58 +63,58 @@ def checkVariable(server,password):
 @shared_task
 def downloadDirectFshare(code, server, password, token):
     print("downloadDirectFshare", server)
-    fshareI  = FS(server)
-    fshareI.login()
+    # fshareI  = FS(server)
+    # fshareI.login()
     logging.basicConfig(level=logging.DEBUG)
     requests_log = logging.getLogger("requests.packages.urllib3")
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
 
-    # tokenInfo = checkVariable(server,password)
-    # if tokenInfo is None:
-    #     raise Exception("token is empty")
+    tokenInfo = checkVariable(server,password)
+    if tokenInfo is None:
+        raise Exception("token is empty")
 
-    # cookie_share_app = getattr(tokenInfo,"cookie_share_app")
-    # cookie_csrf = getattr(tokenInfo,"cookie_csrf")
+    cookie_share_app = getattr(tokenInfo,"cookie_share_app")
+    cookie_csrf = getattr(tokenInfo,"cookie_csrf")
 
-    # if password and password != "" :
-    #     if token == "" or token == None:
-    #         token = "1637929889"
-    #     #     return "File có password cần gửi link đầy đủ. ví dụ: https://www.fshare.vn/file/X7TAOCTDJAJNA96RT?token=1637849239"
-    #     tokenInfo = bypassword(server, code, password, cookie_csrf, cookie_share_app, token)
+    if password and password != "" :
+        if token == "" or token == None:
+            token = "1637929889"
+        #     return "File có password cần gửi link đầy đủ. ví dụ: https://www.fshare.vn/file/X7TAOCTDJAJNA96RT?token=1637849239"
+        tokenInfo = bypassword(server, code, password, cookie_csrf, cookie_share_app, token)
 
-    #     if tokenInfo:
-    #         cookie_share_app = getattr(tokenInfo,"cookie_share_app")
-    #         cookie_csrf = getattr(tokenInfo,"cookie_csrf")
-    #         # print("tokenInfo2222", cookie_csrf, cookie_share_app)
+        if tokenInfo:
+            cookie_share_app = getattr(tokenInfo,"cookie_share_app")
+            cookie_csrf = getattr(tokenInfo,"cookie_csrf")
+            # print("tokenInfo2222", cookie_csrf, cookie_share_app)
 
-    # print("token info: ", cookie_csrf, cookie_share_app)
+    print("token info: ", cookie_csrf, cookie_share_app)
 
 
-    # # heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=3*60))
+    # heartBeating.apply_async(kwargs={ "server": server,'csrf': cookie_csrf, 'app': cookie_share_app}, eta=now() + timedelta(seconds=3*60))
 
-    # myobj = {'linkcode': code, 'withFcode5':0, '_csrf-app': cookie_csrf}
-    # headers_api = {
-    #     'User-Agent': str(USER_AGENT),
-    #     "sec-ch-ua-platform":"macOS",
-    #     "sec-ch-ua-mobile":"?0",
-    #     "sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99",
-    #     'x-csrf-token': cookie_csrf,
-    #     'Cookie':'fshare-app=' + cookie_share_app
-    # }
-    # print(headers_api)
-    # resp = requests.post('https://www.fshare.vn/download/get',data = myobj, headers=headers_api)
-    # print("get file status code: ", resp.status_code)
-    # if resp.ok:
-    #     try:
-    #         print(resp.content)
-    #         # print("get file response", resp.json())
-    #         return resp.json()
-    #     except Exception:
-    #         return resp.content
+    myobj = {'linkcode': code, 'withFcode5':0, '_csrf-app': cookie_csrf}
+    headers_api = {
+        'User-Agent': str(USER_AGENT),
+        "sec-ch-ua-platform":"macOS",
+        "sec-ch-ua-mobile":"?0",
+        "sec-ch-ua":"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99",
+        'x-csrf-token': cookie_csrf,
+        'Cookie':'fshare-app=' + cookie_share_app
+    }
+    print(headers_api)
+    resp = requests.post('https://www.fshare.vn/download/get',data = myobj, headers=headers_api)
+    print("get file status code: ", resp.status_code)
+    if resp.ok:
+        try:
+            print(resp.content)
+            # print("get file response", resp.json())
+            return resp.json()
+        except Exception:
+            return resp.content
 
-    # else :
-    #     return
+    else :
+        return
 
 @shared_task
 def heartBeating(server, csrf, app):

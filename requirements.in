@@ -33,3 +33,7 @@ django-cors-headers
 django-redis
 django-rest-knox
 pylibmc
+openpyxl
+pandas
+babel
+jinja2
