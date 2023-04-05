@@ -25,7 +25,8 @@ RUN pip-compile requirements.in > requirements.txt && \
 
 RUN pip install -r requirements.txt && \
     pip install -r dev-requirements.txt  && \
-    pip install psycopg2-binary
+    pip install psycopg2-binary && \
+    pip install pytesseract
 
 # Clean the house
 RUN apt-get purge libpq-dev -y && apt-get autoremove -y && \

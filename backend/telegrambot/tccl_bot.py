@@ -290,9 +290,9 @@ def checkingPhoto(message):
 
             # Resize the image using the calculated size
             resized_img = img.resize((new_width, new_height))
-            print(pytesseract.image_to_string(img))
+            # print(pytesseract.image_to_string(img))
 
-            text = pytesseract.image_to_string(resized_img)
+            text = pytesseract.image_to_string(resized_img,  lang='eng')
 
             print("end convert")
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
