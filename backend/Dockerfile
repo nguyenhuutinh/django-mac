@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED 1
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
 
+RUN apt-get install -y libgl1-mesa-glx
 # Install system dependencies
 RUN apt-get update && apt-get install gcc build-essential libpq-dev -y && \
     python3 -m pip install --no-cache-dir pip-tools
