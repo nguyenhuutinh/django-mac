@@ -4,10 +4,11 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    rm -rf /var/lib/apt/lists/*
 RUN add-apt-repository ppa:alex-p/tesseract-ocr-devel
+RUN apt-get update \
+  && apt-get -y install tesseract-ocr \
+  && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
+
 RUN apt-get install tesseract-ocr
 RUN apt-get install -y libgl1-mesa-glx
 # Install system dependencies
