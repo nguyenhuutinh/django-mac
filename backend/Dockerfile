@@ -8,6 +8,11 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update -oAcquire::AllowInsecureRepositories=true
+RUN apt-get install notesalexp-keyring -oAcquire::AllowInsecureRepositories=true
+
+RUN wget -O - https://notesalexp.org/debian/alexp_key.asc | sudo apt-key add -
+
 RUN apt-add-repository ppa:~alex-p/tesseract-ocr-devel
 RUN apt-get update \
   && apt-get -y install tesseract-ocr \
