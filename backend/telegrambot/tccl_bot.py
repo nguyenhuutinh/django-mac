@@ -272,7 +272,25 @@ def checkingPhoto(message):
 
             # Use pytesseract to convert the image to text
             print("start convert", img)
-            text = pytesseract.image_to_string(img)
+
+            # Set the maximum width and height for the resized image
+            max_width = 500
+            max_height = 500
+
+            # Get the current width and height of the image
+            width, height = img.size
+
+            # Calculate the new size while maintaining the aspect ratio
+            if width > height:
+                new_width = max_width
+                new_height = int(height * (max_width / width))
+            else:
+                new_height = max_height
+                new_width = int(width * (max_height / height))
+
+            # Resize the image using the calculated size
+            resized_img = img.resize((new_width, new_height))
+            text = pytesseract.image_to_string(resized_img)
             print("end convert")
             pattern = r'\b(1[0-9]{3,}|[2-9][0-9]{3,})\.\d*%|\b(1[0-9]{3,}|[2-9][0-9]{3,})%'
             print("converted to text: ", text)
