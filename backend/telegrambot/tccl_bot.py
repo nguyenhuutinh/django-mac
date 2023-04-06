@@ -293,7 +293,7 @@ def checkingPhoto(message):
             response = requests.post(
                 url,
                 files={
-                    'image': img,
+                    'image': open(filePath, 'rb'),
                 },
                 headers=headers
             )
