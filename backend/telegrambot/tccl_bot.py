@@ -286,6 +286,24 @@ def checkingPhoto(message):
                 os.remove(filePath)
                 return 1
 
+            url = 'https://api.deepai.org/api/nsfw-detector'
+            headers = {
+                'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
+            }
+            response = requests.post(
+                url,
+                files={
+                    'image': img,
+                },
+                headers=headers
+            )
+            print(response.text)
+            result = json.loads(response.text)
+            if result['output']['nsfw_score'] > 0.7:
+                print('Nudity detected')
+                os.remove(filePath)
+                return 2
+
             # img = cv2.imread(filePath)
 
             # # Load the pre-trained neural network model for nudity detection
