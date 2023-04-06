@@ -440,6 +440,12 @@ def processCheckAndBan(message):
     if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
+    if "ai" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+        return True
+    if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+        return True
     if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
         return True
