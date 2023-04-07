@@ -27,7 +27,7 @@ from cloudmersive_image_api_client.rest import ApiException
 
 configuration = cloudmersive_image_api_client.Configuration()
 configuration.api_key['Apikey'] = '9f957878-68e3-4b7b-ba1b-5c960f445002'
-api_instance = cloudmersive_image_api_client.ImageApi(cloudmersive_image_api_client.ApiClient(configuration))
+api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_client.ApiClient(configuration))
 
 
 MSG_COUNTER = 0
@@ -343,7 +343,7 @@ def checkingPhoto(message):
 
                     try:
                         # Classify an image for nudity
-                        api_response = api_instance.image_nudity_detection(filePath)
+                        api_response = api_instance.nsfw_classify(filePath)
                         print(api_response)
 
                         nsfw_score = api_response.nsfw_score
