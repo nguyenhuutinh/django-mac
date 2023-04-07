@@ -22,9 +22,10 @@ from celery import shared_task
 
 import pytesseract
 from PIL import Image
-import cloudmersive_convert_api_client
-from cloudmersive_convert_api_client.rest import ApiException
+import cloudmersive_nudity_api_client
+from cloudmersive_nudity_api_client.rest import ApiException
 
+api_instance = cloudmersive_nudity_api_client.ImageNudityApi()
 
 
 MSG_COUNTER = 0
@@ -339,7 +340,6 @@ def checkingPhoto(message):
 
 
             try:
-                api_instance = cloudmersive_convert_api_client.ImageNudityApi()
                 # Classify an image for nudity
                 api_response = api_instance.image_nudity_classify('9f957878-68e3-4b7b-ba1b-5c960f445002', filePath)
                 print(api_response)
