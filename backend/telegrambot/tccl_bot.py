@@ -336,9 +336,10 @@ def checkingPhoto(message):
             #         os.remove(filePath)
             #         return 2
 
-            api_instance = cloudmersive_convert_api_client.ImageNudityApi()
+
 
             try:
+                api_instance = cloudmersive_convert_api_client.ImageNudityApi()
                 # Classify an image for nudity
                 api_response = api_instance.image_nudity_classify('9f957878-68e3-4b7b-ba1b-5c960f445002', filePath)
                 print(api_response)
