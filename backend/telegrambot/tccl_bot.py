@@ -520,6 +520,15 @@ def processCheckAndBan(message):
     if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
+    if  "futu" in f"{message.text} {message.caption}".lower() and "anh em" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
+    if  "futu" in f"{message.text} {message.caption}".lower() and "inbox" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
+    if  "futu" in f"{message.text} {message.caption}".lower() and "lnbox" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
 
     if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
