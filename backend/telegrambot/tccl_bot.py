@@ -27,7 +27,7 @@ from cloudmersive_image_api_client.rest import ApiException
 
 configuration = cloudmersive_image_api_client.Configuration()
 configuration.api_key['Apikey'] = '9f957878-68e3-4b7b-ba1b-5c960f445002'
-api_instance = cloudmersive_image_api_client.ImageNudityApi(cloudmersive_image_api_client.ApiClient(configuration))
+api_instance = cloudmersive_image_api_client.ImageApi(cloudmersive_image_api_client.ApiClient(configuration))
 
 
 MSG_COUNTER = 0
