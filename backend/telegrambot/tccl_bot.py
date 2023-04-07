@@ -344,8 +344,9 @@ def checkingPhoto(message):
                     try:
                         # Classify an image for nudity
                         api_response = api_instance.nsfw_classify(filePath)
-                        print(api_response)
+                        print(api_response, api_response.score)
                         njson = json.loads(api_response)
+                        print(njson)
                         nsfw_score = njson["score"]
                         classification_outcome = njson["classification_outcome"]
                         print(nsfw_score, classification_outcome)
