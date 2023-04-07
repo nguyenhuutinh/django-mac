@@ -336,7 +336,7 @@ def checkingPhoto(message):
                 confidence = output[0, 0, i, 2]
                 if confidence > 0.5 and classes[int(output[0, 0, i, 1])] == 'person':
                     print('Nudity detected')
-                    os.remove(filePath)
+                    # os.remove(filePath)
                     # return 2
 
 
