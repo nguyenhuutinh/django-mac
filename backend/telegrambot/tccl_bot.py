@@ -345,11 +345,11 @@ def checkingPhoto(message):
                         # Classify an image for nudity
                         api_response = api_instance.nsfw_classify(filePath)
                         print(api_response)
-
-                        nsfw_score = api_response.nsfw_score
-                        is_safe = api_response.is_safe
-                        print(nsfw_score, is_safe)
-                        if nsfw_score > 0.9:
+                        njson = json.loads(api_response)
+                        nsfw_score = njson["score"]
+                        classification_outcome = njson["classification_outcome"]
+                        print(nsfw_score, classification_outcome)
+                        if nsfw_score > 0.8 or classification_outcome == "UnsafeContent_HighProbability":
                             print('Nudity detected')
                             os.remove(filePath)
                             return 2
