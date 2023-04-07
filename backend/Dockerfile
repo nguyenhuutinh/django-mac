@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y tesseract-ocr python3-pip
 RUN apt-get update \
   && apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
 
-RUN pip3 install pytesseract opencv-python cloudmersive-nudity-api-client
+RUN pip3 install pytesseract opencv-python cloudmersive_image_api_client
 
 RUN apt-get install -y libgl1-mesa-glx
 

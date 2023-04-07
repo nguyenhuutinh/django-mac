@@ -22,10 +22,12 @@ from celery import shared_task
 
 import pytesseract
 from PIL import Image
-import cloudmersive_nudity_api_client
-from cloudmersive_nudity_api_client.rest import ApiException
+import cloudmersive_image_api_client
+from cloudmersive_image_api_client.rest import ApiException
 
-api_instance = cloudmersive_nudity_api_client.ImageNudityApi()
+configuration = cloudmersive_image_api_client.Configuration()
+configuration.api_key['Apikey'] = '9f957878-68e3-4b7b-ba1b-5c960f445002'
+api_instance = cloudmersive_image_api_client.ImageNudityApi(cloudmersive_image_api_client.ApiClient(configuration))
 
 
 MSG_COUNTER = 0
@@ -341,11 +343,11 @@ def checkingPhoto(message):
 
                     try:
                         # Classify an image for nudity
-                        api_response = api_instance.image_nudity_classify('9f957878-68e3-4b7b-ba1b-5c960f445002', filePath)
+                        api_response = api_instance.image_nudity_detection(filePath)
                         print(api_response)
-                        response_json = json.loads(api_response)
-                        nsfw_score = response_json['NSFWScore']
-                        is_safe = response_json['IsSafe']
+
+                        nsfw_score = api_response.nsfw_score
+                        is_safe = api_response.is_safe
                         print(nsfw_score, is_safe)
                         if nsfw_score > 0.9:
                             print('Nudity detected')
