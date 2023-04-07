@@ -39,3 +39,4 @@ djangorestframework-simplejwt
 diffimg
 pytesseract
 # opencv-python
+cloudmersive-image-api-client
