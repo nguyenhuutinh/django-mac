@@ -22,6 +22,10 @@ from celery import shared_task
 
 import pytesseract
 from PIL import Image
+import cloudmersive_convert_api_client
+from cloudmersive_convert_api_client.rest import ApiException
+
+
 
 MSG_COUNTER = 0
 MSG_MAX = 60
@@ -286,23 +290,23 @@ def checkingPhoto(message):
                 os.remove(filePath)
                 return 1
 
-            url = 'https://api.deepai.org/api/nsfw-detector'
-            headers = {
-                'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
-            }
-            response = requests.post(
-                url,
-                files={
-                    'image': open(filePath, 'rb'),
-                },
-                headers=headers
-            )
-            print(response.text)
-            result = json.loads(response.text)
-            if result['output']['nsfw_score'] > 0.7:
-                print('Nudity detected')
-                os.remove(filePath)
-                return 2
+            # url = 'https://api.deepai.org/api/nsfw-detector'
+            # headers = {
+            #     'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
+            # }
+            # response = requests.post(
+            #     url,
+            #     files={
+            #         'image': open(filePath, 'rb'),
+            #     },
+            #     headers=headers
+            # )
+            # print(response.text)
+            # result = json.loads(response.text)
+            # if result['output']['nsfw_score'] > 0.7:
+            #     print('Nudity detected')
+            #     os.remove(filePath)
+            #     return 2
 
             # img = cv2.imread(filePath)
 
@@ -331,6 +335,23 @@ def checkingPhoto(message):
             #         print('Nudity detected')
             #         os.remove(filePath)
             #         return 2
+
+            api_instance = cloudmersive_convert_api_client.ImageNudityApi()
+
+            try:
+                # Classify an image for nudity
+                api_response = api_instance.image_nudity_classify('9f957878-68e3-4b7b-ba1b-5c960f445002', filePath)
+                print(api_response)
+                response_json = json.loads(api_response)
+                nsfw_score = response_json['NSFWScore']
+                is_safe = response_json['IsSafe']
+                print(nsfw_score, is_safe)
+                if nsfw_score > 0.9:
+                    print('Nudity detected')
+                    os.remove(filePath)
+                    return 2
+            except ApiException as e:
+                print("Exception when calling ImageNudityApi->image_nudity_classify: %s\n" % e)
             os.remove(filePath)
             print('No Nudity detected')
             return -1
