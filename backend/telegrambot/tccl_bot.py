@@ -280,7 +280,7 @@ def checkingPhoto(message):
             # Use pytesseract to convert the image to text
             print("start convert", img)
 
-            text = pytesseract.image_to_string(img)
+            text = pytesseract.image_to_string(img, lang="eng", config="--psm 6")
             print("end convert")
             pattern = r'\b(1[0-9]{3}|2000)\.\d*%|\b(1[0-9]{3}|2000)%'
             print("converted to text: ", text)
