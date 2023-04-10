@@ -117,9 +117,9 @@ def photo(message):
     elif res == 2:
         userId = message.from_user.id
         chatId = message.chat.id
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
-        bot.send_message("-1001349899890", "Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+        # bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
+        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     else:
         print("check photo and it is valid")
 
@@ -275,7 +275,10 @@ def checkingPhoto(message):
         print(file_exists)
         if file_exists:
 
-            img = Image.open(filePath)
+            img = cv2.imread(filePath, 1)
+
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
 
             # Use pytesseract to convert the image to text
             print("start convert", img)
