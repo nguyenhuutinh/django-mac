@@ -175,7 +175,11 @@ def handle_button_callback(call):
         else:
             bot.answer_callback_query(call.id, text='There is no message to delete.')
 
-
+@bot.message_handler(func=lambda message: message.new_chat_members and bot.get_me().username in [user.username for user in message.new_chat_members])
+def handle_new_member(message):
+    new_name = message.new_chat_member.first_name
+    print(f"Bot name has been updated to {new_name}")
+    
 
 def checkingUserProfilePhoto(message):
     print(f"checking user photo {message.from_user.id}")
