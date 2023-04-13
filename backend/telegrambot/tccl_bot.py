@@ -117,7 +117,7 @@ def photo(message):
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
         ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
 
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'black')
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
 
         keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
@@ -140,7 +140,7 @@ def photo(message):
         keyboard = InlineKeyboardMarkup()
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
         ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'black')
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
         keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
