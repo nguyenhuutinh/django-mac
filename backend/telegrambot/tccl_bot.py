@@ -116,7 +116,7 @@ def photo(message):
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
         ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
         keyboard.add(delete_button, ban_button)
-        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung SCAM / LỪA ĐẢO.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
+        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
