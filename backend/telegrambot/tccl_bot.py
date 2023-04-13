@@ -179,7 +179,7 @@ def handle_button_callback(call):
 def handle_new_member(message):
     new_name = message.new_chat_member.first_name
     print(f"Bot name has been updated to {new_name}")
-    
+    bot.send_message("-1001349899890", "TEST - Detect Change Name  - user id: " + f"{new_name}")
 
 def checkingUserProfilePhoto(message):
     print(f"checking user photo {message.from_user.id}")
