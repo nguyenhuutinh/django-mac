@@ -277,7 +277,7 @@ def checkingPhoto(message):
 
             img = cv2.imread(filePath, 1)
 
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
             # Use pytesseract to convert the image to text
