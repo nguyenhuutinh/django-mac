@@ -123,7 +123,7 @@ def photo(message):
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
-        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        # bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     elif res == 3:
         userId = message.from_user.id
         chatId = message.chat.id
@@ -165,9 +165,10 @@ def handle_button_callback(call):
         bot.ban_chat_member(call.message.chat.id, user_id)
         bot.answer_callback_query(call.id, text='User banned.')
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
+
     elif call.data.startswith('invalid'):
-        if call.message.reply_to_message:
-            bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.reply_to_message.message_id)
+        if call.message.message_id:
+            bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         else:
             bot.answer_callback_query(call.id, text='There is no message to delete.')
 
