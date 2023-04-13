@@ -123,7 +123,7 @@ def photo(message):
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
-        # bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     elif res == 3:
         userId = message.from_user.id
         chatId = message.chat.id
@@ -150,9 +150,9 @@ def photo(message):
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_callback(call):
     result = bot.get_chat_member(call.message.chat.id, call.message.from_user.id).status in ['administrator','creator'] or call.message.from_user.username == "GroupAnonymousBot" or call.message.from_user.first_name == "Telegram" or call.message.from_user.first_name == "Channel"
-    # if result == False:
-    #     bot.answer_callback_query(call.id, text='Chức năng chỉ dành cho admin', show_alert=True)
-    #     return
+    if result == False:
+        bot.answer_callback_query(call.id, text='Chức năng chỉ dành cho admin', show_alert=True)
+        return
     # Check which button was clicked and take appropriate action
     if call.data.startswith('delete'):
         _, user_id, message_id = call.data.split(' ')
