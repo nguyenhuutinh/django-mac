@@ -275,11 +275,11 @@ def checkingPhoto(message):
         print(file_exists)
         if file_exists:
 
-            # img = cv2.imread(filePath, 1)
-            img = Image.open(filePath)
+            img2 = cv2.imread(filePath, 1)
+            # img = Image.open(filePath)
 
 
-            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            img = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 
             # Use pytesseract to convert the image to text
