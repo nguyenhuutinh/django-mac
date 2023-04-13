@@ -8,6 +8,8 @@ import cv2
 import re
 from re import M
 import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 # from config import *
 import logging
 from manage import bot
@@ -110,9 +112,13 @@ def photo(message):
         userId = message.from_user.id
         chatId = message.chat.id
         # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+        keyboard = InlineKeyboardMarkup()
+        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
+        ban_button = InlineKeyboardButton('Ban', callback_data=f'ban {message.from_user.id}')
+        keyboard.add(delete_button, ban_button)
+        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung SCAM / LỪA ĐẢO.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
-        # bot.reply_to(message, full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     elif res == 3:
         userId = message.from_user.id
@@ -127,10 +133,24 @@ def photo(message):
         chatId = message.chat.id
         # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
         # bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
+        keyboard = InlineKeyboardMarkup()
+        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
+        ban_button = InlineKeyboardButton('Ban', callback_data=f'ban {message.from_user.id}')
+        keyboard.add(delete_button, ban_button)
+        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     else:
         print("check photo and it is valid")
 
+@bot.callback_query_handler(func=lambda call: True)
+def handle_button_callback(call):
+    # Check which button was clicked and take appropriate action
+    if call.data.startswith('delete'):
+        _, user_id, message_id = call.data.split(' ')
+        bot.delete_message(call.message.chat.id, message_id)
+    elif call.data.startswith('ban'):
+        _, user_id = call.data.split(' ')
+        bot.ban_chat_member(call.message.chat.id, user_id)
 
 
 def checkingUserProfilePhoto(message):
