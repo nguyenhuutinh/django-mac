@@ -113,9 +113,11 @@ def photo(message):
         chatId = message.chat.id
         # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
         keyboard = InlineKeyboardMarkup()
-        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
-        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}')
+
+        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
+        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
+
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'black')
 
         keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
@@ -136,9 +138,9 @@ def photo(message):
         # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
         # bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
         keyboard = InlineKeyboardMarkup()
-        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
-        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}')
+        delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
+        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'black')
         keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
