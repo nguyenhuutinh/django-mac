@@ -283,12 +283,15 @@ def checkingPhoto(message):
 
 
             # Use pytesseract to convert the image to text
-            print("start convert", img)
-
             text = pytesseract.image_to_string(img, lang="eng")
-            print("end convert")
-            pattern = r'\b(1[0-9]{3}|2000)\.\d*%|\b(1[0-9]{3}|2000)%'
             print("converted to text: ", text)
+            if "Futures ai tham gia" in text:
+                print("The text contains 'Futures ai tham gia'")
+                return 3
+            else:
+                print("The text does not contain 'Futures ai tham gia'")
+
+            pattern = r'\b(1[0-9]{3}|2000)\.\d*%|\b(1[0-9]{3}|2000)%'
             # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
             match = re.search(pattern, text)
 
@@ -297,6 +300,8 @@ def checkingPhoto(message):
                 print(f"Percentage value greater than or equal to 1000 found: {match.group(0)}")
                 os.remove(filePath)
                 return 1
+
+
 
             # url = 'https://api.deepai.org/api/nsfw-detector'
             # headers = {
