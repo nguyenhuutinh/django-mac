@@ -114,7 +114,7 @@ def photo(message):
         # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
         keyboard = InlineKeyboardMarkup()
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
-        ban_button = InlineKeyboardButton('Ban', callback_data=f'ban {message.from_user.id}')
+        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
         keyboard.add(delete_button, ban_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung SCAM / LỪA ĐẢO.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
 
