@@ -115,8 +115,10 @@ def photo(message):
         keyboard = InlineKeyboardMarkup()
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
         ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
-        keyboard.add(delete_button, ban_button)
-        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}')
+
+        keyboard.add(delete_button, ban_button, clear_button)
+        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
@@ -135,8 +137,9 @@ def photo(message):
         # bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
         keyboard = InlineKeyboardMarkup()
         delete_button = InlineKeyboardButton('Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}')
-        ban_button = InlineKeyboardButton('Ban', callback_data=f'ban {message.from_user.id}')
-        keyboard.add(delete_button, ban_button)
+        ban_button = InlineKeyboardButton('Ban ' + full_name, callback_data=f'ban {message.from_user.id}')
+        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}')
+        keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
     else:
@@ -152,10 +155,16 @@ def handle_button_callback(call):
     if call.data.startswith('delete'):
         _, user_id, message_id = call.data.split(' ')
         bot.delete_message(call.message.chat.id, message_id)
+        bot.answer_callback_query(call.id, text='Message deleted.')
+        bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
+
     elif call.data.startswith('ban'):
         _, user_id = call.data.split(' ')
         bot.ban_chat_member(call.message.chat.id, user_id)
-
+        bot.answer_callback_query(call.id, text='User banned.')
+        bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
+    elif call.data.startswith('invalid'):
+        bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
 
 def checkingUserProfilePhoto(message):
     print(f"checking user photo {message.from_user.id}")
