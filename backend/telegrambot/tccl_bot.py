@@ -136,7 +136,7 @@ def photo(message):
 
         bot.ban_chat_member(chatId, userId)
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
+        # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
             bot.send_photo("-1001349899890", photo=photoUrl)
         except Exception as e:
