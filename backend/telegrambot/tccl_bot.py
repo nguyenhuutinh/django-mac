@@ -221,8 +221,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
             #compare Bao's Photo
             result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -232,8 +232,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
 
             result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
@@ -244,8 +244,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
             #tèo
 
@@ -257,8 +257,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
             result = diff('/home/user/app/backend/data/teo2.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -268,8 +268,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
             result = diff('/home/user/app/backend/data/teo3.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -279,8 +279,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
             os.remove(filePath)
 
@@ -295,9 +295,9 @@ def checkingPhoto(message):
     # njson = json.loads(data)
     # print(data['result'])
     file_id = message.photo[-1].file_id
-    print(message.photo)
+    # print(message.photo)
     if message.photo != None and message.photo[-1] != None:
-        print("photo existed")
+        # print("photo existed")
         # photos_ids = []
         # fileName = message.photo[-1].file_unique_id
         fileId = message.photo[-1].file_id
@@ -305,7 +305,7 @@ def checkingPhoto(message):
         pic_url = bot.get_file_url(fileId)
         file_info = bot.get_file(file_id)
         print(pic_url)
-        print(file_info)
+        # print(file_info)
         # downloaded_file = bot.download_file(file_info.file_path)
         file_extension = '.' + file_info.file_path.split('.')[-1]
         fileName = str(uuid.uuid4()) + file_extension
@@ -314,7 +314,7 @@ def checkingPhoto(message):
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
         filePath = '/home/user/app/backend/data/' + fileName
-        print(filePath)
+        # print(filePath)
         if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
         with open(filePath, 'wb') as handle:
@@ -328,7 +328,7 @@ def checkingPhoto(message):
                     break
                 handle.write(block)
         file_exists = exists(filePath)
-        print(file_exists)
+        # print(file_exists)
         if file_exists:
 
             img2 = cv2.imread(filePath, 1)
@@ -400,7 +400,7 @@ def checkingPhoto(message):
             # Check if any of the detected objects are classified as a person
             for i in range(output.shape[2]):
                 confidence = output[0, 0, i, 2]
-                print(confidence)
+                # print(confidence)
                 if confidence > 0.8 and classes[int(output[0, 0, i, 1])] == 'person':
                     print('Nudity detected')
                     # os.remove(filePath)
@@ -408,7 +408,7 @@ def checkingPhoto(message):
                     try:
                         # Classify an image for nudity
                         api_response = api_instance.nsfw_classify(filePath)
-                        print(api_response)
+                        # print(api_response)
                         # njson = json.loads(api_response)
                         # print(njson)
                         nsfw_score = api_response.score
@@ -423,7 +423,7 @@ def checkingPhoto(message):
                     os.remove(filePath)
                     print('No Nudity detected')
                     return -1
-    print(-1)
+    # print(-1)
     return -1
 
 # def compare_images(img1, img2):
@@ -461,13 +461,13 @@ def moderate(message):
 
     if message.message_id:
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
-        print(f"checking user {message.from_user.id} exist : {isExist}")
+        # print(f"checking user {message.from_user.id} exist : {isExist}")
         if isExist is not True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
-            print(f"create user to db")
+            # print(f"create user to db")
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
-            print(f"checking user status : {message.from_user.id} - {user.status}")
+            # print(f"checking user status : {message.from_user.id} - {user.status}")
             if user.status == 'banned':
                 _deleteMessage(message)
                 clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
