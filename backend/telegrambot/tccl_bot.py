@@ -31,7 +31,7 @@ configuration = cloudmersive_image_api_client.Configuration()
 configuration.api_key['Apikey'] = '9f957878-68e3-4b7b-ba1b-5c960f445002'
 api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_client.ApiClient(configuration))
 
-
+photoUrl = ""
 MSG_COUNTER = 0
 MSG_MAX = 60
 
@@ -132,6 +132,9 @@ def photo(message):
         bot.ban_chat_member(chatId, userId)
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        global photoUrl
+        bot.send_photo(chat_id=message.chat.id, photo=photoUrl)
+
     elif res == 2:
         userId = message.from_user.id
         chatId = message.chat.id
@@ -288,6 +291,7 @@ def checkingUserProfilePhoto(message):
 
 
 def checkingPhoto(message):
+
     print(f"checking photo")
 
     # data = bot.get_user_profile_photos(message.from_user.id)
@@ -301,8 +305,9 @@ def checkingPhoto(message):
         # photos_ids = []
         # fileName = message.photo[-1].file_unique_id
         fileId = message.photo[-1].file_id
-
+        global photoUrl
         pic_url = bot.get_file_url(fileId)
+        photoUrl = pic_url
         file_info = bot.get_file(file_id)
         print(pic_url)
         # print(file_info)
