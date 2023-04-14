@@ -126,7 +126,7 @@ def photo(message):
         # bot.ban_chat_member(chatId, userId)
         bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
-            bot.send_photo("-1001349899890", photo=photoUrl)
+            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
         except Exception as e:
             print("Error sending photo:", e)
     elif res == 3:
@@ -143,7 +143,7 @@ def photo(message):
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
-            bot.send_photo("-1001349899890", photo="https://i1-vnexpress.vnecdn.net/2023/04/14/chi-trang-long-an-5934-1681459-7533-2186-1681463517.jpg")
+            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
         except Exception as e:
             print("Error sending photo:", e)
 
@@ -160,7 +160,7 @@ def photo(message):
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
         bot.send_message("-1001349899890", "IMAGE SCAN - Nudity detected")
         try:
-            bot.send_photo("-1001349899890", photo=photoUrl)
+            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
         except Exception as e:
             print("Error sending photo:", e)
     else:
@@ -322,7 +322,7 @@ def checkingPhoto(message):
         # fileName = message.photo[-1].file_unique_id
         fileId = message.photo[-1].file_id
         pic_url = bot.get_file_url(fileId)
-        photoUrl = pic_url
+
         file_info = bot.get_file(file_id)
         # print(pic_url)
         # print(file_info)
@@ -334,6 +334,7 @@ def checkingPhoto(message):
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
         filePath = '/home/user/app/backend/data/' + fileName
+        photoUrl = filePath
         # print(filePath)
         if not os.path.exists(filePath):
             with open(filePath, 'w'): pass
