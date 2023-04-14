@@ -164,14 +164,14 @@ def handle_button_callback(call):
         bot.delete_message(call.message.chat.id, message_id)
         bot.answer_callback_query(call.id, text='Message deleted.')
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
-        bot.reply_to(call.message, "  🗣️ 🗣️ Đồng Bào Chú Ý:\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        bot.reply_to(call.message, "  🗣️ 🗣️ 👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
 
     elif call.data.startswith('ban'):
         _, user_id = call.data.split(' ')
         bot.ban_chat_member(call.message.chat.id, user_id)
         bot.answer_callback_query(call.id, text='User banned.')
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id)
-        bot.reply_to(call.message, "  🗣️ 🗣️ Đồng Bào Chú Ý:\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        bot.reply_to(call.message, "  🗣️ 🗣️ \n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
 
 
     elif call.data.startswith('invalid'):
