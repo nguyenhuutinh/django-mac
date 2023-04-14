@@ -143,7 +143,7 @@ def photo(message):
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
-            bot.send_photo("-1001349899890", photo=photoUrl)
+            bot.send_photo("-1001349899890", photo="https://i1-vnexpress.vnecdn.net/2023/04/14/chi-trang-long-an-5934-1681459-7533-2186-1681463517.jpg")
         except Exception as e:
             print("Error sending photo:", e)
 
