@@ -135,11 +135,12 @@ def photo(message):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
 
         bot.ban_chat_member(chatId, userId)
+        print("photoUrl")
+        print(photoUrl)
+
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
-            print("photoUrl")
-            print(photoUrl)
             bot.send_photo("-1001349899890", photo=photoUrl)
         except Exception as e:
             print("Error sending photo:", e)
@@ -321,7 +322,7 @@ def checkingPhoto(message):
         pic_url = bot.get_file_url(fileId)
         photoUrl = pic_url
         file_info = bot.get_file(file_id)
-        print(pic_url)
+        # print(pic_url)
         # print(file_info)
         # downloaded_file = bot.download_file(file_info.file_path)
         file_extension = '.' + file_info.file_path.split('.')[-1]
