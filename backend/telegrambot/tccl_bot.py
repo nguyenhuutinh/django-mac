@@ -361,7 +361,7 @@ def checkingPhoto(message):
             # Use pytesseract to convert the image to text
             text = pytesseract.image_to_string(img, lang="eng")
             print("converted to text: ", text)
-            if "Futures ai tham gia" in text:
+            if "Futures ai tham gia" in text or ( "tham gia" in text and "nbox" in text):
                 print("The text contains 'Futures ai tham gia'")
                 return 3
             else:
