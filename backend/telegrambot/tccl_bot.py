@@ -124,7 +124,7 @@ def photo(message):
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
         # bot.ban_chat_member(chatId, userId)
-        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         bot.send_photo("-1001349899890", photo=photoUrl)
     elif res == 3:
         userId = message.from_user.id
@@ -133,7 +133,7 @@ def photo(message):
 
         bot.ban_chat_member(chatId, userId)
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - ALERT - SCAM - HÌNH ẢNH : " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         bot.send_photo("-1001349899890", photo=photoUrl)
 
     elif res == 2:
@@ -146,8 +146,8 @@ def photo(message):
         ban_button = InlineKeyboardButton('🚫 Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
         clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
         keyboard.add(delete_button, ban_button, clear_button)
-        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Admin hãy xác nhận" , reply_markup=keyboard)
-        bot.send_message("-1001349899890", "IMAGE SCAN - TEST - Nudity detected - user id: " + str(userId) + " - "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
+        bot.send_message("-1001349899890", "IMAGE SCAN - Nudity detected")
         bot.send_photo("-1001349899890", photo=photoUrl)
     else:
         print("check photo and it is valid")
