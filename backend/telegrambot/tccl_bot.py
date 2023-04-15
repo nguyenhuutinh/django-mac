@@ -33,7 +33,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 60
+MSG_MAX = 200
 
 # from PIL import ImageChops, ImageStat,Image
 
