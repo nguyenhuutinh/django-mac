@@ -250,8 +250,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            # else:
-                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
 
             result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
@@ -262,8 +262,8 @@ def checkingUserProfilePhoto(message):
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
                 os.remove(filePath)
                 return True
-            # else:
-                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            else:
+                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
             #tèo
 
@@ -367,7 +367,7 @@ def checkingPhoto(message):
             else:
                 print("The text does not contain 'Futures ai tham gia'")
 
-            pattern = r'\b(1[0-9]{3}|2000)\.\d*%|\b(1[0-9]{3}|2000)%'
+            pattern = r'\b\d{4,}%'
             # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
             match = re.search(pattern, text)
 
@@ -586,6 +586,9 @@ def processCheckAndBan(message):
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
     if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
+    if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
     if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
