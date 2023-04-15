@@ -594,6 +594,15 @@ def processCheckAndBan(message):
     if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
+    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
+    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
+    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "admin" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
+        return True
     if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
         return True
