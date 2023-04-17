@@ -123,7 +123,7 @@ def photo(message):
         keyboard.add(delete_button, ban_button, clear_button)
         bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
-        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
+        # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
             bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
         except Exception as e:
@@ -140,7 +140,7 @@ def photo(message):
             print("Error :", e)
 
         bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
+        # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
         try:
             bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
         except Exception as e:
