@@ -110,24 +110,25 @@ def photo(message):
 
     res = checkingPhoto(message=message)
     if res == 1:
-        userId = message.from_user.id
-        chatId = message.chat.id
-        # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        keyboard = InlineKeyboardMarkup()
+        # userId = message.from_user.id
+        # chatId = message.chat.id
+        # # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+        # keyboard = InlineKeyboardMarkup()
 
-        delete_button = InlineKeyboardButton('🔴 Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
-        ban_button = InlineKeyboardButton('🚫 Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
+        # delete_button = InlineKeyboardButton('🔴 Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
+        # ban_button = InlineKeyboardButton('🚫 Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
 
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
+        # clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
 
-        keyboard.add(delete_button, ban_button, clear_button)
-        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
+        # keyboard.add(delete_button, ban_button, clear_button)
+        # bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
 
-        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
-        try:
-            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
-        except Exception as e:
-            print("Error sending photo:", e)
+        # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
+        # try:
+        #     bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
+        # except Exception as e:
+        #     print("Error sending photo:", e)
+        print("stop")
     elif res == 3:
         userId = message.from_user.id
         chatId = message.chat.id
