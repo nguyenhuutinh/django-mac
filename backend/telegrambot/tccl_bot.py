@@ -507,6 +507,12 @@ def checkAndDeleteMessage(message):
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
+    if "ae vào"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
+    if "crypto"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
     if "follow us" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
@@ -699,6 +705,7 @@ def processCheckAndBan(message):
     if "chưa vào" in f"{message.text} {message.caption}".lower() and  "nhắn ad" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 31  {bcolors.ENDC}")
         return True
+
     if "Đỗ Bả".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
         return True
