@@ -365,6 +365,9 @@ def checkingPhoto(message):
             if "Futures ai tham gia" in text or ( "tham gia" in text and "nbox" in text):
                 print("The text contains 'Futures ai tham gia'")
                 return 3
+            elif "cần bán" in text or "cần ra đi" in text:
+                print("The text contains 'Futures ai tham gia'")
+                return 3
             else:
                 print("The text does not contain 'Futures ai tham gia'")
 
