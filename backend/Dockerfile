@@ -38,4 +38,4 @@ ADD backend/ /home/user/app/backend
 # RUN mkdir /home/user/app/data
 RUN chown user:user /home/user/app/backend
 USER user
-CMD gunicorn telegrambot.wsgi --log-file - -b 0.0.0.0:8000 --reload
+CMD gunicorn --timeout 600 telegrambot.wsgi --log-file - -b 0.0.0.0:8000 --reload
