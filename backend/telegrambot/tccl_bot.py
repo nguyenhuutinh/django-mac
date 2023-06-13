@@ -362,7 +362,9 @@ def checkingPhoto(message):
             # Use pytesseract to convert the image to text
             text = pytesseract.image_to_string(img, lang="eng")
             print("converted to text: ", text)
-            if "Futures ai tham gia" in text or ( "tham gia" in text and "nbox" in text):
+            if "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
+                return 3
+            elif "Futures ai tham gia" in text or ( "tham gia" in text and "nbox" in text):
                 print("The text contains 'Futures ai tham gia'")
                 return 3
             elif "cần bán" in text or "cần ra đi" in text:
@@ -565,6 +567,7 @@ def processCheckAndBan(message):
     lastName = message.from_user.last_name
     username = message.from_user.username
     print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption}  {bcolors.ENDC} \nUser info: {firstName} {lastName} -userId: {userId} -chatId: {chatId}".lower())
+
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
