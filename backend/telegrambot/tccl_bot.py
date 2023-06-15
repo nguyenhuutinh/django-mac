@@ -512,6 +512,10 @@ def checkAndDeleteMessage(message):
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
+    if "join" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        return True
+    if "@tradinghoiquan" in f"{message.text} {message.caption}".lower():
+        return True
     if "ae vào"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
