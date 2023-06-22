@@ -501,7 +501,7 @@ def moderate(message):
 
     if processCheckAndBan(message):
         banUser(message, 'message bi cam')
-    elif checkingUserProfilePhoto(message) and (message.text == None or len(message.text) < 5):
+    elif checkingUserProfilePhoto(message):
         banUser(message, 'photo tccl')
 
 def checkAndDeleteMessage(message):
@@ -552,7 +552,7 @@ def _deleteMessage(message):
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng từ ngữ bị cấm. ‼️")
 
-    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=5)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {full_name}" )
 
 @shared_task
