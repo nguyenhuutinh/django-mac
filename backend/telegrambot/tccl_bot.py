@@ -481,7 +481,7 @@ def moderate(message):
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
 
-
+    print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
@@ -505,7 +505,7 @@ def moderate(message):
         banUser(message, 'photo tccl')
 
 def checkAndDeleteMessage(message):
-    print(f"{bcolors.WARNING}checkAndDeleteMessage - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
+    print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
@@ -565,12 +565,11 @@ def clearDBRecord(user_id):
     TelegramUser.objects.filter(user_id=user_id).delete()
 
 def processCheckAndBan(message):
-    userId = message.from_user.id
-    chatId = message.chat.id
+
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
-    print(f"{bcolors.WARNING}processCheckAndBan - text: {message.text} - caption: {message.caption}  {bcolors.ENDC} \nUser info: {firstName} {lastName} -userId: {userId} -chatId: {chatId}".lower())
+    print(f"{bcolors.WARNING}processCheckAndBan {bcolors.ENDC}")
 
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
@@ -822,7 +821,7 @@ def allMessage(message):
         print("admin")
         return
 
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}\n")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}")
     MSG_COUNTER = MSG_COUNTER + 1
     if MSG_COUNTER >= MSG_MAX:
         MSG_COUNTER = 0
