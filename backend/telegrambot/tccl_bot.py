@@ -722,7 +722,12 @@ def processCheckAndBan(message):
     if "Đỗ Bả".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
         return True
-    return False
+    if "chưa tham" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
+        return False
+    if "chưa tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
+        return False
 
 def banUser(message, error_text):
     print("start ban user")
