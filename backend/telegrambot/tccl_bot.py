@@ -553,6 +553,7 @@ def checkAndDeleteMessage(message):
     if isExist:
         print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
         return True
+    return False
 
 def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
