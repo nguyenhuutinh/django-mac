@@ -33,7 +33,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 100
+MSG_MAX = 50
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -837,8 +837,8 @@ def allMessage(message):
     MSG_COUNTER = MSG_COUNTER + 1
     if MSG_COUNTER >= MSG_MAX:
         MSG_COUNTER = 0
-        bot.send_message("-1001724937734", "[GÓC CẢNH BÁO]\n\n‼️ 🆘💢 Cảnh báo các hành vi giả danh admin để lừa đảo 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-
+        sentmessage = bot.send_message("-1001724937734", "[GÓC CẢNH BÁO]\n\n‼️ 🆘💢 Cảnh báo các hành vi giả danh admin để lừa đảo 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        print(sentmessage)
     moderate(message=message)
 
 @bot.message_handler( content_types=[
