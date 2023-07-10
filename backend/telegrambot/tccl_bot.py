@@ -301,6 +301,18 @@ def checkingUserProfilePhoto(message):
             # else:
                 # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
+
+            result = diff('/home/user/app/backend/data/thinh.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+
+            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+
+            if result is not None and result < 0.04:
+                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+                os.remove(filePath)
+                return True
+            # else:
+                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+
             os.remove(filePath)
 
     return False
