@@ -570,7 +570,7 @@ def _deleteMessage(message):
 
 @shared_task
 def deleteMessageTask(chat_id, message_id):
-    print("deleteMessageTask")
+    print("delete Message Task")
     print(f"{bcolors.OKGREEN}deleted message: {chat_id} {message_id}{bcolors.ENDC}")
     bot.delete_message(chat_id,message_id=message_id)
 @shared_task
