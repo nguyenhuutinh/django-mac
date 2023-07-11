@@ -841,6 +841,7 @@ def allMessage(message):
         sentmessage = bot.send_message("-1001724937734", "[CẢNH BÁO LỪA ĐẢO]\n\n‼️ 🆘💢 Cảnh báo các hành vi giả danh admin để lừa đảo 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
         # print(sentmessage)
         chatId = sentmessage.chat.id
+        print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=30)
 
     moderate(message=message)
