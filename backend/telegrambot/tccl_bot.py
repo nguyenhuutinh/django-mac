@@ -589,80 +589,81 @@ def processCheckAndBan(message):
         return True
     # # if "futt + spot" in f"{message.text} {message.caption}".lower():
     #     return True
-    if "whaless" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
+    if len(message.text) < 30:
+        if "whaless" in f"{message.text} {message.caption}".lower():
+            print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+            return True
 
-    if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
-        return True
-    if "ai" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
-        return True
-    if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
-        return True
-    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
-        return True
-    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vlp" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
-        return True
-    if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "v1p" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
-        return True
-    if  "vào" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "admin" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "anh em" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "inbox" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
-    if  "futu" in f"{message.text} {message.caption}".lower() and "lnbox" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 21  {bcolors.ENDC}")
-        return True
+        if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+            return True
+        if "ai" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+            return True
+        if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+            return True
+        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
+            return True
+        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vlp" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+            return True
+        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "v1p" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+            return True
+        if  "vào" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 213  {bcolors.ENDC}")
+            return True
+        if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 214  {bcolors.ENDC}")
+            return True
+        if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 215  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 216  {bcolors.ENDC}")
+            return True
+        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 217  {bcolors.ENDC}")
+            return True
+        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 218  {bcolors.ENDC}")
+            return True
+        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "admin" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 219  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 221  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 222  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 223  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 224  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "anh em" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+            print(f"{bcolors.WARNING}case 225  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "inbox" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 226  {bcolors.ENDC}")
+            return True
+        if  "futu" in f"{message.text} {message.caption}".lower() and "lnbox" in f"{message.text} {message.caption}".lower() :
+            print(f"{bcolors.WARNING}case 227  {bcolors.ENDC}")
+            return True
 
-    if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
-        return True
-    if "TCCL".lower() in f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-        return True
+        if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
+            print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
+            return True
+        if "TCCL".lower() in f"{firstName} {lastName}".lower():
+            print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
+            return True
     # if ".".lower() == f"{firstName}".lower() and None == lastName:
     #     print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
     #     return True
