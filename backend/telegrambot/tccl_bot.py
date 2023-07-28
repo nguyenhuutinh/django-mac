@@ -589,7 +589,7 @@ def processCheckAndBan(message):
         return True
     # # if "futt + spot" in f"{message.text} {message.caption}".lower():
     #     return True
-    if len(message.text) < 30:
+    if len(message.text) < 40:
         if "whaless" in f"{message.text} {message.caption}".lower():
             print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
             return True
