@@ -685,6 +685,9 @@ def processCheckAndBan(message):
     if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
         return True
+    if "Đỗ Bả0".lower() in f"{firstName} {lastName}".lower() :
+        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
+        return True
     if "Bảo Đỗ".lower() in f"{firstName} {lastName}".lower() :
         print(f"{bcolors.WARNING}case 11  {bcolors.ENDC}")
         return True
@@ -692,6 +695,9 @@ def processCheckAndBan(message):
         print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
         return True
     if "Bả0".lower() in f"{firstName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
+        print(f"{bcolors.WARNING}case 202  {bcolors.ENDC}")
+        return True
+    if "Bả0".lower() in f"{lastName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
         print(f"{bcolors.WARNING}case 202  {bcolors.ENDC}")
         return True
     if "Bả0".lower() in f"{firstName.replace('.','')}".lower() and  "Đỗ".lower() in f"{firstName.replace('.','')}".lower():
