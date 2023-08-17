@@ -566,7 +566,7 @@ def _deleteMessage(message):
         bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng từ ngữ bị cấm. ‼️")
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
-    bot.send_message("-1001349899890", f"deleted message: {message.text} - {message.from_user.id} {full_name}" )
+    bot.send_message("-1001349899890", f"deleted message: {message.text} {message. caption}- {message.from_user.id} {full_name}" )
 
 @shared_task
 def deleteMessageTask(chat_id, message_id):
