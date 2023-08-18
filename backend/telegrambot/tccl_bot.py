@@ -101,7 +101,7 @@ def photo(message):
         print("admin")
         return
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}\n")
-    moderateMessage(message=message)
+    moderate(message=message)
 
 
     first_name = message.from_user.first_name
@@ -487,8 +487,8 @@ def checkingPhoto(message):
 #     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
 #     return diff_ratio
-@shared_task
-def moderateMessage(message):
+
+def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
@@ -851,9 +851,7 @@ def allMessage(message):
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
-    chatId = message.chat.id
-
-    moderateMessage.apply_async(kwargs={ "message": chatId}, countdown=1)
+    moderate(message=message)
 
 @bot.message_handler( content_types=[
     "new_chat_members"
