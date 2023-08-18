@@ -490,7 +490,8 @@ def checkingPhoto(message):
 @shared_task
 def moderateMessageTask(message):
     print("message")
-    print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
+    bot.reply_to(message, "hello")
+    # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
 def moderate(message):
     if message.chat.id != -1001724937734:
