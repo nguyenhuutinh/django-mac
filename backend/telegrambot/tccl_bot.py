@@ -487,7 +487,7 @@ def checkingPhoto(message):
 #     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
 #     return diff_ratio
-
+@shared_task
 def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
@@ -851,7 +851,7 @@ def allMessage(message):
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
-    moderate(message=message)
+    moderate.apply_async(kwargs={ "message": message}, countdown=0)
 
 @bot.message_handler( content_types=[
     "new_chat_members"
