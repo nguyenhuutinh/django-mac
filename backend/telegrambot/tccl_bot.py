@@ -487,6 +487,8 @@ def checkingPhoto(message):
 #     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
 #     return diff_ratio
+def moderateMessageTask(message):
+    print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
 def moderate(message):
     if message.chat.id != -1001724937734:
@@ -852,6 +854,7 @@ def allMessage(message):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
     moderate(message=message)
+    moderateMessageTask.apply_async(kwargs={ "message": message}, countdown=1)
 
 @bot.message_handler( content_types=[
     "new_chat_members"
