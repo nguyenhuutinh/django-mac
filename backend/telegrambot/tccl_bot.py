@@ -851,7 +851,9 @@ def allMessage(message):
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
-    moderate.apply_async(kwargs={ "message": message}, countdown=1)
+    chatId = message.chat.id
+
+    moderate.apply_async(kwargs={ "message": chatId}, countdown=1)
 
 @bot.message_handler( content_types=[
     "new_chat_members"
