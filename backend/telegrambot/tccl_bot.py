@@ -9,6 +9,7 @@ import re
 from re import M
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from telegrambot import celery_app
 
 # from config import *
 import logging
@@ -487,7 +488,7 @@ def checkingPhoto(message):
 #     diff_ratio = sum(stat.mean) / (len(stat.mean) * 255)
 
 #     return diff_ratio
-@shared_task
+@celery_app.task
 def moderateMessageTask(message):
     print(message)
     print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
