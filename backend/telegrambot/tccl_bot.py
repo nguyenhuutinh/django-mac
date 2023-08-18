@@ -489,7 +489,7 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    print(message)
+    print("message")
     print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
 def moderate(message):
