@@ -858,7 +858,7 @@ def allMessage(message):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
     # moderateMessageTask.apply_async(kwargs={ "message": "message"}, countdown=1)
-    moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
+    # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
     moderate(message=message)
 
