@@ -490,7 +490,7 @@ def checkingPhoto(message):
 @shared_task
 def moderateMessageTask():
     print("message")
-    bot.send_message("-1001349899890", f"tesst" )
+    # bot.send_message("-1001349899890", f"tesst" )
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
