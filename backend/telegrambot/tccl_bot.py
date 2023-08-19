@@ -488,7 +488,7 @@ def checkingPhoto(message):
 
 #     return diff_ratio
 @shared_task
-def moderateMessageTask(message):
+def moderateMessageTask():
     print("message")
     bot.send_message("-1001349899890", f"tesst" )
 
