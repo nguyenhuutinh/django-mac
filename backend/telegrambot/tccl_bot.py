@@ -546,9 +546,9 @@ async def checkAndDeleteMessage(message):
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
-    if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-        return True
+    # if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
+    #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
+    #     return True
     if "lồn" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
         return True
