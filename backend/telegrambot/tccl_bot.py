@@ -494,7 +494,7 @@ def moderateMessageTask():
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
-def moderate(message):
+async def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
@@ -522,7 +522,7 @@ def moderate(message):
     elif checkingUserProfilePhoto(message):
         banUser(message, 'photo tccl')
 
-def checkAndDeleteMessage(message):
+async def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
@@ -561,7 +561,7 @@ def checkAndDeleteMessage(message):
         return True
     return False
 
-def _deleteMessage(message):
+async def _deleteMessage(message):
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     first_name = message.from_user.first_name
