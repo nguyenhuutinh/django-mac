@@ -549,12 +549,12 @@ async def checkAndDeleteMessage(message):
     # if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
     #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
     #     return True
-    if "lồn" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-        return True
-    if "địt" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
-        return True
+    # if "lồn" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
+    #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
+    #     return True
+    # if "địt" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
+    #     print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
+    #     return True
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
     if isExist:
         print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
