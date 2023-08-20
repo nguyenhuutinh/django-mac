@@ -593,6 +593,9 @@ def processCheckAndBan(message):
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
+    if "thông báo mở" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 33  {bcolors.ENDC}")
+        return True
     # # if "futt + spot" in f"{message.text} {message.caption}".lower():
     #     return True
     if len(message.text) < 40:
