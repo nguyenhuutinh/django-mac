@@ -209,12 +209,14 @@ def checkingUserProfilePhoto(message):
     # print(data['result'])
     user_photos = data.photos
     if len(user_photos) > 0:
+        print("len(user_photos) > 0")
 
         # photos_ids = []
         fileName = user_photos[0][0].file_unique_id
         fileId = user_photos[0][0].file_id
 
         pic_url = bot.get_file_url(fileId)
+        print(pic_url)
         # print(pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
