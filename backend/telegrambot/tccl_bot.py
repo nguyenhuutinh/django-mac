@@ -204,7 +204,7 @@ def checkingUserProfilePhoto(message):
     print(f"checking user photo {message.from_user.id}")
 
     data = bot.get_user_profile_photos(message.from_user.id)
-    # print(data)
+    print(data)
     # njson = json.loads(data)
     # print(data['result'])
     user_photos = data.photos
