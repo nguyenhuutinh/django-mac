@@ -506,7 +506,7 @@ def moderate(message):
         _deleteMessage(message)
 
     if message.message_id:
-        isExist = TelegramUser.objects.filter(user_id=message.from_user.id).exists()
+        isExist = TelegramUser.objects.filter(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name ).exists()
         print(f"checking user {message.from_user.id} exist : {isExist}")
         if isExist is not True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
