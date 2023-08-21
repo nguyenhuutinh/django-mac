@@ -511,6 +511,11 @@ def moderate(message):
         if isExist is not True:
             TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
             print(f"create user to db")
+            print(f"step 2")
+            if processCheckAndBan(message):
+                banUser(message, 'message bi cam')
+            elif checkingUserProfilePhoto(message):
+                banUser(message, 'photo tccl')
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
             print(f"checking user status : {message.from_user.id} - {user.status}")
@@ -518,11 +523,7 @@ def moderate(message):
                 _deleteMessage(message)
                 clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
 
-    print(f"step 2")
-    if processCheckAndBan(message):
-        banUser(message, 'message bi cam')
-    elif checkingUserProfilePhoto(message):
-        banUser(message, 'photo tccl')
+
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
