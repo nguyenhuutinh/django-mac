@@ -519,9 +519,9 @@ def moderate(message):
         if message.text == None:
             isPhoto = True
         if isExist is not True or isPhoto is True:
-            if isExist is not True:
+            if isExist is not True and isPhoto is not True:
                 TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
-                print(f"create user to db")
+                print(f"add user {message.from_user.id} to DB")
             print(f"step 2")
             processChecUserProfile.apply_async(kwargs={ "userId": message.from_user.id, "chatId": message.chat.id, "messageId": message.message_id}, countdown=1)
 
