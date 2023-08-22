@@ -192,7 +192,7 @@ pygments==2.14.0
     # via ipython
 pyjwt==2.6.0
     # via djangorestframework-simplejwt
-pytelegrambotapi==4.12.0
+pytelegrambotapi==4.13.0
     # via -r requirements.in
 pytesseract==0.3.10
     # via -r requirements.in

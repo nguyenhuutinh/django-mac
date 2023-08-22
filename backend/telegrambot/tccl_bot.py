@@ -200,10 +200,15 @@ def handle_new_member(message):
     print(f"Bot name has been updated to {new_name}")
     bot.send_message("-1001349899890", "TEST - Detect Change Name  - user id: " + f"{new_name}")
 
-def checkingUserProfilePhoto(message):
-    print(f"checking user photo {message.from_user.id}")
+@shared_task
+def processChecUserProfile (userid):
+    if checkingUserProfilePhoto(userid):
+        print("demo")
 
-    data = bot.get_user_profile_photos(message.from_user.id)
+def checkingUserProfilePhoto(userId):
+    print(f"checking user photo {userId}")
+
+    data = bot.get_user_profile_photos(userId)
     print(data)
     # njson = json.loads(data)
     # print(data['result'])
@@ -236,7 +241,7 @@ def checkingUserProfilePhoto(message):
         file_exists = exists(filePath)
         if file_exists:
             result = diff('/home/user/app/backend/data/logo1.jpg', filePath, diff_img_file='/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link= pic_url, profile_score= result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link= pic_url, profile_score= result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -247,7 +252,7 @@ def checkingUserProfilePhoto(message):
             #compare Bao's Photo
             result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -259,7 +264,7 @@ def checkingUserProfilePhoto(message):
 
             result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.047:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -272,7 +277,7 @@ def checkingUserProfilePhoto(message):
 
             result = diff('/home/user/app/backend/data/teo1.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -283,7 +288,7 @@ def checkingUserProfilePhoto(message):
 
             result = diff('/home/user/app/backend/data/teo2.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -294,7 +299,7 @@ def checkingUserProfilePhoto(message):
 
             result = diff('/home/user/app/backend/data/teo3.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -306,7 +311,7 @@ def checkingUserProfilePhoto(message):
 
             result = diff('/home/user/app/backend/data/thinh.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=message.from_user.id).update(user_avatar_link = pic_url, profile_score = result)
+            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
             if result is not None and result < 0.04:
                 print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
@@ -516,11 +521,15 @@ def moderate(message):
                 TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
                 print(f"create user to db")
             print(f"step 2")
+            processChecUserProfile.apply_async(kwargs={ "userid": message.from_user.id}, countdown=1)
+
+            if checkingUserProfilePhoto(message.from_user.id):
+                banUser(message, 'message bi cam')
+                return
+
             if processCheckAndBan(message):
                 banUser(message, 'message bi cam')
                 return
-            if checkingUserProfilePhoto(message):
-                banUser(message, 'photo tccl')
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
             print(f"checking user status : {message.from_user.id} - {user.status}")
