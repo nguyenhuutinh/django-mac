@@ -201,9 +201,10 @@ def handle_new_member(message):
     bot.send_message("-1001349899890", "TEST - Detect Change Name  - user id: " + f"{new_name}")
 
 @shared_task
-def processChecUserProfile (userid):
-    if checkingUserProfilePhoto(userid):
-        print("demo")
+def processChecUserProfile (userId, chatId, messageId):
+    if checkingUserProfilePhoto(userId):
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': messageId}, countdown=3)
+        bot.ban_chat_member(chatId, userId)
 
 def checkingUserProfilePhoto(userId):
     print(f"checking user photo {userId}")
@@ -521,7 +522,7 @@ def moderate(message):
                 TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
                 print(f"create user to db")
             print(f"step 2")
-            processChecUserProfile.apply_async(kwargs={ "userid": message.from_user.id}, countdown=1)
+            processChecUserProfile.apply_async(kwargs={ "userId": message.from_user.id, "chatId": message.chat.id, "messageId": message.message_id}, countdown=1)
 
             if checkingUserProfilePhoto(message.from_user.id):
                 banUser(message, 'message bi cam')
