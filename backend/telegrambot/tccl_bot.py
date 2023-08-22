@@ -766,6 +766,7 @@ def processCheckAndBan(message):
     if "chưa tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
         return True
+    print("no case")
     return False
 
 def banUser(message, error_text):
