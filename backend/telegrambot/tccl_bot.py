@@ -250,7 +250,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}diff logo1 - {userId}: {str(result)} {bcolors.ENDC}")
             #compare Bao's Photo
             result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -261,7 +261,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}diff logo2 - {userId}: {str(result)} {bcolors.ENDC}")
 
 
             result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
@@ -273,7 +273,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}diff logo3 - {userId}: {str(result)} {bcolors.ENDC}")
 
             #tèo
 
