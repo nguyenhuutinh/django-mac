@@ -223,7 +223,7 @@ def checkingUserProfilePhoto(userId):
         fileId = user_photos[0][0].file_id
 
         pic_url = bot.get_file_url(fileId)
-        print(pic_url)
+        print(f"{bcolors.OKGREEN} avatar - {pic_url}{bcolors.ENDC}")
         # print(pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
