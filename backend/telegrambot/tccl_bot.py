@@ -615,16 +615,19 @@ def processCheckAndBan(message):
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
-    if "thông báo mở" in f"{message.text} {message.caption}".lower() and  "anh em" in f"{message.text} {message.caption}".lower():
+    if "thông báo" in f"{message.text} {message.caption}".lower() and  "anh em" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 33  {bcolors.ENDC}")
         return True
     # # if "futt + spot" in f"{message.text} {message.caption}".lower():
     #     return True
-    if len(message.text) < 40:
+    if len(message.text) < 60:
         if "whaless" in f"{message.text} {message.caption}".lower():
             print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
             return True
 
+        if "Thông báo nhóm" in f"{message.text} {message.caption}".lower():
+            print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+            return True
         if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
