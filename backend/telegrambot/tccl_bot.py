@@ -202,12 +202,12 @@ def handle_new_member(message):
 
 @shared_task
 def processChecUserProfile (userId, chatId, messageId):
-    if checkingUserProfilePhoto(userId):
+    if checkingUserProfilePhoto(userId, "task"):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': messageId}, countdown=3)
         bot.ban_chat_member(chatId, userId)
         bot.send_message("-1001349899890", "Đã ban user id: " + str(userId))
 
-def checkingUserProfilePhoto(userId):
+def checkingUserProfilePhoto(userId, mode):
     print(f"checking user photo {userId}")
 
     data = bot.get_user_profile_photos(userId)
@@ -223,7 +223,7 @@ def checkingUserProfilePhoto(userId):
         fileId = user_photos[0][0].file_id
 
         pic_url = bot.get_file_url(fileId)
-        print(f"{bcolors.OKGREEN} avatar - {pic_url}{bcolors.ENDC}")
+        print(f"{bcolors.OKGREEN} {mode} - avatar - {pic_url}{bcolors.ENDC}")
         # print(pic_url)
         # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
 
@@ -250,7 +250,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff logo1 - {userId}: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}{mode} - diff logo1 - {userId}: {str(result)} {bcolors.ENDC}")
             #compare Bao's Photo
             result = diff('/home/user/app/backend/data/logo3.jpeg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
@@ -261,7 +261,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff logo2 - {userId}: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}{mode} - diff logo2 - {userId}: {str(result)} {bcolors.ENDC}")
 
 
             result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
@@ -273,7 +273,7 @@ def checkingUserProfilePhoto(userId):
                 os.remove(filePath)
                 return True
             else:
-                print(f"{bcolors.OKGREEN}diff logo3 - {userId}: {str(result)} {bcolors.ENDC}")
+                print(f"{bcolors.OKGREEN}{mode} - diff logo3 - {userId}: {str(result)} {bcolors.ENDC}")
 
             #tèo
 
@@ -525,7 +525,7 @@ def moderate(message):
             print(f"step 2")
             processChecUserProfile.apply_async(kwargs={ "userId": message.from_user.id, "chatId": message.chat.id, "messageId": message.message_id}, countdown=1)
 
-            if checkingUserProfilePhoto(message.from_user.id):
+            if checkingUserProfilePhoto(message.from_user.id, "function"):
                 banUser(message, 'message bi cam')
                 return
 
