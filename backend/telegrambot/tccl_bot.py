@@ -518,7 +518,8 @@ def moderate(message):
             print(f"step 2")
             if processCheckAndBan(message):
                 banUser(message, 'message bi cam')
-            elif checkingUserProfilePhoto(message):
+                return
+            if checkingUserProfilePhoto(message):
                 banUser(message, 'photo tccl')
         else :
             user = TelegramUser.objects.get(user_id=message.from_user.id)
