@@ -6,7 +6,7 @@ import telebot
 from decouple import config
 
 BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
-APP_URL = "https://tele-check.xyz/api/tccl-bot/webhook/"
+APP_URL = "https://api.tradecoinchienluoc.com/api/tccl-bot/webhook/"
 # APP_URL = "https://8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io/api/tccl-bot/webhook/"
 
 bot = telebot.TeleBot(BOT_TOKEN)
