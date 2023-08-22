@@ -205,6 +205,7 @@ def processChecUserProfile (userId, chatId, messageId):
     if checkingUserProfilePhoto(userId):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': messageId}, countdown=3)
         bot.ban_chat_member(chatId, userId)
+        bot.send_message("-1001349899890", "Đã ban user id: " + str(userId))
 
 def checkingUserProfilePhoto(userId):
     print(f"checking user photo {userId}")
