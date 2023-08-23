@@ -625,7 +625,7 @@ def processCheckAndBan(message):
             print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
             return True
 
-        if "Thông báo nhóm" in f"{message.text} {message.caption}".lower():
+        if "thông báo nhóm" in f"{message.text} {message.caption}".lower():
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
         if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
