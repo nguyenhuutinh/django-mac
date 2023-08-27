@@ -783,7 +783,10 @@ def processCheckAndBan(message):
         print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
         return True
     if "chưa tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
+        print(f"{bcolors.WARNING}case 10112  {bcolors.ENDC}")
+        return True
+    if "buy and wait" in f"{message.text}{message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower() :
+        print(f"{bcolors.WARNING}case 10113  {bcolors.ENDC}")
         return True
     print("no case")
     return False
