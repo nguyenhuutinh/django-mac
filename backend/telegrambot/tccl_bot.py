@@ -549,6 +549,9 @@ def checkAndDeleteMessage(message):
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
+    if ("t.me" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
+        print(f"{bcolors.WARNING}case 12222  {bcolors.ENDC}")
+        return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
