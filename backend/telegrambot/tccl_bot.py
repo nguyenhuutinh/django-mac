@@ -546,7 +546,7 @@ def moderate(message):
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
-    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
+    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
     if ("t.me" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
