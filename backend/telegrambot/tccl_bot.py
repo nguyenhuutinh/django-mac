@@ -532,12 +532,12 @@ def moderate(message):
             if processCheckAndBan(message):
                 banUser(message, 'message bi cam')
                 return
-        else :
-            user = TelegramUser.objects.get(user_id=message.from_user.id)
-            print(f"checking user status : {message.from_user.id} - {user.status}")
-            if user.status == 'banned':
-                _deleteMessage(message)
-                clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
+        # else :
+            # user = TelegramUser.objects.get(user_id=message.from_user.id)
+            # print(f"checking user status : {message.from_user.id} - {user.status}")
+            # if user.status == 'banned':
+            #     _deleteMessage(message)
+            #     clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
             # first_name = message.from_user.first_name
             # last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
             # full_name = f"{first_name}{last_name}"
