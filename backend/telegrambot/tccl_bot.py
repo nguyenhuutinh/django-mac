@@ -57,6 +57,8 @@ logger.setLevel(logging.ERROR)
 ban_reason = ""
 warning_max = 20
 warning_count = 0
+
+
 def process_request(request):
     # print(request.data)
     json_string = request.data
@@ -73,25 +75,8 @@ def chat_m(message: types.ChatMemberUpdated):
     print("chat_mem_change", message)
     old = message.old_chat_member
     new = message.new_chat_member
-    print(old)
-    print(new)
-#     if new.status == "member":
-#         bot.send_message(message.chat.id,"Hello {name}!".format(name=new.user.first_name)) # Welcome message
-
-
-# When comment has been written, we save data into our db and send user to starting state 1 - START
-# @bot.message_handler(func=lambda message: message)
-# def _add_comment(message):
-#     print("add_comment")
-
-
-#     user_id = message.from_user.id
-#     comment = message.text
-#     db_object.execute("INSERT INTO places(address, comment, user_id) VALUES (%s, %s, %s)",
-#                       (user_states.ADDRESS, comment, user_id))
-#     db_connection.commit()
-#     bot.send_message(message.chat.id, "Successfully added!")
-#     user_states.update_state(message, user_states.START)
+    print("chat_mem_change_old",old)
+    print("chat_mem_change_new", new)
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
