@@ -67,8 +67,6 @@ services:
       ports:
         - "5555:5555"
       command: flower -A telegrambot --port=5555
-      depends_on:
-      - redis
   # mailhog: # service for faking a SMTP server
   #   image: mailhog/mailhog
   #   ports:
