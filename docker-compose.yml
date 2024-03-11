@@ -53,6 +53,10 @@ services:
       image: mher/flower
       ports:
         - "5555:5555"
+    command: flower --broker=redis://broker:6379
+      depends_on:
+        - broker
+
   celery:
     build:
       dockerfile: backend/Dockerfile
