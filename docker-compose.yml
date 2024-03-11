@@ -53,7 +53,7 @@ services:
     image: mher/flower
     ports:
       - "5555:5555"
-    # command: flower --broker=redis://broker:6379
+    command: flower --broker=redis://broker:6379
     depends_on:
       - broker
 
@@ -62,7 +62,7 @@ services:
       dockerfile: backend/Dockerfile
       context: .
     # command: python manage.py celery
-    command: celery -A telegrambot worker -B -l info flower
+    command: celery -A telegrambot worker -B -l info
 
     volumes:
       - ./:/home/user/app/
