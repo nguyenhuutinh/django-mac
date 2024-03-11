@@ -62,7 +62,11 @@ services:
       - db
       - broker
       # - result
-
+  flower:
+      image: mher/flower
+      ports:
+        - "5555:5555"
+      command: flower -A telegrambot worker -B --port=5555
   # mailhog: # service for faking a SMTP server
   #   image: mailhog/mailhog
   #   ports:
