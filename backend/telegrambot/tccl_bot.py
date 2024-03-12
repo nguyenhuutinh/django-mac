@@ -483,8 +483,10 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    print("message", message)
-    print("Received message:", message.text)
+    message_data = json.loads(message)
+
+    print("message", message_data)
+    print("Received message:", message_data['text'])
     # print("From user:", message.from_user.username)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
@@ -927,7 +929,7 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
+        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=1)
 
     except Exception as e:
         # Handle any exceptions during serialization
