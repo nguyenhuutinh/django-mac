@@ -11,3 +11,5 @@ pre-commit
 
 #safety
 diffimg
+
+langdetect

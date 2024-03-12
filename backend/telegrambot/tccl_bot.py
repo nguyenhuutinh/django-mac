@@ -10,6 +10,7 @@ from re import M
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from types import SimpleNamespace
+from langdetect import detect
 
 # from config import *
 import logging
@@ -555,6 +556,10 @@ def moderate(message):
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
+    not_eng_or_vietnamese = is_not_english_or_vietnamese(text_to_check)
+    if (not_eng_or_vietnamese is True):
+        print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
+        return True
     if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
@@ -1013,5 +1018,11 @@ def _reset(message):
 
 
 
-
+def is_not_english_or_vietnamese(text):
+    try:
+        detected_language = detect(text)
+        return detected_language != 'en' and detected_language != 'vi'
+    except:
+        # Handle cases where language detection fails
+        return False
 
