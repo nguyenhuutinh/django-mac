@@ -974,6 +974,7 @@ def allMessage(message):
         "sender_chat": message.sender_chat,
         "text": message.text,
         "caption": message.caption,
+        "photo": message.photo,
         # Include other attributes of the 'message' object as needed
     }
     try:
