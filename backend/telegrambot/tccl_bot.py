@@ -1031,7 +1031,22 @@ def allMessage(message):
             "has_protected_content": message.has_protected_content
         }
     }
-    message_json = json.dumps(message_data)
+    try:
+        # Serialize the message data into JSON
+        message_json = json.dumps(message_data)
+
+        # Print the serialized message data
+        print("Serialized Message Data:", message_json)
+
+        # Your task logic goes here
+        # ...
+
+        # Return any result if needed
+        return "Task completed successfully"
+    except Exception as e:
+        # Handle any exceptions during serialization
+        print("Error occurred during serialization:", e)
+        return "Error occurred during task execution"
     print("Serialized Message Data:", message_json)
 
     moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
