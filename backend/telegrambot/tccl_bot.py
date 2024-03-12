@@ -883,9 +883,11 @@ def allMessage(message):
         chatId = sentmessage.chat.id
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
+    
     print(message)
+    message_json = json.dumps(message)
 
-    moderateMessageTask.apply_async(kwargs={ "message": message}, countdown=1)
+    moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
     moderate(message=message)
