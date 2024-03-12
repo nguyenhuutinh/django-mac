@@ -61,9 +61,9 @@ services:
     build:
       dockerfile: backend/Dockerfile
       context: .
-    # command: python manage.py celery
-    command: celery -A telegrambot worker -B -l info flower
-
+    command: >
+      bash -c "celery -A telegrambot worker -B -l info &
+              flower -A telegrambot --port=5555"
     volumes:
       - ./:/home/user/app/
     env_file: backend/.env
