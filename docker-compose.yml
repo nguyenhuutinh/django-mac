@@ -50,7 +50,7 @@ services:
 
   
   flower:
-    image : flower:latest
+    image : flower:2.0.1
     ports:
       - "5555:5555"
     command: >
