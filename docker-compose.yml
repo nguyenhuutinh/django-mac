@@ -53,17 +53,18 @@ services:
     image: mher/flower
     ports:
       - "5555:5555"
-    # command: flower --broker=redis://broker:6379
-    # depends_on:
-    #   - broker
+    command: >
+          bash -c "flower --broker=redis://broker:6379"
+    depends_on:
+      - broker
 
   celery:
     build:
       dockerfile: backend/Dockerfile
       context: .
     command: >
-      bash -c "celery -A telegrambot worker -B -l info &
-              flower -A telegrambot --port=5555"
+      bash -c "celery -A telegrambot worker -B -l info --broker=redis://broker:6379"
+    
     volumes:
       - ./:/home/user/app/
     env_file: backend/.env
