@@ -883,7 +883,6 @@ def unban_user(message):
     bot.unban_chat_member(-1001724937734, userId)
     bot.send_message("-1001349899890", "Đã Mở UserId:  " + f" {userId}")
 
-def send_image_with_caption():
     
 
 
