@@ -886,6 +886,7 @@ def allMessage(message):
     
     print(message)
     message_json = json.dumps(message)
+    print("Serialized Message Data:", message_json)
 
     moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
