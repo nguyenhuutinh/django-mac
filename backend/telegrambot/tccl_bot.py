@@ -522,7 +522,7 @@ def moderate(message):
         isExist = TelegramUser.objects.filter(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name ).exists()
         print(f"checking user {message.from_user.id} exist : {isExist}")
         isPhoto = False
-        if message.text == None:
+        if message.photo != None:
             isPhoto = True
         if isExist is not True and isPhoto is True and message.caption is not None:
             print(f"new user but user sent image with caption . User ID: {message.from_user.id}. Delete message")
