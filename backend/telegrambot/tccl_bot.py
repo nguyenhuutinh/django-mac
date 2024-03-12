@@ -892,23 +892,57 @@ def allMessage(message):
 
     # message_json = json.dumps(message)
     
+    message_data = {
+        "content_type": message.content_type,
+        "id": message.id,
+        "message_id": message.message_id,
+        "from_user": {
+            "id": message.from_user.id,
+            "is_bot": message.from_user.is_bot,
+            "first_name": message.from_user.first_name,
+            "username": message.from_user.username,
+            "last_name": message.from_user.last_name,
+        },
+        "date": message.date,
+        "chat": {
+            "id": message.chat.id,
+            "type": message.chat.type,
+            "title": message.chat.title,
+            "username": message.chat.username,
+            "first_name": message.chat.first_name,
+            "last_name": message.chat.last_name,
+            # Include other attributes of the 'chat' object as needed
+        },
+        "sender_chat": message.sender_chat,
+        "is_automatic_forward": message.is_automatic_forward,
+        "reply_to_message": serialize_message_data(message.reply_to_message) if message.reply_to_message else None,
+        "via_bot": serialize_user_data(message.via_bot) if message.via_bot else None,
+        "edit_date": message.edit_date,
+        "has_protected_content": message.has_protected_content,
+        "media_group_id": message.media_group_id,
+        "author_signature": message.author_signature,
+        "text": message.text,
+        "entities": message.entities,
+        "caption_entities": message.caption_entities,
+        # Include other attributes of the 'message' object as needed
+    }
     try:
         # Serialize the message data into JSON
-        json_data = json.dumps(handle_none(message), ensure_ascii=False)
+        message_json = json.dumps(message_data)
 
         # Print the serialized message data
-        print("Serialized Message Data:", json_data)
+        print("Serialized Message Data:", message_json)
 
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs={ "message": json_data}, countdown=1)
+        moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
 
     except Exception as e:
         # Handle any exceptions during serialization
         print("Error occurred during serialization:", e)
         return "Error occurred during task execution"
-    print("Serialized Message Data:", json_data)
+    print("Serialized Message Data:", message_json)
 
 def handle_none(value):
     if value is None:
