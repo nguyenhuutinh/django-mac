@@ -488,7 +488,7 @@ def moderateMessageTask(message):
     message_object = SimpleNamespace(**message_data)
 
     print("message", message_object)
-    print("Received message:", message_object.chat.id)
+    print("Received message:", message_object.chat)
     # moderate(message_object)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
