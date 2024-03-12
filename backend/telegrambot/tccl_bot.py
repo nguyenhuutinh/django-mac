@@ -904,7 +904,7 @@ def allMessage(message):
         image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
         
         # Caption for the image with highlighted title
-        caption = """*CẢNH BÁO GIẢ MẠO ADMIN LỪA ĐẢO*\n\n*Tất cả tài khoản Telegram mang tên Đỗ Bảo hoặc Đỗ Bảo - TCCL inbox cho các bạn trước đều là LỪA ĐẢO*. \n\n 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống Đỗ Bảo để chat với bạn\n👉 Hãy LUÔN CẨN THẬN với tài sản của mình."""
+        caption = """*CẢNH BÁO GIẢ MẠO ADMIN LỪA ĐẢO*\n\n*TẤT CẢ TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX CHO CÁC BẠN TRƯỚC ĐỀU LÀ LỪA ĐẢO.* \n\n 💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ ĐỔI TÊN VÀ AVATAR GIỐNG ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH."""
         
         # Send the photo with the caption
         sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
