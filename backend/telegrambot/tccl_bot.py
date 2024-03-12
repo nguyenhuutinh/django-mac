@@ -895,7 +895,7 @@ def allMessage(message):
     message_data = {
         "content_type": message.content_type,
         "id": message.id,
-        "message_id": message.message_id,
+        "message_id": message.message_id
        
     }
     try:
@@ -908,7 +908,7 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs=message_json, countdown=1)
+        moderateMessageTask.apply_async(args=[message_data], countdown=1)
 
     except Exception as e:
         # Handle any exceptions during serialization
