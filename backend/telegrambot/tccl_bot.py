@@ -482,9 +482,10 @@ def checkingPhoto(message):
 
 #     return diff_ratio
 @shared_task
-def moderateMessageTask():
+def moderateMessageTask(message):
     print("message")
-    # bot.send_message("-1001349899890", f"tesst" )
+    print("Received message:", message.text)
+    print("From user:", message.from_user.username)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
@@ -883,7 +884,7 @@ def allMessage(message):
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
 
-    # moderateMessageTask.apply_async(kwargs={ "message": "message"}, countdown=1)
+    moderateMessageTask.apply_async(kwargs={ "message": message}, countdown=1)
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
     moderate(message=message)
