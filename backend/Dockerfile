@@ -5,6 +5,8 @@ ENV PYTHONUNBUFFERED 1
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
 
+RUN pip install --no-cache-dir redis flower
+
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     rm -rf /var/lib/apt/lists/*
@@ -38,24 +40,4 @@ ADD backend/ /home/user/app/backend
 # RUN mkdir /home/user/app/data
 RUN chown user:user /home/user/app/backend
 USER user
-
-
-# Set the working directory in the container
-WORKDIR /flower
-
-
-# Clone the Flower repository from GitHub
-RUN git clone https://github.com/mher/flower.git .
-
-
-# Install Flower dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose the default Flower port
-EXPOSE 5555
-
-# Set the command to run Flower when the container starts
-CMD ["flower", "--broker=redis://broker:6379"]
-
-
 CMD gunicorn --timeout 600 telegrambot.wsgi --log-file - -b 0.0.0.0:8000 --reload
