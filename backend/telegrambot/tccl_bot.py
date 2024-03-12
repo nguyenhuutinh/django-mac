@@ -523,6 +523,10 @@ def moderate(message):
         isPhoto = False
         if message.text == None:
             isPhoto = True
+        if isExist is not True and isPhoto is True and message.caption is not None:
+            print(f"NOT exist but user sent image with caption . User ID: {message.from_user.id}. Delete message")
+            _deleteMessage(message)
+
         if isExist is not True or isPhoto is True:
             if isExist is not True and isPhoto is not True:
                 TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
