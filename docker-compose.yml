@@ -51,10 +51,11 @@ services:
   
   flower:
     image: mher/flower
+    container_name: flower # Docker conainer name
+
     ports:
       - "5555:5555"
-    command: >
-          bash -c "flower --broker=redis://broker:6379"
+    command: celery flower # This will execute flower.
     depends_on:
       - broker
 
