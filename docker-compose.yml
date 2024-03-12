@@ -54,7 +54,7 @@ services:
     ports:
       - "5555:5555"
     command: >
-          bash -c "flower --broker=redis://broker:6379"
+      sh -c "flower --broker=redis://broker:6379"
     depends_on:
       - broker
 
