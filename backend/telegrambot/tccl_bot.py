@@ -498,8 +498,8 @@ def moderateMessageTask(message):
         # Create SimpleNamespace object for message_data
         message_object = SimpleNamespace(chat=chat_ns, from_user=from_user_ns, **message_data)
 
-        print("message", message_object)
-        print("Received message:", message_object.chat)
+        # print("message", message_object)
+        # print("Received message:", message_object.chat)
         moderate(message_object)
     except Exception as exc:
             # Retry the task with a delay of 5 seconds between retries
