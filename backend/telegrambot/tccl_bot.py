@@ -830,9 +830,21 @@ def banUser(message, error_text):
     print(f"banned ?: {isExist}")
     if not isExist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ " + full_name + " bị ban vì hành vi SCAM / LỪA ĐẢO ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        bot.reply_to(message, "‼️ " + full_name + " bị ban vì hành vi LỪA ĐẢO")
+        image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
+        
+        # Caption for the image with highlighted title
+        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX CHO CÁC BẠN TRƯỚC ĐỀU LÀ LỪA ĐẢO.* \n\n 💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ ĐỔI TÊN VÀ AVATAR GIỐNG ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH."""
+        
+        # Send the photo with the caption
+        sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
+                # print(sentmessage)
+        chatId = sentmessage.chat.id
+        print("sent warning ... ", chatId, sentmessage.message_id)
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
 
-    bot.send_message("-1001349899890", "Đã ban user id: " + str(userId) + " - firstName: "+ f"{full_name}" + f" - message: {message.id} {message.text} " + f" - caption: {message.caption}")
+    bot.send_message("-1001349899890", f"Đã ban user id: {userId} - Tên: {full_name} - Nội Dung Tin Nhắn: {message.id} {message.text}" + (f" - Caption: {message.caption}" if message.caption else ""))
+    
     print(TelegramUser.objects.filter(user_id=userId))
     TelegramUser.objects.filter(user_id=userId).update(status='banned', ban_reason=error_text)
     print(f"{bcolors.OKGREEN} banned {userId} {full_name} {bcolors.ENDC}")
