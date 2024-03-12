@@ -556,6 +556,7 @@ def moderate(message):
 
 def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
+    text_to_check = message.text or message.caption
     not_eng_or_vietnamese = is_not_english_or_vietnamese(text_to_check)
     if (not_eng_or_vietnamese is True):
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
