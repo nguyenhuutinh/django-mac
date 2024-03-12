@@ -40,6 +40,10 @@ RUN chown user:user /home/user/app/backend
 USER user
 
 
+# Set the working directory in the container
+WORKDIR /flower
+
+
 # Clone the Flower repository from GitHub
 RUN git clone https://github.com/mher/flower.git .
 
