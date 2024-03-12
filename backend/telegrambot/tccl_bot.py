@@ -486,6 +486,16 @@ def checkingPhoto(message):
 def moderateMessageTask(message):
     message_data = json.loads(message)
     message_object = SimpleNamespace(**message_data)
+    # Convert nested dictionaries to SimpleNamespace objects
+    from_user_ns = SimpleNamespace(**message_data['from_user'])
+    chat_ns = SimpleNamespace(**message_data['chat'])
+
+    # Remove nested dictionaries from message_data
+    message_data.pop('from_user')
+    message_data.pop('chat')
+
+    # Create SimpleNamespace object for message_data
+    message_object = SimpleNamespace(chat=chat_ns, from_user=from_user_ns, **message_data)
 
     print("message", message_object)
     print("Received message:", message_object.chat)
