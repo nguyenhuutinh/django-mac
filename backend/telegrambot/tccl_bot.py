@@ -1031,8 +1031,8 @@ def allMessage(message):
             "has_protected_content": message.has_protected_content
         }
     }
-    print("Serialized Message Data:", message_data)
     message_json = json.dumps(message_data)
+    print("Serialized Message Data:", message_json)
 
     moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
 
