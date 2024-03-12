@@ -1032,7 +1032,9 @@ def allMessage(message):
         }
     }
     print("Serialized Message Data:", message_data)
-    moderateMessageTask.apply_async(kwargs={ "message": message_data}, countdown=1)
+    message_json = json.dumps(message_data)
+
+    moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
 
 
 @bot.message_handler( content_types=[
