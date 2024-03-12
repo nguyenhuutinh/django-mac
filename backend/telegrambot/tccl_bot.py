@@ -489,7 +489,7 @@ def moderateMessageTask(message):
 
     print("message", message_object)
     print("Received message:", message_object.text)
-    # print("From user:", message.from_user.username)
+    moderate(message_object)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
@@ -892,7 +892,7 @@ def allMessage(message):
 
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
-    moderate(message=message)
+    # moderate(message=message)
 
     # message_json = json.dumps(message)
     
@@ -919,6 +919,7 @@ def allMessage(message):
         },
         "sender_chat": message.sender_chat,
         "text": message.text,
+        "caption": message.caption,
         # Include other attributes of the 'message' object as needed
     }
     try:
@@ -936,8 +937,9 @@ def allMessage(message):
     except Exception as e:
         # Handle any exceptions during serialization
         print("Error occurred during serialization:", e)
-        return "Error occurred during task execution"
-    print("Serialized Message Data:", message_json)
+        moderate(message=message)
+        
+        # print("Serialized Message Data:", message_json)
 
 def handle_none(value):
     if value is None:
