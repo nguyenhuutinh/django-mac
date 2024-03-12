@@ -885,13 +885,16 @@ def allMessage(message):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
     print(message)
-    message_json = json.dumps(message)
-    print("Serialized Message Data:", message_json)
 
-    moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
     moderate(message=message)
+
+    # message_json = json.dumps(message)
+    print("Serialized Message Data:", message)
+
+    moderateMessageTask.apply_async(kwargs={ "message": message}, countdown=1)
+
 
 @bot.message_handler( content_types=[
     "new_chat_members"
