@@ -903,7 +903,7 @@ def allMessage(message):
             "username": message.from_user.username,
             "last_name": message.from_user.last_name,
         },
-        "date": message.date,
+        # "date": message.date,
         "chat": {
             "id": message.chat.id,
             "type": message.chat.type,
@@ -914,14 +914,7 @@ def allMessage(message):
             # Include other attributes of the 'chat' object as needed
         },
         "sender_chat": message.sender_chat,
-        "is_automatic_forward": message.is_automatic_forward,
-        "edit_date": message.edit_date,
-        "has_protected_content": message.has_protected_content,
-        "media_group_id": message.media_group_id,
-        "author_signature": message.author_signature,
         "text": message.text,
-        "entities": message.entities,
-        "caption_entities": message.caption_entities,
         # Include other attributes of the 'message' object as needed
     }
     try:
