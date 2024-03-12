@@ -524,9 +524,9 @@ def moderate(message):
         isPhoto = False
         if message.text == None:
             isPhoto = True
-        if isExist is not True and isPhoto is True and message.caption is not None:
-            print(f"new user but user sent image with caption . User ID: {message.from_user.id}. Delete message")
-            _deleteMessage(message)
+        # if isExist is not True and isPhoto is True and message.caption is not None:
+        #     print(f"new user but user sent image with caption . User ID: {message.from_user.id}. Delete message")
+        #     _deleteMessage(message)
         if isExist is not True and "https://" in f"{message.text} {message.caption}".lower():
             print(f"new user but user sent link . User ID: {message.from_user.id}. Delete message")
             _deleteMessage(message)
