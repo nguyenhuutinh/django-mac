@@ -484,7 +484,7 @@ def checkingPhoto(message):
 @shared_task
 def moderateMessageTask(message):
     print("message", message)
-    # print("Received message:", message.text)
+    print("Received message:", message.text)
     # print("From user:", message.from_user.username)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
