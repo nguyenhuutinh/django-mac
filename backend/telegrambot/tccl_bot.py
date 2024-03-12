@@ -915,8 +915,6 @@ def allMessage(message):
         },
         "sender_chat": message.sender_chat,
         "is_automatic_forward": message.is_automatic_forward,
-        "reply_to_message": serialize_message_data(message.reply_to_message) if message.reply_to_message else None,
-        "via_bot": serialize_user_data(message.via_bot) if message.via_bot else None,
         "edit_date": message.edit_date,
         "has_protected_content": message.has_protected_content,
         "media_group_id": message.media_group_id,
