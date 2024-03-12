@@ -484,23 +484,26 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    message_data = json.loads(message)
-    message_object = SimpleNamespace(**message_data)
-    # Convert nested dictionaries to SimpleNamespace objects
-    from_user_ns = SimpleNamespace(**message_data['from_user'])
-    chat_ns = SimpleNamespace(**message_data['chat'])
+    try:
+        message_data = json.loads(message)
+        message_object = SimpleNamespace(**message_data)
+        # Convert nested dictionaries to SimpleNamespace objects
+        from_user_ns = SimpleNamespace(**message_data['from_user'])
+        chat_ns = SimpleNamespace(**message_data['chat'])
 
-    # Remove nested dictionaries from message_data
-    message_data.pop('from_user')
-    message_data.pop('chat')
+        # Remove nested dictionaries from message_data
+        message_data.pop('from_user')
+        message_data.pop('chat')
 
-    # Create SimpleNamespace object for message_data
-    message_object = SimpleNamespace(chat=chat_ns, from_user=from_user_ns, **message_data)
+        # Create SimpleNamespace object for message_data
+        message_object = SimpleNamespace(chat=chat_ns, from_user=from_user_ns, **message_data)
 
-    print("message", message_object)
-    print("Received message:", message_object.chat)
-    moderate(message_object)
-
+        print("message", message_object)
+        print("Received message:", message_object.chat)
+        moderate(message_object)
+    except Exception as exc:
+            # Retry the task with a delay of 5 seconds between retries
+            raise moderateMessageTask.retry(exc=exc, countdown=5, max_retries=3)
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
 
 def moderate(message):
