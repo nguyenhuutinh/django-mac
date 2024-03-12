@@ -884,7 +884,7 @@ def allMessage(message):
         print("sent warning", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
-    print(message)
+    # print(message)
 
     # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
 
@@ -896,59 +896,7 @@ def allMessage(message):
         "content_type": message.content_type,
         "id": message.id,
         "message_id": message.message_id,
-        "from_user": {
-            "id": message.from_user.id,
-            "is_bot": message.from_user.is_bot,
-            "first_name": message.from_user.first_name,
-            "username": message.from_user.username,
-            "last_name": message.from_user.last_name,
-            "language_code": message.from_user.language_code,
-            "can_join_groups": message.from_user.can_join_groups,
-            "can_read_all_group_messages": message.from_user.can_read_all_group_messages,
-            "supports_inline_queries": message.from_user.supports_inline_queries,
-            "is_premium": message.from_user.is_premium,
-            "added_to_attachment_menu": message.from_user.added_to_attachment_menu
-        },
-        "date": message.date,
-        "chat": {
-            "id": message.chat.id,
-            "type": message.chat.type,
-            "title": message.chat.title,
-            "username": message.chat.username,
-            "first_name": message.chat.first_name,
-            "last_name": message.chat.last_name,
-            "is_forum": message.chat.is_forum,
-            "photo": message.chat.photo,
-            "bio": message.chat.bio,
-            "join_to_send_messages": message.chat.join_to_send_messages,
-            "join_by_request": message.chat.join_by_request,
-            "has_private_forwards": message.chat.has_private_forwards,
-            "has_restricted_voice_and_video_messages": message.chat.has_restricted_voice_and_video_messages,
-            "description": message.chat.description,
-            "invite_link": message.chat.invite_link,
-            "pinned_message": message.chat.pinned_message,
-            "permissions": message.chat.permissions,
-            "slow_mode_delay": message.chat.slow_mode_delay,
-            "message_auto_delete_time": message.chat.message_auto_delete_time,
-            "has_protected_content": message.chat.has_protected_content,
-            "sticker_set_name": message.chat.sticker_set_name,
-            "can_set_sticker_set": message.chat.can_set_sticker_set,
-            "linked_chat_id": message.chat.linked_chat_id,
-            "location": message.chat.location,
-            "active_usernames": message.chat.active_usernames,
-            "emoji_status_custom_emoji_id": message.chat.emoji_status_custom_emoji_id,
-            "has_hidden_members": message.chat.has_hidden_members,
-            "has_aggressive_anti_spam_enabled": message.chat.has_aggressive_anti_spam_enabled,
-            "emoji_status_expiration_date": message.chat.emoji_status_expiration_date,
-            "available_reactions": message.chat.available_reactions,
-            "accent_color_id": message.chat.accent_color_id,
-            "background_custom_emoji_id": message.chat.background_custom_emoji_id,
-            "profile_accent_color_id": message.chat.profile_accent_color_id,
-            "profile_background_custom_emoji_id": message.chat.profile_background_custom_emoji_id,
-            "has_visible_history": message.chat.has_visible_history,
-            "unrestrict_boost_count": message.chat.unrestrict_boost_count,
-            "custom_emoji_sticker_set_name": message.chat.custom_emoji_sticker_set_name
-        }
+       
     }
     try:
         # Serialize the message data into JSON
@@ -960,13 +908,13 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
+        moderateMessageTask.apply_async(kwargs=message_json, countdown=1)
 
     except Exception as e:
         # Handle any exceptions during serialization
         print("Error occurred during serialization:", e)
         return "Error occurred during task execution"
-    print("Serialized Message Data:", message_json)
+        print("Serialized Message Data:", message_json)
 
 
 
