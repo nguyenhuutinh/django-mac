@@ -902,12 +902,6 @@ def allMessage(message):
             "first_name": message.from_user.first_name,
             "username": message.from_user.username,
             "last_name": message.from_user.last_name,
-            "language_code": message.from_user.language_code,
-            "can_join_groups": message.from_user.can_join_groups,
-            "can_read_all_group_messages": message.from_user.can_read_all_group_messages,
-            "supports_inline_queries": message.from_user.supports_inline_queries,
-            "is_premium": message.from_user.is_premium,
-            "added_to_attachment_menu": message.from_user.added_to_attachment_menu
         },
         "date": message.date,
         "chat": {
