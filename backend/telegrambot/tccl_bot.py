@@ -9,6 +9,7 @@ import re
 from re import M
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from types import SimpleNamespace
 
 # from config import *
 import logging
@@ -483,10 +484,10 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    message_data = json.loads(message)
+    message_object = SimpleNamespace(**message)
 
-    print("message", message_data)
-    print("Received message:", message_data['text'])
+    print("message", message_object)
+    print("Received message:", message_object.text)
     # print("From user:", message.from_user.username)
 
     # print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
