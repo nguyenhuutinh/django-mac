@@ -1041,15 +1041,14 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        # Return any result if needed
-        return "Task completed successfully"
+        moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
+
     except Exception as e:
         # Handle any exceptions during serialization
         print("Error occurred during serialization:", e)
         return "Error occurred during task execution"
     print("Serialized Message Data:", message_json)
 
-    moderateMessageTask.apply_async(kwargs={ "message": message_json}, countdown=1)
 
 
 @bot.message_handler( content_types=[
