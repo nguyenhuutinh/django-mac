@@ -935,7 +935,7 @@ def send_warning_message():
 def allMessage(message):
 
 
-    global MSG_COUNTER
+    global MSG_COUNTER,MSG_MAX
 
     if is_admin(message):
         logger.info(f"Admin message: {message.from_user.first_name} sent message: {message.text}")
