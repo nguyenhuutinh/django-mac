@@ -489,7 +489,7 @@ def checkingPhoto(message):
 
 #     return diff_ratio
 @shared_task
-def moderateMessageTask(message):
+def moderate_message_task(message):
 
     try:
         message_data = json.loads(message)
@@ -507,12 +507,12 @@ def moderateMessageTask(message):
 
         # print("message", message_object)
         # print("Received message:", message_object.chat)
-        print(f"{bcolors.WARNING} moderateMessageTask... {bcolors.ENDC}")
+        print(f"{bcolors.WARNING} moderate_message_task... {bcolors.ENDC}")
 
         moderate(message_object)
     except Exception as exc:
             # Retry the task with a delay of 5 seconds between retries
-            raise moderateMessageTask.retry(exc=exc, countdown=5, max_retries=3)
+            raise moderate_message_task.retry(exc=exc, countdown=5, max_retries=3)
 
 def moderate(message):
     if message.chat.id != -1001724937734:
