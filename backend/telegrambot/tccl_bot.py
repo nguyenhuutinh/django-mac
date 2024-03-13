@@ -87,7 +87,6 @@ def photo(message):
     if result == True:
         print("admin")
         return
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo with caption:  {str( message.caption)} {bcolors.ENDC}\n")
     moderate(message=message)
 
 
@@ -96,6 +95,10 @@ def photo(message):
     full_name = f"{first_name}{last_name}"
 
     res = checkingPhoto(message=message)
+    caption_text = f" with caption: {message.caption}" if message.caption else ""
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo URL {photoUrl}{caption_text}{bcolors.ENDC}\n")
+
+
     if res == 1:
         # userId = message.from_user.id
         # chatId = message.chat.id
