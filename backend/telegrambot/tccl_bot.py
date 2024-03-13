@@ -510,7 +510,7 @@ def moderateMessageTask(message):
         moderate(message_object)
     except Exception as exc:
             # Retry the task with a delay of 5 seconds between retries
-            raise moderateMessageTask.retry(exc=exc, countdown=5, max_retries=3)
+            raise moderateMessageTask.retry(exc=exc, countdown=5, max_retries=1)
 
 def moderate(message):
     if message.chat.id != -1001724937734:
@@ -1001,7 +1001,7 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=5)
+        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=0)
 
     except Exception as e:
         # Handle any exceptions during serialization
