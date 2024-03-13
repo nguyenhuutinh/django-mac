@@ -990,7 +990,7 @@ def allMessage(message):
         # Your task logic goes here
         # ...
 
-        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=1)
+        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=5)
 
     except Exception as e:
         # Handle any exceptions during serialization
