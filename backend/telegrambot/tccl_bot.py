@@ -52,9 +52,11 @@ class bcolors:
 
 # BOT_TOKEN = "5495185707:AAFOwex3SfYxz2xhz-KA3GdyLpMVLnicUaI"
 
-logger = telebot.logger
+# logger = telebot.logger
 
-logger.setLevel(logging.ERROR)
+# logger.setLevel(logging.ERROR)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 ban_reason = ""
 warning_max = 20
