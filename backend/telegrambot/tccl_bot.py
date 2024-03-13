@@ -524,7 +524,7 @@ def moderate(message):
             print(f"{bcolors.WARNING}Received Photo without caption{bcolors.ENDC}")
     else:
         print(f"{bcolors.WARNING}Received Text: {message.text}{bcolors.ENDC}")
-        
+
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
@@ -944,7 +944,7 @@ def allMessage(message):
         image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
         
         # Caption for the image with highlighted title
-        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n\n\nDobao.TCCL ( Không Inb trước, Không tạo nhóm riêng ) """
+        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n\n\nUsername: dobao_tccl\nDobao.TCCL ( Không Inb trước, Không tạo nhóm riêng ) """
         
         # Send the photo with the caption
         sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
