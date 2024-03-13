@@ -35,7 +35,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 20
+MSG_MAX = 50
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -488,7 +488,7 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    
+
     try:
         message_data = json.loads(message)
         message_object = SimpleNamespace(**message_data)
@@ -516,32 +516,6 @@ def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
-
-    global MSG_COUNTER, MSG_MAX
-
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram" or message.from_user.first_name == "Channel"
-    if result == True:
-        # print("admin")
-        return
-
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}")
-    MSG_COUNTER = MSG_COUNTER + 1
-    if MSG_COUNTER >= MSG_MAX:
-        MSG_COUNTER = 0
-        # URL of the image
-        image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
-        
-        # Caption for the image with highlighted title
-        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n\n\n  Dobao.TCCL ( Không Inb trước, Không tạo nhóm riêng ) """
-        
-        # Send the photo with the caption
-        sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
-        # sentmessage = bot.send_message("-1001724937734", "[CẢNH BÁO SCAM/LỪA ĐẢO]\n\nTất cả tài khoản Telegram mang tên Đỗ Bảo hoặc Đỗ Bảo - TCCL inbox cho các bạn trước đều là LỪA ĐẢO / SCAM. \n\n 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống Đỗ Bảo để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        # print(sentmessage)
-        chatId = sentmessage.chat.id
-        print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
-        
 
     print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
     if checkAndDeleteMessage(message):
@@ -943,10 +917,42 @@ def unban_user(message):
     
 
 
+def send_warning_message():
+    image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
+    caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH."""
+
+    try:
+        sent_message = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
+        chat_id = sent_message.chat.id
+        logger.info("Sent warning message... Chat ID: %s, Message ID: %s", chat_id, sent_message.message_id)
+
+        delete_message_task.apply_async(kwargs={"chat_id": chat_id, "message_id": sent_message.message_id}, countdown=180)
+    except Exception as e:
+        logger.error("Error sending warning message: %s", e)
+
 
 @bot.message_handler()
 def allMessage(message):
-    
+
+
+    global MSG_COUNTER
+
+    if is_admin(message):
+        logger.info(f"Admin message: {message.from_user.first_name} sent message: {message.text}")
+        return
+
+    logger.info(f"Non-admin message: {message.from_user.first_name} sent message: {message.text}")
+
+    MSG_COUNTER += 1
+    if MSG_COUNTER >= MSG_MAX:
+        send_warning_message()
+        MSG_COUNTER = 0
+
+    serialize_and_moderate_message(message)
+
+
+
+def serialize_and_moderate_message(message):
     message_data = {
         "content_type": message.content_type,
         "id": message.id,
@@ -958,7 +964,6 @@ def allMessage(message):
             "username": message.from_user.username,
             "last_name": message.from_user.last_name,
         },
-        # "date": message.date,
         "chat": {
             "id": message.chat.id,
             "type": message.chat.type,
@@ -966,32 +971,21 @@ def allMessage(message):
             "username": message.chat.username,
             "first_name": message.chat.first_name,
             "last_name": message.chat.last_name,
-            # Include other attributes of the 'chat' object as needed
         },
         "sender_chat": message.sender_chat,
         "text": message.text,
         "caption": message.caption,
         "photo": message.photo,
-        # Include other attributes of the 'message' object as needed
     }
+
     try:
-        # Serialize the message data into JSON
         message_json = json.dumps(message_data)
+        logger.info("Serialized Message Data: %s", message_json)
 
-        # Print the serialized message data
-        print("Serialized Message Data:", message_json)
-
-        # Your task logic goes here
-        # ...
-
-        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=1)
-
+        moderate_message_task.apply_async(kwargs={"message": message_json}, countdown=1)
     except Exception as e:
-        # Handle any exceptions during serialization
-        print("Error occurred during serialization:", e)
-        moderate(message=message)
-        
-        # print("Serialized Message Data:", message_json)
+        logger.error("Error occurred during serialization: %s", e)
+        moderate_message(message)
 
 def handle_none(value):
     if value is None:
