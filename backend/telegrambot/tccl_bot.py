@@ -940,7 +940,7 @@ def allMessage(message):
         # print(sentmessage)
         chatId = sentmessage.chat.id
         print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=120)
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
     # print(message)
 
