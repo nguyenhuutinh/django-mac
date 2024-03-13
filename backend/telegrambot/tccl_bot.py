@@ -926,11 +926,11 @@ def send_warning_message():
     try:
         sent_message = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
         chat_id = sent_message.chat.id
-        print("Sent warning message... Chat ID: %s, Message ID: %s", chat_id, sent_message.message_id)
+        print("Sent warning message... Chat ID: %s, Message ID: %s" % (chat_id, sent_message.message_id))
 
         delete_message_task.apply_async(kwargs={"chat_id": chat_id, "message_id": sent_message.message_id}, countdown=180)
     except Exception as e:
-        print("Error sending warning message: %s", e)
+        print(f"Error sending warning message: {e}")
 
 
 @bot.message_handler()
@@ -980,11 +980,11 @@ def serialize_and_moderate_message(message):
 
     try:
         message_json = json.dumps(message_data)
-        print("Serialized Message Data: %s", message_json)
+        print(f"Serialized Message Data: {message_json}")
 
         moderate_message_task.apply_async(kwargs={"message": message_json}, countdown=1)
     except Exception as e:
-        print("Error occurred during serialization: %s", e)
+        print(f"Error occurred during serialization: {e}")
         moderate_message(message)
 
 def handle_none(value):
