@@ -926,11 +926,11 @@ def send_warning_message():
     try:
         sent_message = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
         chat_id = sent_message.chat.id
-        logger.info("Sent warning message... Chat ID: %s, Message ID: %s", chat_id, sent_message.message_id)
+        print("Sent warning message... Chat ID: %s, Message ID: %s", chat_id, sent_message.message_id)
 
         delete_message_task.apply_async(kwargs={"chat_id": chat_id, "message_id": sent_message.message_id}, countdown=180)
     except Exception as e:
-        logger.error("Error sending warning message: %s", e)
+        print("Error sending warning message: %s", e)
 
 
 @bot.message_handler()
@@ -938,10 +938,10 @@ def allMessage(message):
     global MSG_COUNTER,MSG_MAX
 
     if is_admin(message):
-        logger.info(f"Admin message: {message.from_user.first_name} sent message: {message.text}")
+        print(f"Admin message: {message.from_user.first_name} sent message: {message.text}")
         return
 
-    logger.info(f"Non-admin message: {message.from_user.first_name} sent message: {message.text}")
+    print(f"Non-admin message: {message.from_user.first_name} sent message: {message.text}")
 
     MSG_COUNTER += 1
     if MSG_COUNTER >= MSG_MAX:
@@ -980,11 +980,11 @@ def serialize_and_moderate_message(message):
 
     try:
         message_json = json.dumps(message_data)
-        logger.info("Serialized Message Data: %s", message_json)
+        print("Serialized Message Data: %s", message_json)
 
         moderate_message_task.apply_async(kwargs={"message": message_json}, countdown=1)
     except Exception as e:
-        logger.error("Error occurred during serialization: %s", e)
+        print("Error occurred during serialization: %s", e)
         moderate_message(message)
 
 def handle_none(value):
