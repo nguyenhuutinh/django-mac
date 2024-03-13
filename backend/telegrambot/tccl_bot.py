@@ -824,6 +824,8 @@ def processCheckAndBan(message):
     if "buy and wait" in f"{message.text}{message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower() :
         print(f"{bcolors.WARNING}case 10113  {bcolors.ENDC}")
         return True
+    if "@XAUUSD_GOLDsignals1" in f"{message.text}{message.caption}".lower()
+        return True
     print("no case")
     return False
 
