@@ -928,7 +928,9 @@ def allMessage(message):
         return
 
     print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}")
-    MSG_COUNTER = MSG_COUNTER + 1
+    if message.reply_to_message is None and message.photo == None:
+        MSG_COUNTER = MSG_COUNTER + 1
+
     if MSG_COUNTER >= MSG_MAX:
         MSG_COUNTER = 0
         # URL of the image
