@@ -517,7 +517,14 @@ def moderate(message):
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
 
-    print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
+    if message.photo:
+        if message.caption:
+            print(f"{bcolors.WARNING}Received Photo with caption: {message.caption}{bcolors.ENDC}")
+        else:
+            print(f"{bcolors.WARNING}Received Photo without caption{bcolors.ENDC}")
+    else:
+        print(f"{bcolors.WARNING}Received Text: {message.text}{bcolors.ENDC}")
+        
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
 
