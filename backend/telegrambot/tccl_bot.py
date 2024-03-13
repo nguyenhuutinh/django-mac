@@ -933,8 +933,6 @@ def send_warning_message():
 
 @bot.message_handler()
 def allMessage(message):
-
-
     global MSG_COUNTER,MSG_MAX
 
     if is_admin(message):
