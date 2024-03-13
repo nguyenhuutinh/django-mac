@@ -35,7 +35,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 20
+MSG_MAX = 30
 
 # from PIL import ImageChops, ImageStat,Image
 
@@ -940,7 +940,7 @@ def allMessage(message):
         # print(sentmessage)
         chatId = sentmessage.chat.id
         print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=120)
     
     # print(message)
 
