@@ -488,31 +488,7 @@ def checkingPhoto(message):
 #     return diff_ratio
 @shared_task
 def moderateMessageTask(message):
-    global MSG_COUNTER, MSG_MAX
-
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram" or message.from_user.first_name == "Channel"
-    if result == True:
-        # print("admin")
-        return
-
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}")
-    MSG_COUNTER = MSG_COUNTER + 1
-    if MSG_COUNTER >= MSG_MAX:
-        MSG_COUNTER = 0
-        # URL of the image
-        image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
-        
-        # Caption for the image with highlighted title
-        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n\n\n @dobao_tccl  - Dobao.TCCL ( Không Inb trước, Không tạo nhóm riêng ) """
-        
-        # Send the photo with the caption
-        sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
-        # sentmessage = bot.send_message("-1001724937734", "[CẢNH BÁO SCAM/LỪA ĐẢO]\n\nTất cả tài khoản Telegram mang tên Đỗ Bảo hoặc Đỗ Bảo - TCCL inbox cho các bạn trước đều là LỪA ĐẢO / SCAM. \n\n 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống Đỗ Bảo để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        # print(sentmessage)
-        chatId = sentmessage.chat.id
-        print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
-        
+    
     try:
         message_data = json.loads(message)
         message_object = SimpleNamespace(**message_data)
@@ -540,6 +516,32 @@ def moderate(message):
     if message.chat.id != -1001724937734:
         print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
         return
+
+    global MSG_COUNTER, MSG_MAX
+
+    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram" or message.from_user.first_name == "Channel"
+    if result == True:
+        # print("admin")
+        return
+
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent message:  {str( message.text)} {bcolors.ENDC} {MSG_COUNTER} {MSG_MAX}")
+    MSG_COUNTER = MSG_COUNTER + 1
+    if MSG_COUNTER >= MSG_MAX:
+        MSG_COUNTER = 0
+        # URL of the image
+        image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
+        
+        # Caption for the image with highlighted title
+        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\n*TẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN ĐỖ BẢO HOẶC ĐỖ BẢO - TCCL INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO.* \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n\n\n @dobao_tccl  - Dobao.TCCL ( Không Inb trước, Không tạo nhóm riêng ) """
+        
+        # Send the photo with the caption
+        sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
+        # sentmessage = bot.send_message("-1001724937734", "[CẢNH BÁO SCAM/LỪA ĐẢO]\n\nTất cả tài khoản Telegram mang tên Đỗ Bảo hoặc Đỗ Bảo - TCCL inbox cho các bạn trước đều là LỪA ĐẢO / SCAM. \n\n 💢🆘 ‼️\n\n👉 ⚠️Các ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống Đỗ Bảo để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+        # print(sentmessage)
+        chatId = sentmessage.chat.id
+        print("sent warning ... ", chatId, sentmessage.message_id)
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
+        
 
     print(f"{bcolors.WARNING}received message - text: {message.text} - caption: {message.caption}  {bcolors.ENDC}")
     if checkAndDeleteMessage(message):
