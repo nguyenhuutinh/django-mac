@@ -650,11 +650,15 @@ global recently_deleted_messages
     
 
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
-    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    # isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
+    # Extract first and last names from the user object
     first_name = message.from_user.first_name
-    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
-    full_name = f"{first_name}{last_name}"
-    if (not isExist) and (message_hash in recently_deleted_messages is False):
+    last_name = message.from_user.last_name or ""
+
+    # Combine first and last names to form the full name
+    full_name = f"{first_name} {last_name}".strip()
+
+    if message_hash in recently_deleted_messages is False:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
 
