@@ -648,7 +648,19 @@ def _deleteMessage(message):
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
-    bot.send_message("-1001349899890", f"deleted message: {message.text} {message. caption}- {message.from_user.id} {full_name}" )
+    
+    text = message.text if message.text else ""
+    caption = message.caption if message.caption else ""
+    user_id = message.from_user.id if message.from_user.id else ""
+    full_name = full_name if full_name else ""
+
+    message_content = f"Tin nhắn đã bị xóa: {text} {caption} - Người dùng: {user_id}"
+    if full_name:
+        message_content += f" ({full_name})"
+
+    bot.send_message("-1001349899890", message_content)
+
+
 
 @shared_task
 def deleteMessageTask(chat_id, message_id):
