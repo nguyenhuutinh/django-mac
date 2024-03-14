@@ -641,7 +641,11 @@ def checkAndDeleteMessage(message):
     #     return True
     return False
 
-global recently_deleted_messages
+
+
+def _deleteMessage(message):
+
+    global recently_deleted_messages
 
     # Hash the message content
     message_hash = hashlib.md5(message.text.encode()).hexdigest()
