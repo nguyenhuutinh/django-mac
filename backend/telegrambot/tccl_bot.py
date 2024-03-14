@@ -37,6 +37,10 @@ photoUrl = ""
 MSG_COUNTER = 0
 MSG_MAX = 20
 
+
+# Maintain a set to store hashes of recently deleted messages
+recently_deleted_messages = set()
+
 # from PIL import ImageChops, ImageStat,Image
 
 class bcolors:
@@ -637,13 +641,20 @@ def checkAndDeleteMessage(message):
     #     return True
     return False
 
-def _deleteMessage(message):
+global recently_deleted_messages
+
+    # Hash the message content
+    message_hash = hashlib.md5(message.text.encode()).hexdigest()
+
+    # Check if the message hash is in the set of recently deleted messages
+    
+
     print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
     isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
     first_name = message.from_user.first_name
     last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
     full_name = f"{first_name}{last_name}"
-    if not isExist:
+    if (not isExist) and (message_hash in recently_deleted_messages is False):
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
 
@@ -653,10 +664,13 @@ def _deleteMessage(message):
     caption = message.caption if message.caption else ""
     user_id = message.from_user.id if message.from_user.id else ""
     full_name = full_name if full_name else ""
-
+    
     message_content = f"Tin nhắn đã bị xóa: {text} {caption} - Người dùng: {user_id}"
     if full_name:
         message_content += f" ({full_name})"
+
+    # Add the message hash to the set of recently deleted messages
+    recently_deleted_messages.add(message_hash)
 
     bot.send_message("-1001349899890", message_content)
 
