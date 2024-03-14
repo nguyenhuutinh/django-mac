@@ -596,6 +596,20 @@ def checkAndDeleteMessage(message):
     if "crypto"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
+
+    if "join"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
+    if "👇🏻"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
+    if "👉"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
+    if "👆"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+        return True
+
     if "follow us" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
@@ -631,7 +645,7 @@ def _deleteMessage(message):
     full_name = f"{first_name}{last_name}"
     if not isExist:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ Tin nhắn " + full_name + " sử dụng từ ngữ bị cấm. ‼️")
+        bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     bot.send_message("-1001349899890", f"deleted message: {message.text} {message. caption}- {message.from_user.id} {full_name}" )
