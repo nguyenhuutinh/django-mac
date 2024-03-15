@@ -35,7 +35,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 20
+MSG_MAX = 40
 
 
 # Maintain a set to store hashes of recently deleted messages
@@ -975,7 +975,13 @@ def unban_user(message):
 
     
 
-
+# Function to check the queue length based on task name
+def check_queue_length_for_task(task_name):
+    with celery_app.connection_or_acquire() as conn:
+        with conn.channel() as channel:
+            queue = celery_app.amqp.queues[task_name](channel)
+            queue.declare()
+            return queue.qos().messages
 
 @bot.message_handler()
 def allMessage(message):
@@ -1004,7 +1010,7 @@ def allMessage(message):
         # print(sentmessage)
         chatId = sentmessage.chat.id
         print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=360)
+        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
     # print(message)
 
