@@ -575,6 +575,8 @@ def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
     text_to_check = message.text or message.caption
     isRuss = isRussia(text_to_check)
+    if "/addstickers" in f"{message.text} {message.caption}".lower():
+        return False
     if (isRuss is True):
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
