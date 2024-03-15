@@ -11,7 +11,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from types import SimpleNamespace
 from langdetect import detect
-
+import hashlib
 # from config import *
 import logging
 from manage import bot
