@@ -2,7 +2,7 @@ from soupsieve import iselect
 from telegrambot.models import Message, TelegramUser
 import uuid
 
-from datetime import datetime, timedelta,timezone
+from datetime import datetime, timedelta
 import os
 import cv2
 import re
@@ -23,6 +23,7 @@ from os.path import exists
 from pathlib import Path
 from diffimg import diff
 from celery import shared_task
+from django.utils import timezone
 
 import pytesseract
 from PIL import Image
@@ -1142,19 +1143,31 @@ def convert_to_send_task(message):
     track_checked_message()
 
 def track_checked_message():
-    today = timezone.now().date()
+    # Get the current datetime in UTC
+    current_datetime_utc = datetime.now(timezone.utc)
+
+    # Extract the date part
+    today = current_datetime_utc.date()
     counter, created = MessageCounter.objects.get_or_create(date=today)
     counter.checking_messages += 1
     counter.save()
 
 def track_deleted_message():
-    today = timezone.now().date()
+    # Get the current datetime in UTC
+    current_datetime_utc = datetime.now(timezone.utc)
+
+    # Extract the date part
+    today = current_datetime_utc.date()
     counter, created = MessageCounter.objects.get_or_create(date=today)
     counter.deleted_messages += 1
     counter.save()
 
 def generate_daily_report():
-    today = timezone.now().date()
+    # Get the current datetime in UTC
+    current_datetime_utc = datetime.now(timezone.utc)
+
+    # Extract the date part
+    today = current_datetime_utc.date()
     counter, created = MessageCounter.objects.get_or_create(date=today)
     report_message = f"Daily Report - {today}:\n"
     report_message += f"Total Checking Messages: {counter.checking_messages}\n"
