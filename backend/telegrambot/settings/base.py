@@ -98,8 +98,8 @@ CORS_ALLOWED_ORIGINS = (
 CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     # 'rest_captcha',
-    # "django.contrib.admin",
-'rest_framework_simplejwt',
+    # "django.contrib.admin",   
+    'rest_framework_simplejwt',
 
     "django.contrib.auth",
     "django.contrib.contenttypes",
