@@ -37,6 +37,7 @@ photoUrl = ""
 MSG_COUNTER = 0
 MSG_MAX = 40
 
+report_sent = False
 
 # Maintain a set to store hashes of recently deleted messages
 recently_deleted_messages = set()
@@ -1083,7 +1084,7 @@ def is_not_english_or_vietnamese(text):
 
 
 def convert_to_send_task(message):
-    
+
     message_data = {
         "content_type": message.content_type,
         "id": message.id,
@@ -1128,12 +1129,15 @@ def convert_to_send_task(message):
         print("Error occurred during serialization:", e)
         moderate(message=message)
 
+    global report_sent
     current_time_utc = datetime.now(timezone.utc)
 
     # Check if the current hour is 17 (5 PM) in UTC
-    if current_time_utc.hour == 17:
+    if current_time_utc.hour == 17 and not report_sent:
         # Call the function to generate the daily report
         send_daily_report()
+        report_sent = True
+
 
     track_checked_message()
 
