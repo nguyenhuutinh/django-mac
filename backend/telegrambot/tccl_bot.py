@@ -1083,14 +1083,7 @@ def is_not_english_or_vietnamese(text):
 
 
 def convert_to_send_task(message):
-    current_time_utc = datetime.now(timezone.utc)
-
-    # Check if the current hour is 17 (5 PM) in UTC
-    if current_time_utc.hour == 17:
-        # Call the function to generate the daily report
-        send_daily_report()
-
-    track_checked_message()
+    
     message_data = {
         "content_type": message.content_type,
         "id": message.id,
@@ -1134,6 +1127,15 @@ def convert_to_send_task(message):
         # Handle any exceptions during serialization
         print("Error occurred during serialization:", e)
         moderate(message=message)
+
+    current_time_utc = datetime.now(timezone.utc)
+
+    # Check if the current hour is 17 (5 PM) in UTC
+    if current_time_utc.hour == 17:
+        # Call the function to generate the daily report
+        send_daily_report()
+
+    track_checked_message()
 
 def track_checked_message():
     today = timezone.now().date()
