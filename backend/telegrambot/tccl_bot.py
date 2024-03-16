@@ -626,7 +626,7 @@ def checkAndDeleteMessage(message):
         return True
     if "@tradefutureforexsignals" in f"{message.text} {message.caption}":
         return True
-    if "@" in f"{message.text} {message.caption}" and "kèo" in f"{message.text} {message.caption}":
+    if "@" in f"{message.text} {message.caption}" and "kèo" in f"{message.text} {message.caption}" and ":" in f"{message.text} {message.caption}" and message.reply_to_message is None:
         return True
     if "opensea.io" in f"{message.text} {message.caption}".lower():
         return True
