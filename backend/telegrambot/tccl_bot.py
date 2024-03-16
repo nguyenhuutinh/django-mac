@@ -624,6 +624,10 @@ def checkAndDeleteMessage(message):
         return True
     if "@RyanNguyenVBC" in f"{message.text} {message.caption}":
         return True
+    if "@tradefutureforexsignals" in f"{message.text} {message.caption}":
+        return True
+    if "@" in f"{message.text} {message.caption}" and "kèo" in f"{message.text} {message.caption}":
+        return True
     if "opensea.io" in f"{message.text} {message.caption}".lower():
         return True
     if "vinacoin.live" in f"{message.text} {message.caption}":
