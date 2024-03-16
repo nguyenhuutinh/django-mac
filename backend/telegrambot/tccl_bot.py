@@ -65,51 +65,6 @@ warning_max = 20
 warning_count = 0
 
 
-def convert_to_send_task(message):
-    message_data = {
-        "content_type": message.content_type,
-        "id": message.id,
-        "message_id": message.message_id,
-        "from_user": {
-            "id": message.from_user.id,
-            "is_bot": message.from_user.is_bot,
-            "first_name": message.from_user.first_name,
-            "username": message.from_user.username,
-            "last_name": message.from_user.last_name,
-        },
-        # "date": message.date,
-        "chat": {
-            "id": message.chat.id,
-            "type": message.chat.type,
-            "title": message.chat.title,
-            "username": message.chat.username,
-            "first_name": message.chat.first_name,
-            "last_name": message.chat.last_name,
-            # Include other attributes of the 'chat' object as needed
-        },
-        "sender_chat": message.sender_chat,
-        "text": message.text,
-        "caption": message.caption,
-        "photo": message.photo,
-        # Include other attributes of the 'message' object as needed
-    }
-    try:
-        # Serialize the message data into JSON
-        message_json = json.dumps(message_data)
-
-        # Print the serialized message data
-        print("Serialized Message Data:", message_json)
-
-        # Your task logic goes here
-        # ...
-
-        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=0)
-
-    except Exception as e:
-        # Handle any exceptions during serialization
-        print("Error occurred during serialization:", e)
-        moderate(message=message)
-
 def process_request(request):
     # print(request.data)
     json_string = request.data
@@ -1125,6 +1080,51 @@ def is_not_english_or_vietnamese(text):
         # Handle cases where language detection fails
         return False
 
+
+def convert_to_send_task(message):
+    message_data = {
+        "content_type": message.content_type,
+        "id": message.id,
+        "message_id": message.message_id,
+        "from_user": {
+            "id": message.from_user.id,
+            "is_bot": message.from_user.is_bot,
+            "first_name": message.from_user.first_name,
+            "username": message.from_user.username,
+            "last_name": message.from_user.last_name,
+        },
+        # "date": message.date,
+        "chat": {
+            "id": message.chat.id,
+            "type": message.chat.type,
+            "title": message.chat.title,
+            "username": message.chat.username,
+            "first_name": message.chat.first_name,
+            "last_name": message.chat.last_name,
+            # Include other attributes of the 'chat' object as needed
+        },
+        "sender_chat": message.sender_chat,
+        "text": message.text,
+        "caption": message.caption,
+        "photo": message.photo,
+        # Include other attributes of the 'message' object as needed
+    }
+    try:
+        # Serialize the message data into JSON
+        message_json = json.dumps(message_data)
+
+        # Print the serialized message data
+        print("Serialized Message Data:", message_json)
+
+        # Your task logic goes here
+        # ...
+
+        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=0)
+
+    except Exception as e:
+        # Handle any exceptions during serialization
+        print("Error occurred during serialization:", e)
+        moderate(message=message)
 
 def track_checked_message():
     today = timezone.now().date()
