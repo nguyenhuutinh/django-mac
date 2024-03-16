@@ -2,7 +2,7 @@ from soupsieve import iselect
 from telegrambot.models import Message, TelegramUser
 import uuid
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,timezone
 import os
 import cv2
 import re
@@ -697,6 +697,7 @@ def _deleteMessage(message):
 def deleteMessageTask(chat_id, message_id):
     print("delete Message Task")
     print(f"{bcolors.OKGREEN}deleted message: {chat_id} {message_id}{bcolors.ENDC}")
+    track_deleted_message()
     bot.delete_message(chat_id,message_id=message_id)
 @shared_task
 def clearDBRecord(user_id):
@@ -1082,6 +1083,14 @@ def is_not_english_or_vietnamese(text):
 
 
 def convert_to_send_task(message):
+    current_time_utc = datetime.now(timezone.utc)
+
+    # Check if the current hour is 17 (5 PM) in UTC
+    if current_time_utc.hour == 17:
+        # Call the function to generate the daily report
+        send_daily_report()
+
+    track_checked_message()
     message_data = {
         "content_type": message.content_type,
         "id": message.id,
@@ -1148,5 +1157,5 @@ def generate_daily_report():
 
 def send_daily_report():
     report = generate_daily_report()
-    chat_id = 'your_chat_id'  # Replace with the actual chat ID to send the report
+    chat_id = '-1001349899890'  # Replace with the actual chat ID to send the report
     bot.sendMessage(chat_id=chat_id, text=report)
