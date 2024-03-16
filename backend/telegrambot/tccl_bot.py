@@ -65,6 +65,51 @@ warning_max = 20
 warning_count = 0
 
 
+def convert_to_send_task(message):
+    message_data = {
+        "content_type": message.content_type,
+        "id": message.id,
+        "message_id": message.message_id,
+        "from_user": {
+            "id": message.from_user.id,
+            "is_bot": message.from_user.is_bot,
+            "first_name": message.from_user.first_name,
+            "username": message.from_user.username,
+            "last_name": message.from_user.last_name,
+        },
+        # "date": message.date,
+        "chat": {
+            "id": message.chat.id,
+            "type": message.chat.type,
+            "title": message.chat.title,
+            "username": message.chat.username,
+            "first_name": message.chat.first_name,
+            "last_name": message.chat.last_name,
+            # Include other attributes of the 'chat' object as needed
+        },
+        "sender_chat": message.sender_chat,
+        "text": message.text,
+        "caption": message.caption,
+        "photo": message.photo,
+        # Include other attributes of the 'message' object as needed
+    }
+    try:
+        # Serialize the message data into JSON
+        message_json = json.dumps(message_data)
+
+        # Print the serialized message data
+        print("Serialized Message Data:", message_json)
+
+        # Your task logic goes here
+        # ...
+
+        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=0)
+
+    except Exception as e:
+        # Handle any exceptions during serialization
+        print("Error occurred during serialization:", e)
+        moderate(message=message)
+
 def process_request(request):
     # print(request.data)
     json_string = request.data
@@ -91,8 +136,9 @@ def photo(message):
     if result == True:
         print("admin")
         return
-    moderate(message=message)
 
+    
+    convert_to_send_task(message)
 
     first_name = message.from_user.first_name
     last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
@@ -1018,59 +1064,7 @@ def allMessage(message):
         print("sent warning ... ", chatId, sentmessage.message_id)
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
-    # print(message)
-
-    # moderateMessageTask.apply_async(args=[message.chat_id, f"You said: {message.text}", message.message_id])
-
-    # moderate(message=message)
-
-    # message_json = json.dumps(message)
-    
-    message_data = {
-        "content_type": message.content_type,
-        "id": message.id,
-        "message_id": message.message_id,
-        "from_user": {
-            "id": message.from_user.id,
-            "is_bot": message.from_user.is_bot,
-            "first_name": message.from_user.first_name,
-            "username": message.from_user.username,
-            "last_name": message.from_user.last_name,
-        },
-        # "date": message.date,
-        "chat": {
-            "id": message.chat.id,
-            "type": message.chat.type,
-            "title": message.chat.title,
-            "username": message.chat.username,
-            "first_name": message.chat.first_name,
-            "last_name": message.chat.last_name,
-            # Include other attributes of the 'chat' object as needed
-        },
-        "sender_chat": message.sender_chat,
-        "text": message.text,
-        "caption": message.caption,
-        "photo": message.photo,
-        # Include other attributes of the 'message' object as needed
-    }
-    try:
-        # Serialize the message data into JSON
-        message_json = json.dumps(message_data)
-
-        # Print the serialized message data
-        print("Serialized Message Data:", message_json)
-
-        # Your task logic goes here
-        # ...
-
-        moderateMessageTask.apply_async(kwargs={ "message" : message_json}, countdown=0)
-
-    except Exception as e:
-        # Handle any exceptions during serialization
-        print("Error occurred during serialization:", e)
-        moderate(message=message)
-        
-        # print("Serialized Message Data:", message_json)
+   convert_to_send_task(message)
 
 def handle_none(value):
     if value is None:
@@ -1130,3 +1124,29 @@ def is_not_english_or_vietnamese(text):
     except:
         # Handle cases where language detection fails
         return False
+
+
+def track_checked_message():
+    today = timezone.now().date()
+    counter, created = MessageCounter.objects.get_or_create(date=today)
+    counter.checking_messages += 1
+    counter.save()
+
+def track_deleted_message():
+    today = timezone.now().date()
+    counter, created = MessageCounter.objects.get_or_create(date=today)
+    counter.deleted_messages += 1
+    counter.save()
+
+def generate_daily_report():
+    today = timezone.now().date()
+    counter, created = MessageCounter.objects.get_or_create(date=today)
+    report_message = f"Daily Report - {today}:\n"
+    report_message += f"Total Checking Messages: {counter.checking_messages}\n"
+    report_message += f"Total Deleted Messages: {counter.deleted_messages}\n"
+    return report_message
+
+def send_daily_report():
+    report = generate_daily_report()
+    chat_id = 'your_chat_id'  # Replace with the actual chat ID to send the report
+    bot.sendMessage(chat_id=chat_id, text=report)
