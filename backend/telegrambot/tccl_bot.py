@@ -673,7 +673,7 @@ def _deleteMessage(message):
     # Combine first and last names to form the full name
     full_name = f"{first_name} {last_name}".strip()
 
-    if message_hash in recently_deleted_messages is False:
+    if message_hash not in recently_deleted_messages:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
     # else:
