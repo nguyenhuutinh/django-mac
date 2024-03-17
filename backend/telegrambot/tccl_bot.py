@@ -635,6 +635,8 @@ def checkAndDeleteMessage(message):
         return True
     if "vinacoin.live" in f"{message.text} {message.caption}":
         return True
+    if "t.me/" in f"{message.text} {message.caption}":
+        return True
     # if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
     #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
     #     return True
