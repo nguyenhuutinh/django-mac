@@ -1,5 +1,5 @@
 from soupsieve import iselect
-from telegrambot.models import Message, TelegramUser
+from telegrambot.models import Message, TelegramUser, MessageCounter
 import uuid
 
 from datetime import datetime, timedelta
