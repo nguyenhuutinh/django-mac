@@ -36,7 +36,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 40
+MSG_MAX = 1000
 
 report_sent = False
 
