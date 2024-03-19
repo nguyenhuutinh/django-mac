@@ -70,16 +70,16 @@ ban_reason = ""
 warning_max = 20
 warning_count = 0
 
-@app.task
-def clear_last_message_time():
-    # Clear last_message_time
-    last_message_time.clear()
-@app.task(bind=True)
-def clear_periodic(self):
-    # Sleep for 1 hour
-    time.sleep(3600)
-    # Call the clear_last_message_time task
-    clear_last_message_time.delay()
+# @app.task
+# def clear_last_message_time():
+#     # Clear last_message_time
+#     last_message_time.clear()
+# @app.task(bind=True)
+# def clear_periodic(self):
+#     # Sleep for 1 hour
+#     time.sleep(3600)
+#     # Call the clear_last_message_time task
+#     clear_last_message_time.delay()
 
 def process_request(request):
     # print(request.data)
