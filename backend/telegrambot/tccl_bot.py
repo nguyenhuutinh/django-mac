@@ -40,6 +40,10 @@ MSG_MAX = 50
 
 report_sent = False
 
+
+last_message_time = {}
+
+
 # Maintain a set to store hashes of recently deleted messages
 recently_deleted_messages = set()
 
@@ -66,6 +70,16 @@ ban_reason = ""
 warning_max = 20
 warning_count = 0
 
+@app.task
+def clear_last_message_time():
+    # Clear last_message_time
+    last_message_time.clear()
+@app.task(bind=True)
+def clear_periodic(self):
+    # Sleep for 1 hour
+    time.sleep(3600)
+    # Call the clear_last_message_time task
+    clear_last_message_time.delay()
 
 def process_request(request):
     # print(request.data)
@@ -637,6 +651,12 @@ def checkAndDeleteMessage(message):
         return True
     if "t.me/" in f"{message.text} {message.caption}":
         return True
+    if "www." in f"{message.text} {message.caption}" and "airdrop" in f"{message.text} {message.caption}":
+        return True
+    if "airdrop" in f"{message.text} {message.caption}" and "$" in f"{message.text} {message.caption}":
+        return True
+    if message.text.count('@') > 2:
+        return True
     # if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
     #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
     #     return True
@@ -998,6 +1018,7 @@ def check_queue_length_for_task(task_name):
 @bot.message_handler()
 def allMessage(message):
     global MSG_COUNTER, MSG_MAX
+    # clear_periodic.delay()
 
     result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram" or message.from_user.first_name == "Channel"
     if result == True:
@@ -1025,6 +1046,22 @@ def allMessage(message):
         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=180)
     
     convert_to_send_task(message)
+
+    # Get the user ID
+    user_id = message.from_user.id
+    
+    # Check if the user ID is already in the dictionary
+    if user_id in last_message_time:
+        # Calculate the time difference between the current message and the last message
+        time_diff = time.time() - last_message_time[user_id]
+        
+        # If the time difference is less than 15 seconds and the user has sent 3 or more messages
+        if time_diff < 15 and last_message_time['message_count'] >= 3:
+            chatId = message.chat.id
+            deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=1)
+            return
+    
+
 
 def handle_none(value):
     if value is None:
