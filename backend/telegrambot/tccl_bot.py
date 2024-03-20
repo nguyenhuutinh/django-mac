@@ -703,7 +703,7 @@ def _deleteMessage(message):
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
     # else:
-        # banUser(message, 'message bi cam')
+        banUser(message, 'message bi cam')
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     
