@@ -594,16 +594,19 @@ def checkAndDeleteMessage(message):
     isRuss = isRussia(text_to_check)
     if "/addstickers" in f"{message.text} {message.caption}".lower():
         return False
-    if (isRuss is True):
+    if "https://t.me/tcclroom" in message.text:
+        return False
+    if "https://t.me/tcclchat" in message.text:
+        return False
+    if "https://t.me/tradecoinchienluoc" in message.text
+        return False    
+    if isRuss is True:
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
     if (is_not_english_or_vietnamese(text_to_check) is True and ("https://" in f"{message.text} {message.caption}".lower())):
         print(f"{bcolors.WARNING}case 1112  {bcolors.ENDC}")
         return True
-    if ("https://t.me/" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
-        print(f"{bcolors.WARNING}case 1113  {bcolors.ENDC}")
-        return True
-    if ("t.me" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
+    if "t.me" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 12222  {bcolors.ENDC}")
         return True
     if "t.me/" in f"{message.text} {message.caption}" and ("tcclroom" not in message.text) and ("tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
@@ -704,7 +707,7 @@ def _deleteMessage(message):
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "‼️ Tin nhắn của " + full_name + " đã bị gỡ bỏ do vi phạm quy định cộng đồng. ‼️")
     # else:
-        banUser(message, 'message bi cam')
+        # banUser(message, 'message bi cam')
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     
