@@ -716,12 +716,12 @@ def _deleteMessage(message):
     user_id = message.from_user.id if message.from_user.id else ""
     full_name = full_name if full_name else ""
     
-    message_content = f"Tin nhắn đã bị xóa: {text} {caption} - Người dùng: {user_id}"
+    message_content = f"Tin nhắn đã bị xóa: {text} {caption} - Người dùng: {user_id} - "
     if full_name:
         message_content += f" ({full_name})"
 
     # Add the message hash to the set of recently deleted messages
-    recently_deleted_messages.add(message_hash)
+    # recently_deleted_messages.add(message_hash)
 
     bot.send_message("-1001349899890", message_content)
 
