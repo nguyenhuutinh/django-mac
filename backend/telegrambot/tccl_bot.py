@@ -606,6 +606,8 @@ def checkAndDeleteMessage(message):
     if ("t.me" in f"{message.text} {message.caption}".lower()) and ("https://t.me/tcclroom" not in message.text) and ("https://t.me/tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
         print(f"{bcolors.WARNING}case 12222  {bcolors.ENDC}")
         return True
+    if "t.me/" in f"{message.text} {message.caption}" and ("tcclroom" not in message.text) and ("tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
+        return True
     if "land of conquest"  in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
         return True
@@ -649,8 +651,7 @@ def checkAndDeleteMessage(message):
         return True
     if "vinacoin.live" in f"{message.text} {message.caption}":
         return True
-    if "t.me/" in f"{message.text} {message.caption}":
-        return True
+    
     if "www." in f"{message.text} {message.caption}" and "airdrop" in f"{message.text} {message.caption}":
         return True
     if "airdrop" in f"{message.text} {message.caption}" and "$" in f"{message.text} {message.caption}":
