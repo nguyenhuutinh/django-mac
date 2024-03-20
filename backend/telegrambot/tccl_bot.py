@@ -595,6 +595,8 @@ def checkAndDeleteMessage(message):
     isEng = isEnglish(text_to_check)
     if "/addstickers" in f"{message.text} {message.caption}".lower():
         return False
+    if ".com" in f"{message.text} {message.caption}".lower():
+        return False
     if "https://t.me/tcclroom" in message.text:
         return False
     if "https://t.me/tcclchat" in message.text:
