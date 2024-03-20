@@ -725,7 +725,7 @@ def _deleteMessage(message):
         message_content += f" ({full_name})"
 
     # Add the message hash to the set of recently deleted messages
-    # recently_deleted_messages.add(message_hash)
+    recently_deleted_messages.add(message_hash)
 
     bot.send_message("-1001349899890", message_content)
 
