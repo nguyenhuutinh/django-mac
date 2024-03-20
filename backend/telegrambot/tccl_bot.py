@@ -604,7 +604,7 @@ def checkAndDeleteMessage(message):
     if isRuss is True:
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
-    if isEng is True and ("https://" in f"{message.text} {message.caption}".lower())):
+    if isEng is True and ("https://" in f"{message.text} {message.caption}".lower()):
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
     if (is_not_english_or_vietnamese(text_to_check) is True and ("https://" in f"{message.text} {message.caption}".lower())):
