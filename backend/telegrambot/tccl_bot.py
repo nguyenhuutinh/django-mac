@@ -592,6 +592,7 @@ def checkAndDeleteMessage(message):
     print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
     text_to_check = message.text or message.caption
     isRuss = isRussia(text_to_check)
+    isEng = isEnglish(text_to_check)
     if "/addstickers" in f"{message.text} {message.caption}".lower():
         return False
     if "https://t.me/tcclroom" in message.text:
@@ -601,6 +602,9 @@ def checkAndDeleteMessage(message):
     if "https://t.me/tradecoinchienluoc" in message.text:
         return False    
     if isRuss is True:
+        print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
+        return True
+    if isEng is True and ("https://" in f"{message.text} {message.caption}".lower())):
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
     if (is_not_english_or_vietnamese(text_to_check) is True and ("https://" in f"{message.text} {message.caption}".lower())):
@@ -1119,6 +1123,14 @@ def isRussia(text):
     try:
         detected_language = detect(text)
         return detected_language == 'ru'
+    except:
+        # Handle cases where language detection fails
+        return False
+
+def isEnglish(text):
+    try:
+        detected_language = detect(text)
+        return detected_language == 'en'
     except:
         # Handle cases where language detection fails
         return False
