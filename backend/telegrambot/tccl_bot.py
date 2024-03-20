@@ -707,11 +707,19 @@ def _deleteMessage(message):
     # Combine first and last names to form the full name
     full_name = f"{first_name} {last_name}".strip()
 
+    # Update the counter when a message is deleted
+    if message_hash in recently_deleted_messages:
+        recently_deleted_messages.remove(message_hash)
+    else:
+        recently_deleted_messages.add(message_hash)
+
+
+
     if message_hash not in recently_deleted_messages:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
-    # else:
-        # banUser(message, 'message bi cam')
+    else:
+        banUser(message, 'message bi cam')
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     
@@ -725,7 +733,7 @@ def _deleteMessage(message):
         message_content += f" ({full_name})"
 
     # Add the message hash to the set of recently deleted messages
-    recently_deleted_messages.add(message_hash)
+    # recently_deleted_messages.add(message_hash)
 
     bot.send_message("-1001349899890", message_content)
 
