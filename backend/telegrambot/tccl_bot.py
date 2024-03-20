@@ -705,7 +705,7 @@ def _deleteMessage(message):
 
     if message_hash not in recently_deleted_messages:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️)
+        bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
     # else:
         # banUser(message, 'message bi cam')
 
