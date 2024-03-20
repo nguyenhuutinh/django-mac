@@ -598,7 +598,7 @@ def checkAndDeleteMessage(message):
         return False
     if "https://t.me/tcclchat" in message.text:
         return False
-    if "https://t.me/tradecoinchienluoc" in message.text
+    if "https://t.me/tradecoinchienluoc" in message.text:
         return False    
     if isRuss is True:
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
