@@ -960,7 +960,7 @@ def banUser(message, error_text):
     print(f"banned ?: {isExist}")
     if not isExist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "‼️ TÀI KHOẢN {full_name} ĐÃ BỊ KHÓA DO VI PHẠM CHÍNH SÁCH VỀ SPAM / LỪA ĐẢO ‼️")
+        bot.reply_to(message, f"‼️ TÀI KHOẢN {full_name} ĐÃ BỊ KHÓA DO VI PHẠM CHÍNH SÁCH VỀ SPAM / LỪA ĐẢO ‼️")
         image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
         
         # Caption for the image with highlighted title
