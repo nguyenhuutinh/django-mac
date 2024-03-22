@@ -595,7 +595,7 @@ def checkAndDeleteMessage(message):
     isEng = isEnglish(text_to_check)
     if "/addstickers" in f"{message.text} {message.caption}".lower():
         return False
-    if ".com" in f"{message.text} {message.caption}".lower():
+    if ".com" in f"{message.text} {message.caption}".lower() or ".gov" in f"{message.text} {message.caption}".lower():
         return False
     if "https://t.me/tcclroom" in message.text:
         return False
@@ -721,7 +721,7 @@ def _deleteMessage(message):
         bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
     else:
         print(f"{bcolors.FAIL} _deleteMessage -> ban_user {message} {bcolors.ENDC}")
-        # banUser(message, 'message bi cam')
+        banUser(message, 'message bi cam')
 
     deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
     
