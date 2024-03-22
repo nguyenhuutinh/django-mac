@@ -758,6 +758,8 @@ def processCheckAndBan(message):
     lastName = message.from_user.last_name
     username = message.from_user.username
     print(f"{bcolors.WARNING}processCheckAndBan {firstName} - {lastName} - {username} {bcolors.ENDC}")
+    if "https://t.me/+" in f"{message.text} {message.caption}".lower():
+        return True
     if "kèo" in f"{message.text} {message.caption}".lower() and "👉" in f"{message.text} {message.caption}".lower():
         return True
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
