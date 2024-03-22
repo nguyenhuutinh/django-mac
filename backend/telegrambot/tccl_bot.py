@@ -736,7 +736,7 @@ def _deleteMessage(message):
         message_content += f" ({full_name})"
 
     # Add the message hash to the set of recently deleted messages
-    # recently_deleted_messages.add(message_hash)
+    recently_deleted_messages.add(message_hash)
 
     bot.send_message("-1001349899890", message_content)
 
@@ -1080,18 +1080,18 @@ def allMessage(message):
     convert_to_send_task(message)
 
     # Get the user ID
-    user_id = message.from_user.id
+    # user_id = message.from_user.id
     
     # Check if the user ID is already in the dictionary
-    if user_id in last_message_time:
-        # Calculate the time difference between the current message and the last message
-        time_diff = time.time() - last_message_time[user_id]
+    # if user_id in last_message_time:
+    #     # Calculate the time difference between the current message and the last message
+    #     time_diff = time.time() - last_message_time[user_id]
         
-        # If the time difference is less than 15 seconds and the user has sent 3 or more messages
-        if time_diff < 15 and last_message_time['message_count'] >= 3:
-            chatId = message.chat.id
-            deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=1)
-            return
+    #     # If the time difference is less than 15 seconds and the user has sent 3 or more messages
+    #     if time_diff < 15 and last_message_time['message_count'] >= 3:
+    #         chatId = message.chat.id
+    #         deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=1)
+    #         return
     
 
 
