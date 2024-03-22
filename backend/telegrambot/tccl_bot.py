@@ -712,8 +712,7 @@ def _deleteMessage(message):
     # Update the counter when a message is deleted
     if message_hash in recently_deleted_messages:
         recently_deleted_messages.remove(message_hash)
-    else:
-        recently_deleted_messages.add(message_hash)
+        
 
 
 
