@@ -765,6 +765,8 @@ def processCheckAndBan(message):
         return True
     if "kèo" in f"{message.text} {message.caption}".lower() and "👉" in f"{message.text} {message.caption}".lower():
         return True
+    if "link" in f"{message.text} {message.caption}".lower() and "👉" in f"{message.text} {message.caption}".lower():
+        return True
     if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
