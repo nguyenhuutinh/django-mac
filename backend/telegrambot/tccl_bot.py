@@ -757,6 +757,8 @@ def processCheckAndBan(message):
     lastName = message.from_user.last_name
     username = message.from_user.username
     print(f"{bcolors.WARNING}processCheckAndBan {firstName} - {lastName} - {username} {bcolors.ENDC}")
+    if "tín hiệu" in f"{message.text} {message.caption}".lower() and "của tôi" in f"{message.text} {message.caption}".lower() :
+        return True
     if "cập nhập plan btc mới nhất" in f"{message.text} {message.caption}".lower() and "uptrend" in f"{message.text} {message.caption}".lower():
         return True
     if "vào avatar" in f"{message.text} {message.caption}".lower() and "link" in f"{message.text} {message.caption}".lower():
