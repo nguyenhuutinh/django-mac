@@ -612,6 +612,10 @@ def checkAndDeleteMessage(message):
     if isEng is True and ("@" in f"{message.text} {message.caption}".lower()):
         print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
         return True
+    if "cập nhập plan btc mới nhất" in f"{message.text} {message.caption}".lower() and "uptrend" in f"{message.text} {message.caption}".lower():
+        return True
+    if "vào avatar" in f"{message.text} {message.caption}".lower() and "plan" in f"{message.text} {message.caption}".lower():
+        return True
     if (is_not_english_or_vietnamese(text_to_check) is True and ("https://" in f"{message.text} {message.caption}".lower())):
         print(f"{bcolors.WARNING}case 1112  {bcolors.ENDC}")
         return True
