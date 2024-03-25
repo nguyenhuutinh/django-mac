@@ -642,7 +642,7 @@ def processCheckAndBan(message):
     if "tccl" in (username or "").lower():
         print(f"{bcolors.WARNING}case 9  {bcolors.ENDC}")
         return True
-    if any(word in (firstName + " " + lastName).lower() for word in ["đỗ bảo", "đỗ bả0", "bảo đỗ", "bảo", "đỗ", "trung kim son", "trade coin chiến lược", "trade", "admin none", "none admin", "admln"]):
+    if any(word in (firstName + " " + lastName).lower() for word in ["trung kim son", "trade coin chiến lược", "admln"]):
         print(f"{bcolors.WARNING}case 10-11-12-13-14-15-16-17-18  {bcolors.ENDC}")
         return True
     if "glcapital1" in text:
