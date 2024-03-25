@@ -595,6 +595,8 @@ def checkAndDeleteMessage(message):
     isEng = isEnglish(text_to_check)
     if "/addstickers" in f"{message.text} {message.caption}".lower():
         return False
+    if "@tribc1991" in f"{message.text} {message.caption}".lower():
+        return False
     if ".com" in f"{message.text} {message.caption}".lower() or ".gov" in f"{message.text} {message.caption}".lower() or ".net" in f"{message.text} {message.caption}".lower()  or ".org" in f"{message.text} {message.caption}".lower():
         return False
     if "https://t.me/tcclroom" in message.text:
