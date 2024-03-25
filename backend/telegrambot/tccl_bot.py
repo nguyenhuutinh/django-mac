@@ -106,8 +106,8 @@ ADMIN_STATUSES = ['administrator', 'creator']
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     global photoUrl
-    result = bot.get_chat_member(message.chat.id, message.from_user.id).status in ADMIN_STATUSES or
-             message.from_user.username == "GroupAnonymousBot" or
+    result = bot.get_chat_member(message.chat.id, message.from_user.id).status in ADMIN_STATUSES or \
+             message.from_user.username == "GroupAnonymousBot" or \
              message.from_user.first_name == "Telegram"
     
     if result:
@@ -147,7 +147,7 @@ def process_image_scan_result(message, full_name, scan_type):
         bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
     except Exception as e:
         print("Error sending photo:", e)
-
+        
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_callback(call):
     result = bot.get_chat_member(call.message.chat.id, call.message.from_user.id).status in ['administrator','creator'] or call.message.from_user.username == "GroupAnonymousBot" or call.message.from_user.first_name == "Telegram" or call.message.from_user.first_name == "Channel"
