@@ -337,138 +337,74 @@ def checkingUserProfilePhoto(userId, mode):
 
     return False
 
-
 def checkingPhoto(message):
     global photoUrl
-    print(f"checking photo")
+    print("checking photo")
 
-    # data = bot.get_user_profile_photos(message.from_user.id)
-    # print(data)
-    # njson = json.loads(data)
-    # print(data['result'])
-    file_id = message.photo[-1].file_id
-    # print(message.photo)
-    if message.photo != None and message.photo[-1] != None:
-        # print("photo existed")
-        # photos_ids = []
-        # fileName = message.photo[-1].file_unique_id
-        fileId = message.photo[-1].file_id
-        pic_url = bot.get_file_url(fileId)
-
+    # Check if the message contains a photo
+    if message.photo and message.photo[-1]:
+        # Extract file information
+        file_id = message.photo[-1].file_id
         file_info = bot.get_file(file_id)
-        # print(pic_url)
-        # print(file_info)
-        # downloaded_file = bot.download_file(file_info.file_path)
         file_extension = '.' + file_info.file_path.split('.')[-1]
         fileName = str(uuid.uuid4()) + file_extension
-
-
-        # Path("/home/user/app/backend/data/directory").mkdir(parents=True, exist_ok=True)
-
         filePath = '/home/user/app/backend/data/' + fileName
         photoUrl = filePath
-        # print(filePath)
-        if not os.path.exists(filePath):
-            with open(filePath, 'w'): pass
+
+        # Download the photo
+        response = requests.get(bot.get_file_url(file_id), stream=True)
         with open(filePath, 'wb') as handle:
-            response = requests.get(pic_url, stream=True)
-
-            if not response.ok:
-                print(f"{bcolors.FAIL}open file error: {response} {bcolors.ENDC}")
-
             for block in response.iter_content(1024):
                 if not block:
                     break
                 handle.write(block)
-        file_exists = exists(filePath)
-        # print(file_exists)
-        if file_exists:
 
-            img2 = cv2.imread(filePath, 1)
-            # img = Image.open(filePath)
+        # Check if the file exists
+        if os.path.exists(filePath):
+            # Read the image using OpenCV
+            img = cv2.imread(filePath)
 
+            # Convert the image to grayscale
+            gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            img = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+            # Use pytesseract to extract text from the image
+            text = pytesseract.image_to_string(gray_img, lang="eng")
+            print("Converted text:", text)
 
-
-            # Use pytesseract to convert the image to text
-            text = pytesseract.image_to_string(img, lang="eng")
-            print("converted to text: ", text)
-            if "chưa tham gia" in f"{message.text} {message.caption}".lower():
+            # Check for specific text patterns
+            if "chưa tham gia" in text.lower() or "Futures ai tham gia" in text.lower() or "cần bán" in text.lower() or "cần ra đi" in text.lower():
+                os.remove(filePath)
                 return 3
-            elif "Futures ai tham gia" in text or ( "tham gia" in text and "nbox" in text):
-                print("The text contains 'Futures ai tham gia'")
-                return 3
-            elif "cần bán" in text or "cần ra đi" in text:
-                print("The text contains 'Futures ai tham gia'")
-                return 3
-            else:
-                print("The text does not contain 'Futures ai tham gia'")
 
+            # Use regular expressions to find percentage values
             pattern = r'\b\d{4,}%'
-            # Use the regex search function to find any percentage value greater than or equal to 1000 in the text
             match = re.search(pattern, text)
-
-            # If a percentage value greater than or equal to 1000 is found, print it
             if match:
                 print(f"Percentage value greater than or equal to 1000 found: {match.group(0)}")
                 os.remove(filePath)
                 return 1
-
-
-
-            # url = 'https://api.deepai.org/api/nsfw-detector'
-            # headers = {
-            #     'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
-            # }
-            # response = requests.post(
-            #     url,
-            #     files={
-            #         'image': open(filePath, 'rb'),
-            #     },
-            #     headers=headers
-            # )
-            # print(response.text)
-            # result = json.loads(response.text)
-            # if result['output']['nsfw_score'] > 0.7:
-            #     print('Nudity detected')
-            #     os.remove(filePath)
-            #     return 2
-
-            img = cv2.imread(filePath)
 
             # Load the pre-trained neural network model for nudity detection
             model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
 
             # Define the classes for the neural network model
             classes = ['background', 'person']
-            if img is None or img.shape[0] == 0 or img.shape[1] == 0:
-                raise ValueError('Invalid input image')
+
             # Convert the image to a blob
             input_size = (300, 300)
-
             blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
 
-            # Set the input for the neural network model
+            # Set the input for the neural network model and perform forward pass
             model.setInput(blob)
-
-            # Perform forward pass to get the output from the neural network model
             output = model.forward()
-            print('Checking if any of the detected objects are classified as a person')
-            # Check if any of the detected objects are classified as a person
+
+            # Check if any detected objects are classified as a person
             for i in range(output.shape[2]):
                 confidence = output[0, 0, i, 2]
-                # print(confidence)
                 if confidence > 0.8 and classes[int(output[0, 0, i, 1])] == 'person':
-                    print('Nudity detected')
-                    # os.remove(filePath)
-                    # return 2
                     try:
-                        # Classify an image for nudity
+                        # Classify the image for nudity using an external API
                         api_response = api_instance.nsfw_classify(filePath)
-                        # print(api_response)
-                        # njson = json.loads(api_response)
-                        # print(njson)
                         nsfw_score = api_response.score
                         classification_outcome = api_response.classification_outcome
                         print(nsfw_score, classification_outcome)
@@ -479,9 +415,12 @@ def checkingPhoto(message):
                     except ApiException as e:
                         print("Exception when calling ImageNudityApi->image_nudity_classify: %s\n" % e)
                     os.remove(filePath)
-                    print('No Nudity detected')
+                    print('No nudity detected')
                     return -1
-    # print(-1)
+
+        # Remove the temporary file
+        os.remove(filePath)
+
     return -1
 
 # def compare_images(img1, img2):
@@ -534,15 +473,16 @@ def moderateMessageTask(message):
             raise moderateMessageTask.retry(exc=exc, countdown=5, max_retries=1)
 
 def moderate(message):
-    if message.chat.id != -1001724937734:
-        print(f"{bcolors.FAIL}wrong chat group: {str(message.chat.id)} {bcolors.ENDC}")
+    chat_id = message.chat.id
+    from_user = message.from_user
+
+    if chat_id != -1001724937734:
+        print(f"{bcolors.FAIL}wrong chat group: {str(chat_id)} {bcolors.ENDC}")
         return
 
     if message.photo:
-        if message.caption:
-            print(f"{bcolors.WARNING}Received Photo with caption: {message.caption}{bcolors.ENDC}")
-        else:
-            print(f"{bcolors.WARNING}Received Photo without caption{bcolors.ENDC}")
+        caption_info = f" with caption: {message.caption}" if message.caption else " without caption"
+        print(f"{bcolors.WARNING}Received Photo{caption_info}{bcolors.ENDC}")
     else:
         print(f"{bcolors.WARNING}Received Text: {message.text}{bcolors.ENDC}")
 
@@ -550,207 +490,112 @@ def moderate(message):
         _deleteMessage(message)
 
     if message.message_id:
-        isExist = TelegramUser.objects.filter(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name ).exists()
-        print(f"checking user {message.from_user.id} exist : {isExist}")
-        isPhoto = False
-        if message.text == None:
-            isPhoto = True
-        # if isExist is not True and isPhoto is True and message.caption is not None:
-        #     print(f"new user but user sent image with caption . User ID: {message.from_user.id}. Delete message")
-        #     _deleteMessage(message)
-        # if isExist is not True and "https://" in f"{message.text} {message.caption}".lower() :
-        #     print(f"new user but user sent link . User ID: {message.from_user.id}. Delete message")
-        #     _deleteMessage(message)
+        user_exist = TelegramUser.objects.filter(user_id=from_user.id, firstname=from_user.first_name, lastname=from_user.last_name).exists()
+        print(f"checking user {from_user.id} existence: {user_exist}")
 
-        if isExist is not True or isPhoto is True:
-            if isExist is not True:
-                TelegramUser.objects.create(user_id=message.from_user.id, firstname=message.from_user.first_name, lastname=message.from_user.last_name, username=message.from_user.username, isBot=message.from_user.is_bot, status = "new", user_avatar_link = "")
-                print(f"add user {message.from_user.id} to DB")
-            print(f"step 2")
-            processChecUserProfile.apply_async(kwargs={ "userId": message.from_user.id, "chatId": message.chat.id, "messageId": message.message_id}, countdown=1)
+        is_photo = message.text is None
 
-            if checkingUserProfilePhoto(message.from_user.id, "function"):
+        if not user_exist or is_photo:
+            if not user_exist:
+                TelegramUser.objects.create(user_id=from_user.id, firstname=from_user.first_name, lastname=from_user.last_name, username=from_user.username, isBot=from_user.is_bot, status="new", user_avatar_link="")
+                print(f"add user {from_user.id} to DB")
+
+            print("step 2")
+            processChecUserProfile.apply_async(kwargs={"userId": from_user.id, "chatId": chat_id, "messageId": message.message_id}, countdown=1)
+
+            if checkingUserProfilePhoto(from_user.id, "function"):
                 banUser(message, 'message bi cam')
                 return
 
             if processCheckAndBan(message):
                 banUser(message, 'message bi cam')
                 return
-        # else :
-            # user = TelegramUser.objects.get(user_id=message.from_user.id)
-            # print(f"checking user status : {message.from_user.id} - {user.status}")
-            # if user.status == 'banned':
-            #     _deleteMessage(message)
-            #     clearDBRecord.apply_async(kwargs={ "user_id": message.from_user.id}, countdown=10)
-            # first_name = message.from_user.first_name
-            # last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
-            # full_name = f"{first_name}{last_name}"
-            # if user.fir
 
 
 def checkAndDeleteMessage(message):
-    print(f"{bcolors.WARNING}checkAndDeleteMessage{bcolors.ENDC}")
-    text_to_check = message.text or message.caption
-    isRuss = isRussia(text_to_check)
-    isEng = isEnglish(text_to_check)
-    if "/addstickers" in f"{message.text} {message.caption}".lower():
+    text_to_check = (message.text or message.caption or "").lower()
+
+    # Check for specific patterns to exclude messages
+    exclusion_patterns = [
+        "/addstickers",
+        "@tribc1991",
+        ".com", ".gov", ".net", ".org",
+        "https://t.me/tcclroom",
+        "https://t.me/tcclchat",
+        "https://t.me/tradecoinchienluoc"
+    ]
+    if any(pattern in text_to_check for pattern in exclusion_patterns):
         return False
-    if "@tribc1991" in f"{message.text} {message.caption}".lower():
-        return False
-    if ".com" in f"{message.text} {message.caption}".lower() or ".gov" in f"{message.text} {message.caption}".lower() or ".net" in f"{message.text} {message.caption}".lower()  or ".org" in f"{message.text} {message.caption}".lower():
-        return False
-    if "https://t.me/tcclroom" in message.text:
-        return False
-    if "https://t.me/tcclchat" in message.text:
-        return False
-    if "https://t.me/tradecoinchienluoc" in message.text:
-        return False    
-    if isRuss is True:
-        print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
-        return True
-    if isEng is True and ("https://" in f"{message.text} {message.caption}".lower()):
-        print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
-        return True
-    if isEng is True and ("@" in f"{message.text} {message.caption}".lower()):
-        print(f"{bcolors.WARNING}case 1111  {bcolors.ENDC}")
-        return True
-    if "cập nhập plan btc mới nhất" in f"{message.text} {message.caption}".lower() and "uptrend" in f"{message.text} {message.caption}".lower():
-        return True
-    if "vào avatar" in f"{message.text} {message.caption}".lower() and "plan" in f"{message.text} {message.caption}".lower():
-        return True
-    if (is_not_english_or_vietnamese(text_to_check) is True and ("https://" in f"{message.text} {message.caption}".lower())):
-        print(f"{bcolors.WARNING}case 1112  {bcolors.ENDC}")
-        return True
-    if "t.me" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 12222  {bcolors.ENDC}")
-        return True
-    if "t.me/" in f"{message.text} {message.caption}" and ("tcclroom" not in message.text) and ("tcclchat" not in message.text) and ("https://t.me/tradecoinchienluoc" not in message.text):
-        return True
-    if "land of conquest"  in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-    if "join" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        return True
-    if "@tradinghoiquan" in f"{message.text} {message.caption}".lower():
-        return True
-    if "ae vào"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-    if "crypto"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
+
+    # Check for specific language or content patterns to include messages
+    if (
+        isRussia(text_to_check) or
+        (isEnglish(text_to_check) and ("https://" in text_to_check or "@" in text_to_check)) or
+        ("cập nhập plan btc mới nhất" in text_to_check and "uptrend" in text_to_check) or
+        ("vào avatar" in text_to_check and "plan" in text_to_check) or
+        (is_not_english_or_vietnamese(text_to_check) and "https://" in text_to_check) or
+        "t.me" in text_to_check or
+        ("t.me/" in text_to_check and "tcclroom" not in text_to_check and "tcclchat" not in text_to_check and "https://t.me/tradecoinchienluoc" not in text_to_check) or
+        "land of conquest" in text_to_check or
+        ("join" in text_to_check and "@" in text_to_check) or
+        "@tradinghoiquan" in text_to_check or
+        ("ae vào" in text_to_check and "@" in text_to_check) or
+        ("crypto" in text_to_check and "@" in text_to_check) or
+        "follow us" in text_to_check or
+        "gold vip signal" in text_to_check or
+        "rewards distribution" in text_to_check or
+        "@RyanNguyenVBC" in text_to_check or
+        "@tradefutureforexsignals" in text_to_check or
+        ("@" in text_to_check and "kèo" in text_to_check and ":" in text_to_check and message.reply_to_message is None) or
+        "opensea.io" in text_to_check or
+        "vinacoin.live" in text_to_check or
+        ("www." in text_to_check and "airdrop" in text_to_check) or
+        ("airdrop" in text_to_check and "$" in text_to_check) or
+        message.text.count('@') > 2 or
+        ("vào avatar" in text_to_check and "cập nhập" in text_to_check) or
+        ("avatar" in text_to_check and "cập nhập" in text_to_check and "link" in text_to_check)
+    ):
         return True
 
-    if "join"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-    if "👇🏻"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-    if "👉"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-    if "👆"  in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
-        return True
-
-    if "follow us" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
-        return True
-
-    if "gold vip signal" in f"{message.text} {message.caption}".lower() or "@tfrsygtfdresuyyvhjgfd" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
-        return True
-    if "rewards distribution" in f"{message.text} {message.caption}".lower():
-        print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
-        return True
-    if "@RyanNguyenVBC" in f"{message.text} {message.caption}":
-        return True
-    if "@tradefutureforexsignals" in f"{message.text} {message.caption}":
-        return True
-    if "@" in f"{message.text} {message.caption}" and "kèo" in f"{message.text} {message.caption}" and ":" in f"{message.text} {message.caption}" and message.reply_to_message is None:
-        return True
-    if "opensea.io" in f"{message.text} {message.caption}".lower():
-        return True
-    if "vinacoin.live" in f"{message.text} {message.caption}":
-        return True
-    
-    if "www." in f"{message.text} {message.caption}" and "airdrop" in f"{message.text} {message.caption}":
-        return True
-    if "airdrop" in f"{message.text} {message.caption}" and "$" in f"{message.text} {message.caption}":
-        return True
-    if message.text.count('@') > 2:
-        return True
-
-    if "vào avatar" in f"{message.text} {message.caption}" and "cập nhập" in  f"{message.text} {message.caption}" :
-        return True
-    if "avatar" in f"{message.text} {message.caption}" and "cập nhập" in  f"{message.text} {message.caption}" and "link" in  f"{message.text} {message.caption}" :
-        return True
-
-    # if "mẹ" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-    #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-    #     return True
-    # if "lồn" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-    #     print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-    #     return True
-    # if "địt" in f"{message.text} {message.caption}".lower() and "mày" in f"{message.text} {message.caption}".lower():
-    #     print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
-    #     return True
-    # isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned' ).exists()
-    # if isExist:
-    #     print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
-    #     return True
     return False
-
-
 
 def _deleteMessage(message):
 
     global recently_deleted_messages
 
     # Hash the message content
-    message_hash = hashlib.md5(message.text.encode()).hexdigest()
+    message_hash = hashlib.md5((message.text or "").encode()).hexdigest()
 
     # Check if the message hash is in the set of recently deleted messages
-    
-
-    print(f"{bcolors.FAIL}deleted message: {message.text}{bcolors.ENDC}")
-    # isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
-    # Extract first and last names from the user object
-    first_name = message.from_user.first_name
-    last_name = message.from_user.last_name or ""
-
-    # Combine first and last names to form the full name
-    full_name = f"{first_name} {last_name}".strip()
-
-    # Update the counter when a message is deleted
     if message_hash in recently_deleted_messages:
+        # Update the counter when a message is deleted
         recently_deleted_messages.remove(message_hash)
-        
-
-
-
-    if message_hash not in recently_deleted_messages:
+    else:
+        # If the message hash is not found, warn the user or take further action
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
-    else:
         print(f"{bcolors.FAIL} _deleteMessage -> ban_user {message} {bcolors.ENDC}")
         banUser(message, 'message bi cam')
 
-    deleteMessageTask.apply_async(kwargs={ "chat_id": message.chat.id,'message_id': message.message_id}, countdown=1)
-    
-    text = message.text if message.text else ""
-    caption = message.caption if message.caption else ""
-    user_id = message.from_user.id if message.from_user.id else ""
-    full_name = full_name if full_name else ""
-    
-    message_content = f"Tin nhắn đã bị xóa: {text} {caption} - Người dùng: {user_id} - "
+    # Asynchronously delete the message
+    deleteMessageTask.apply_async(kwargs={"chat_id": message.chat.id, 'message_id': message.message_id}, countdown=1)
+
+    # Extract information about the user
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name or ""
+    user_id = message.from_user.id
+    full_name = f"{first_name} {last_name}".strip()
+
+    # Prepare message content for logging
+    message_content = f"Tin nhắn đã bị xóa: {message.text or ''} {message.caption or ''} - Người dùng: {user_id} - "
     if full_name:
         message_content += f" ({full_name})"
 
+    # Log the deleted message content
+    bot.send_message("-1001349899890", message_content)
+
     # Add the message hash to the set of recently deleted messages
     recently_deleted_messages.add(message_hash)
-
-    bot.send_message("-1001349899890", message_content)
 
 
 
@@ -763,236 +608,141 @@ def deleteMessageTask(chat_id, message_id):
 @shared_task
 def clearDBRecord(user_id):
     TelegramUser.objects.filter(user_id=user_id).delete()
-
 def processCheckAndBan(message):
-
     firstName = message.from_user.first_name
     lastName = message.from_user.last_name
     username = message.from_user.username
     print(f"{bcolors.WARNING}processCheckAndBan {firstName} - {lastName} - {username} {bcolors.ENDC}")
-    if "tín hiệu" in f"{message.text} {message.caption}".lower() and "của tôi" in f"{message.text} {message.caption}".lower() :
+
+    text = message.text.lower() if message.text else ""
+    caption = message.caption.lower() if message.caption else ""
+
+    if "tín hiệu" in text and "của tôi" in text:
         return True
-    if "cập nhập plan btc mới nhất" in f"{message.text} {message.caption}".lower() and "uptrend" in f"{message.text} {message.caption}".lower():
+    if "cập nhập plan btc mới nhất" in text and "uptrend" in text:
         return True
-    if "vào avatar" in f"{message.text} {message.caption}".lower() and "link" in f"{message.text} {message.caption}".lower():
+    if "vào avatar" in text and "link" in text:
         return True
-    if "https://t.me/+" in f"{message.text} {message.caption}".lower():
+    if "https://t.me/+" in text:
         return True
-    if "kèo" in f"{message.text} {message.caption}".lower() and "👉" in f"{message.text} {message.caption}".lower():
+    if "kèo" in text and "👉" in text:
         return True
-    if "link" in f"{message.text} {message.caption}".lower() and "👉" in f"{message.text} {message.caption}".lower():
+    if "link" in text and "👉" in text:
         return True
-    if "NhómVIP".lower() in f"{message.text} {message.caption}".lower() or "ai chưa tham gia" in f"{message.text} {message.caption}".lower():
+    if "nhómvip" in text or "ai chưa tham gia" in text:
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
-    if "thông báo" in f"{message.text} {message.caption}".lower() and  "anh em" in f"{message.text} {message.caption}".lower():
+    if "thông báo" in text and "anh em" in text:
         print(f"{bcolors.WARNING}case 33  {bcolors.ENDC}")
         return True
-    # # if "futt + spot" in f"{message.text} {message.caption}".lower():
-    #     return True
-    if len(message.text) < 60:
-        if "whaless" in f"{message.text} {message.caption}".lower():
+    if len(message.text or "") < 60:
+        if "whaless" in text:
             print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
             return True
-
-        if "thông báo nhóm" in f"{message.text} {message.caption}".lower():
+        if "thông báo nhóm" in text:
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
-        if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() :
+        if "anh em" in text and "vào nhóm" in text and "vip" in text:
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
-        if "ai" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+        if "ai" in text and "vào nhóm" in text and "liên hệ" in text:
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
-        if "anh em" in f"{message.text} {message.caption}".lower() and  "vào nhóm" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
+        if "anh em" in text and "vào nhóm" in text and "liên hệ" in text:
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
-        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+        if "vào" in text and "nhóm" in text and "vip" in text and "inbox" in text:
             print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
             return True
-        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "vlp" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
+        if any(word in text for word in ["vào nhóm vip", "vào nhóm vlp", "vào nhóm v1p", "vào nhóm vip ib"]):
             print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
             return True
-        if "vào" in f"{message.text} {message.caption}".lower() and  "nhóm" in f"{message.text} {message.caption}".lower() and  "v1p" in f"{message.text} {message.caption}".lower() and  "inbox" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
+        if any(word in text for word in ["ai tham gia", "ai tham gia ib", "ai tham gia liên hệ"]):
+            print(f"{bcolors.WARNING}case 214-215  {bcolors.ENDC}")
             return True
-        if  "vào" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() and  "vip" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 213  {bcolors.ENDC}")
+        if any(word in text for word in ["futt + spot", "thông báo anh em", "liên hệ admin"]):
+            print(f"{bcolors.WARNING}case 6-7-8  {bcolors.ENDC}")
             return True
-        if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 214  {bcolors.ENDC}")
-            return True
-        if  "ai" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 215  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 216  {bcolors.ENDC}")
-            return True
-        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ib" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 217  {bcolors.ENDC}")
-            return True
-        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "liên hệ" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 218  {bcolors.ENDC}")
-            return True
-        if  "fut" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "admin" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 219  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "lb" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 221  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gia" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 222  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and  "gla" in f"{message.text} {message.caption}".lower() and  "ln" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 223  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 224  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "anh em" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
-            print(f"{bcolors.WARNING}case 225  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "inbox" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 226  {bcolors.ENDC}")
-            return True
-        if  "futu" in f"{message.text} {message.caption}".lower() and "lnbox" in f"{message.text} {message.caption}".lower() :
-            print(f"{bcolors.WARNING}case 227  {bcolors.ENDC}")
-            return True
-
-        if "TCCL Community".lower() in f"{firstName} {lastName}".lower() :
-            print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
-            return True
-        if "TCCL".lower() in f"{firstName} {lastName}".lower():
-            print(f"{bcolors.WARNING}case 5  {bcolors.ENDC}")
-            return True
-    # if ".".lower() == f"{firstName}".lower() and None == lastName:
-    #     print(f"{bcolors.WARNING}case 6  {bcolors.ENDC}")
-    #     return True
-    # if "..".lower() == f"{firstName}".lower() and None == lastName:
-    #     print(f"{bcolors.WARNING}case 7  {bcolors.ENDC}")
-    #     return True
-    # if "...".lower() == f"{firstName}".lower() and None == lastName:
-    #     print(f"{bcolors.WARNING}case 8  {bcolors.ENDC}")
-    #     return True
-    if "tccl" in f"{username}":
+    if any(word in (firstName + " " + lastName).lower() for word in ["tccl community", "tccl"]):
+        print(f"{bcolors.WARNING}case 4-5  {bcolors.ENDC}")
+        return True
+    if "tccl" in (username or "").lower():
         print(f"{bcolors.WARNING}case 9  {bcolors.ENDC}")
         return True
-    if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
+    if any(word in (firstName + " " + lastName).lower() for word in ["đỗ bảo", "đỗ bả0", "bảo đỗ", "bảo", "đỗ", "trung kim son", "trade coin chiến lược", "trade", "admin none", "none admin", "admln"]):
+        print(f"{bcolors.WARNING}case 10-11-12-13-14-15-16-17-18  {bcolors.ENDC}")
         return True
-    if "Đỗ Báo".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
-        return True
-    if "Đỗ Bảo".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
-        return True
-    if "Đỗ Bả0".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
-        return True
-    if "Bảo Đỗ".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 11  {bcolors.ENDC}")
-        return True
-    if "Bảo".lower() in f"{firstName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
-        print(f"{bcolors.WARNING}case 20  {bcolors.ENDC}")
-        return True
-    if "Bả0".lower() in f"{firstName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
-        print(f"{bcolors.WARNING}case 202  {bcolors.ENDC}")
-        return True
-    if "Bả0".lower() in f"{lastName}".lower() and  "Đỗ".lower() in f"{firstName}".lower():
-        print(f"{bcolors.WARNING}case 202  {bcolors.ENDC}")
-        return True
-    if "Bả0".lower() in f"{firstName.replace('.','')}".lower() and  "Đỗ".lower() in f"{firstName.replace('.','')}".lower():
-        print(f"{bcolors.WARNING}case 201  {bcolors.ENDC}")
-        return True
-    if "Trung Kim Son".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 12  {bcolors.ENDC}")
-        return True
-    if "Trade Coin Chiến Lược".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 13  {bcolors.ENDC}")
-        return True
-    if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Chiến Lược".lower() in f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 14  {bcolors.ENDC}")
-        return True
-    if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Lược".lower() in f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 15  {bcolors.ENDC}")
-        return True
-    if "Trade".lower() in f"{firstName} {lastName}".lower() and  "Iược".lower() in f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 16  {bcolors.ENDC}")
-        return True
-    if "admin none" == f"{firstName} {lastName}".lower() or "none admin" == f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 17  {bcolors.ENDC}")
-        return True
-    if "admln" in f"{firstName} {lastName}".lower():
-        print(f"{bcolors.WARNING}case 18  {bcolors.ENDC}")
-        return True
-    if "glcapital1" in f"{message.text} {message.caption}".lower():
+    if "glcapital1" in text:
         print(f"{bcolors.WARNING}case 19  {bcolors.ENDC}")
         return True
-    if "aecryptodhchat" in f"{message.text} {message.caption}".lower():
+    if "aecryptodhchat" in text:
         print(f"{bcolors.WARNING}case 29  {bcolors.ENDC}")
         return True
-    if "qua đây trao đổi với mình" in f"{message.text} {message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower():
+    if "qua đây trao đổi với mình" in text and "@" in text:
         print(f"{bcolors.WARNING}case 30  {bcolors.ENDC}")
         return True
-
-    if "chưa vào" in f"{message.text} {message.caption}".lower() and  "nhắn ad" in f"{message.text} {message.caption}".lower() :
+    if "chưa vào" in text and "nhắn ad" in text:
         print(f"{bcolors.WARNING}case 31  {bcolors.ENDC}")
         return True
-
-    if "Đỗ Bả".lower() in f"{firstName} {lastName}".lower() :
-        print(f"{bcolors.WARNING}case 10  {bcolors.ENDC}")
-        return True
-    if "chưa tham" in f"{message.text} {message.caption}".lower() and "nhóm" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
-        return True
-    if "chưa tham" in f"{message.text} {message.caption}".lower() and "ad" in f"{message.text} {message.caption}".lower() :
-        print(f"{bcolors.WARNING}case 10112  {bcolors.ENDC}")
-        return True
-    if "buy and wait" in f"{message.text}{message.caption}".lower() and "@" in f"{message.text} {message.caption}".lower() :
+    if "chưa tham" in text and "nhóm" in text:
+        if "ad" in text:
+            print(f"{bcolors.WARNING}case 10112  {bcolors.ENDC}")
+            return True
+        else:
+            print(f"{bcolors.WARNING}case 10111  {bcolors.ENDC}")
+            return True
+    if "buy and wait" in text and "@" in text:
         print(f"{bcolors.WARNING}case 10113  {bcolors.ENDC}")
         return True
-    if "@XAUUSD_GOLDsignals1" in f"{message.text}{message.caption}".lower():
+    if "@xauusd_goldsignals1" in text:
         return True
+
     print("no case")
     return False
 
 def banUser(message, error_text):
     print("start ban user")
-    chatId = message.chat.id
-    first_name = message.from_user.first_name
-    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
+    chat_id = message.chat.id
+    user = message.from_user
+
+    # Extract user information
+    first_name = user.first_name
+    last_name = user.last_name or ''
     full_name = f"{first_name}{last_name}"
-    userId = message.from_user.id
+    user_id = user.id
 
-    deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
+    # Delete the message after 3 seconds
+    deleteMessageTask.apply_async(kwargs={"chat_id": chat_id, 'message_id': message.message_id}, countdown=3)
 
-    bot.ban_chat_member(chatId, userId)
+    # Ban the user
+    bot.ban_chat_member(chat_id, user_id)
 
-    isExist = TelegramUser.objects.filter(user_id=message.from_user.id, status='banned').exists()
-    print(f"banned ?: {isExist}")
-    if not isExist:
+    # Check if the user is already banned
+    is_exist = TelegramUser.objects.filter(user_id=user.id, status='banned').exists()
+    print(f"banned ?: {is_exist}")
+
+    if not is_exist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, f"‼️ TÀI KHOẢN {full_name} ĐÃ BỊ KHÓA DO VI PHẠM CHÍNH SÁCH VỀ SPAM / LỪA ĐẢO ‼️")
+
+        # URL of the warning image
         image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
         
         # Caption for the image with highlighted title
         caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\nTẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN *ĐỖ BẢO* HOẶC *ĐỖ BẢO.TCCL* INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO. \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n--------------\n\n*Dobao.TCCL ( Không Tích Xanh, Không Inb trước, Không tạo nhóm riêng )*\n*username Chính Chủ: ©dobao_tccl*"""
         
         # Send the photo with the caption
-        sentmessage = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
-                # print(sentmessage)
-        chatId = sentmessage.chat.id
-        print("sent warning ... ", chatId, sentmessage.message_id)
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': sentmessage.message_id}, countdown=60)
+        sent_message = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
+        
+        # Delete the warning message after 60 seconds
+        deleteMessageTask.apply_async(kwargs={"chat_id": sent_message.chat.id, 'message_id': sent_message.message_id}, countdown=60)
 
-    bot.send_message("-1001349899890", f"Đã ban user id: {userId} - Tên: {full_name} - Nội Dung Tin Nhắn: {message.id} {message.text}" + (f" - Caption: {message.caption}" if message.caption else ""))
+    # Send a message to notify about the banned user
+    bot.send_message("-1001349899890", f"Đã ban user id: {user_id} - Tên: {full_name} - Nội Dung Tin Nhắn: {message.id} {message.text}" + (f" - Caption: {message.caption}" if message.caption else ""))
     
-    print(TelegramUser.objects.filter(user_id=userId))
-    TelegramUser.objects.filter(user_id=userId).update(status='banned', ban_reason=error_text)
-    print(f"{bcolors.OKGREEN} banned {userId} {full_name} {bcolors.ENDC}")
+    # Update the status of the user to 'banned' in the database
+    TelegramUser.objects.filter(user_id=user_id).update(status='banned', ban_reason=error_text)
+    print(f"{bcolors.OKGREEN} banned {user_id} {full_name} {bcolors.ENDC}")
 
 
 
