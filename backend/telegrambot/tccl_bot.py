@@ -630,7 +630,7 @@ def processCheckAndBan(message):
         if any(word in text for word in ["vào nhóm vip", "vào nhóm vlp", "vào nhóm v1p", "vào nhóm vip ib"]):
             print(f"{bcolors.WARNING}case 220  {bcolors.ENDC}")
             return True
-        if any(word in text for word in ["ai tham gia", "ai tham gia ib", "ai tham gia liên hệ"]):
+        if any(word in text for word in ["ai tham gia ib", "ai tham gia liên hệ"]):
             print(f"{bcolors.WARNING}case 214-215  {bcolors.ENDC}")
             return True
         if any(word in text for word in ["futt + spot", "thông báo anh em", "liên hệ admin"]):
