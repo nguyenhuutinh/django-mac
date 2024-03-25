@@ -656,6 +656,10 @@ def checkAndDeleteMessage(message):
     if "follow us" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
         return True
+
+    if "gold vip signal" in f"{message.text} {message.caption}".lower():
+        print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
+        return True
     if "rewards distribution" in f"{message.text} {message.caption}".lower():
         print(f"{bcolors.WARNING}case 4  {bcolors.ENDC}")
         return True
