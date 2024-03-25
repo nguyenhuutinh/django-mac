@@ -522,7 +522,7 @@ def checkAndDeleteMessage(message):
         "vinacoin.live" in text_to_check or
         ("www." in text_to_check and "airdrop" in text_to_check) or
         ("airdrop" in text_to_check and "$" in text_to_check) or
-        message.text.count('@') > 2 or
+        text_to_check.count('@') > 2 or
         ("vào avatar" in text_to_check and "cập nhập" in text_to_check) or
         ("avatar" in text_to_check and "cập nhập" in text_to_check and "link" in text_to_check)
     ):
@@ -546,7 +546,7 @@ def _deleteMessage(message):
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
         print(f"{bcolors.FAIL} _deleteMessage -> ban_user {message} {bcolors.ENDC}")
-        banUser(message, 'message bi cam')
+        # banUser(message, 'message bi cam')
 
     # Asynchronously delete the message
     deleteMessageTask.apply_async(kwargs={"chat_id": message.chat.id, 'message_id': message.message_id}, countdown=1)
