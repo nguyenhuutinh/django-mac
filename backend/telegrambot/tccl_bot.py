@@ -541,12 +541,14 @@ def _deleteMessage(message):
     if message_hash in recently_deleted_messages:
         # Update the counter when a message is deleted
         recently_deleted_messages.remove(message_hash)
-    else:
-        # If the message hash is not found, warn the user or take further action
+    
+    if message_hash not in recently_deleted_messages:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
         bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
+    else:
+        # If the message hash is not found, warn the user or take further action
         print(f"{bcolors.FAIL} _deleteMessage -> ban_user {message} {bcolors.ENDC}")
-        # banUser(message, 'message bi cam')
+        banUser(message, 'message bi cam')
 
     # Asynchronously delete the message
     deleteMessageTask.apply_async(kwargs={"chat_id": message.chat.id, 'message_id': message.message_id}, countdown=1)
