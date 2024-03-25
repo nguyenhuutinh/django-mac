@@ -100,82 +100,53 @@ def chat_m(message: types.ChatMemberUpdated):
     print("chat_mem_change_old",old)
     print("chat_mem_change_new", new)
 
+# Define a constant for admin status check
+ADMIN_STATUSES = ['administrator', 'creator']
+
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     global photoUrl
-    result = bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator'] or message.from_user.username == "GroupAnonymousBot" or message.from_user.first_name == "Telegram"
-    if result == True:
+    result = bot.get_chat_member(message.chat.id, message.from_user.id).status in ADMIN_STATUSES or
+             message.from_user.username == "GroupAnonymousBot" or
+             message.from_user.first_name == "Telegram"
+    
+    if result:
         print("admin")
         return
 
-    
     convert_to_send_task(message)
 
     first_name = message.from_user.first_name
-    last_name = message.from_user.last_name if message.from_user.last_name is not None else ''
+    last_name = message.from_user.last_name or ''
     full_name = f"{first_name}{last_name}"
 
     res = checkingPhoto(message=message)
     caption_text = f" with caption: {message.caption}" if message.caption else ""
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{message.from_user.first_name} sent photo URL {photoUrl}{caption_text}{bcolors.ENDC}\n")
-
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{first_name} sent photo URL {photoUrl}{caption_text}{bcolors.ENDC}\n")
 
     if res == 1:
-        # userId = message.from_user.id
-        # chatId = message.chat.id
-        # # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        # keyboard = InlineKeyboardMarkup()
-
-        # delete_button = InlineKeyboardButton('🔴 Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
-        # ban_button = InlineKeyboardButton('🚫 Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
-
-        # clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
-
-        # keyboard.add(delete_button, ban_button, clear_button)
-        # bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh này có nội dung SCAM / LỪA ĐẢO.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
-
-        # bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
-        # try:
-        #     bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
-        # except Exception as e:
-        #     print("Error sending photo:", e)
         print("stop")
     elif res == 3:
-        userId = message.from_user.id
-        chatId = message.chat.id
-        deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        # print("photoUrl")
-        # print(photoUrl)
-        try:
-            bot.ban_chat_member(chatId, userId)
-        except Exception as e:
-            print("Error :", e)
-
-        bot.reply_to(message, "‼️ "+ full_name + " bị ban vì post hình ảnh có nội dung SCAM / LỪA ĐẢO. ‼️" + "\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
-        bot.send_message("-1001349899890", "IMAGE SCAN - SCAM BẰNG HÌNH")
-        try:
-            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
-        except Exception as e:
-            print("Error sending photo:", e)
-
+        process_image_scan_result(message, full_name, "SCAM / LỪA ĐẢO")
     elif res == 2:
-        userId = message.from_user.id
-        chatId = message.chat.id
-        # deleteMessageTask.apply_async(kwargs={ "chat_id": chatId,'message_id': message.message_id}, countdown=3)
-        # bot.reply_to(message, "‼️ Tin nhắn bị xóa / vì sử dụng hình ảnh nhạy cảm. ‼️")
-        keyboard = InlineKeyboardMarkup()
-        delete_button = InlineKeyboardButton('🔴 Xóa', callback_data=f'delete {message.from_user.id} {message.message_id}', color= 'red')
-        ban_button = InlineKeyboardButton('🚫 Ban ' + full_name, callback_data=f'ban {message.from_user.id}', color= 'red')
-        clear_button = InlineKeyboardButton('Sai', callback_data=f'invalid {message.from_user.id}', color= 'grey')
-        keyboard.add(delete_button, ban_button, clear_button)
-        bot.reply_to(message, "‼️ Hệ thống nhận diện hình ảnh có nội dung 18+.‼️ Chờ admin xác nhận" , reply_markup=keyboard)
-        bot.send_message("-1001349899890", "IMAGE SCAN - Nudity detected")
-        try:
-            bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
-        except Exception as e:
-            print("Error sending photo:", e)
+        process_image_scan_result(message, full_name, "18+")
     else:
         print("check photo and it is valid")
+
+
+def process_image_scan_result(message, full_name, scan_type):
+    userId = message.from_user.id
+    chatId = message.chat.id
+    deleteMessageTask.apply_async(kwargs={"chat_id": chatId, 'message_id': message.message_id}, countdown=3)
+
+    bot.ban_chat_member(chatId, userId)
+    bot.reply_to(message, f"‼️ {full_name} bị ban vì post hình ảnh có nội dung {scan_type}. ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+    
+    bot.send_message("-1001349899890", f"IMAGE SCAN - {scan_type} BẰNG HÌNH")
+    try:
+        bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
+    except Exception as e:
+        print("Error sending photo:", e)
 
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_callback(call):
