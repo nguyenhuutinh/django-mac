@@ -582,9 +582,9 @@ def deleteMessageTask(chat_id, message_id):
 def clearDBRecord(user_id):
     TelegramUser.objects.filter(user_id=user_id).delete()
 def processCheckAndBan(message):
-    firstName = message.from_user.first_name
-    lastName = message.from_user.last_name
-    username = message.from_user.username
+    firstName = message.from_user.first_name or ""
+    lastName = message.from_user.last_name or ""
+    username = message.from_user.username or ""
     print(f"{bcolors.WARNING}processCheckAndBan {firstName} - {lastName} - {username} {bcolors.ENDC}")
 
     text = message.text.lower() if message.text else ""
@@ -703,7 +703,7 @@ def banUser(message, error_text):
         link_text = 'https://t.me/dobao_tccl'
 
         # Caption for the image with highlighted title
-        caption = """*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\nTẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN *ĐỖ BẢO* HOẶC *ĐỖ BẢO.TCCL* INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO. \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n--------------\n\n*Dobao.TCCL ( Không Tích Xanh, Không Inb trước, Không tạo nhóm riêng )*\n*Check Account Chính Chủ: [{link_text}]({link_text})*"""
+        caption = f"""*CẢNH BÁO GIẢ MẠO ADMIN INBOX LỪA ĐẢO*\n\nTẤT CẢ CÁC TÀI KHOẢN TELEGRAM MANG TÊN *ĐỖ BẢO* HOẶC *ĐỖ BẢO.TCCL* INBOX TRƯỚC CHO CÁC BẠN ĐỀU LÀ LỪA ĐẢO. \n\n  💢🆘 ‼️\n\n👉 ⚠️CÁC ADMIN TCCL KHÔNG BAO GIỜ NHẮN TIN TRƯỚC.\n👉 ⚠️TCCL KHÔNG CÓ GROUP VIP.\n👉 ⚠️TCCL KHÔNG THU KHOẢN PHÍ NÀO.\n👉 ⚠️ BẤT KỲ AI ĐỀU CÓ THỂ TẠO TÀI KHOẢN GIẢ MẠO ĐỖ BẢO ĐỂ CHAT VỚI BẠN\n👉 HÃY LUÔN CẨN THẬN VỚI TÀI SẢN CỦA MÌNH. \n--------------\n\n*Dobao.TCCL ( Không Tích Xanh, Không Inb trước, Không tạo nhóm riêng )*\n*Check Account Chính Chủ: [{link_text}]({link_text})*"""
         
         # Send the photo with the caption
         sent_message = bot.send_photo("-1001724937734", image_url, caption=caption, parse_mode="Markdown")
