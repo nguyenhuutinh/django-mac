@@ -589,7 +589,8 @@ def processCheckAndBan(message):
 
     text = message.text.lower() if message.text else ""
     caption = message.caption.lower() if message.caption else ""
-
+    if "puffer.farm" in text:
+        return True
     if "tín hiệu" in text and "của tôi" in text:
         return True
     if "cập nhập plan btc mới nhất" in text and "uptrend" in text:
