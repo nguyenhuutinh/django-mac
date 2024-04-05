@@ -589,6 +589,8 @@ def processCheckAndBan(message):
 
     text = message.text.lower() if message.text else ""
     caption = message.caption.lower() if message.caption else ""
+    if "giveaway" in firstName.lower() or "giveaway" in lastName.lower():
+        return True
     if "tradingview" in firstName.lower() or "tradingview" in lastName.lower():
         return True
     if "tai khoan tradingview" in text:
