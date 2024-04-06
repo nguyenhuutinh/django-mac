@@ -521,6 +521,8 @@ def checkAndDeleteMessage(message):
         "opensea.io" in text_to_check or
         "vinacoin.live" in text_to_check or
         "🥇" in text_to_check or 
+        "tradingview" in text_to_check or 
+        "trading view" in text_to_check or 
         ("www." in text_to_check and "airdrop" in text_to_check) or
         ("airdrop" in text_to_check and "$" in text_to_check) or
         (text_to_check.count('@') > 2 and text_to_check.count('@@') == 0) or
