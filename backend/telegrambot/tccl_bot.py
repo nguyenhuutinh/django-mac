@@ -525,6 +525,7 @@ def checkAndDeleteMessage(message):
         "🥇" in text_to_check or 
         "tradingview" in text_to_check or 
         "trading view" in text_to_check or 
+        ("https" in text_to_check and "airdrop" in text_to_check) or
         ("www." in text_to_check and "airdrop" in text_to_check) or
         ("airdrop" in text_to_check and "$" in text_to_check) or
         (text_to_check.count('@') > 2 and text_to_check.count('@@') == 0) or
