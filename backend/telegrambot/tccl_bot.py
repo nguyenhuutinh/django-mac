@@ -489,7 +489,7 @@ def checkAndDeleteMessage(message):
     # Check for specific patterns to exclude messages
     exclusion_patterns = [
         "/addstickers",
-        "@tribc1991",
+        "tribc1991",
         ".com", ".gov", ".net", ".org",
         "https://t.me/tcclroom",
         "https://t.me/tcclchat",
