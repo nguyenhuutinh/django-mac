@@ -36,7 +36,7 @@ api_instance = cloudmersive_image_api_client.NsfwApi(cloudmersive_image_api_clie
 
 photoUrl = ""
 MSG_COUNTER = 0
-MSG_MAX = 1050
+MSG_MAX = 250
 
 report_sent = False
 
@@ -782,7 +782,7 @@ def manualDeleteMessage(message):
     print(f"deleteMessage {message.text}")
     message_id = message.text.replace("/delete_message ", "")
     # bot.delete_message(-1001724937734, message_id)
-    deleteMessageTask.apply_async(kwargs={ "chat_id": -1001724937734,'message_id': message_id}, countdown=3)
+    deleteMessageTask.apply_async(kwargs={ "chat_id": -1001724937734,'message_id': message_id}, countdown=120)
     print(f"{bcolors.FAIL}deleted message  : {str(message_id)} {bcolors.ENDC}")
 
     bot.send_message("-1001349899890", "Đã Delete Message id: " + f" {message_id}")
