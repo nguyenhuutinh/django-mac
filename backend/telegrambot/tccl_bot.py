@@ -582,7 +582,7 @@ def _deleteMessage(message):
 def deleteMessageTask(chat_id, message_id):
     print("delete Message Task")
     print(f"{bcolors.OKGREEN}deleted message: {chat_id} {message_id}{bcolors.ENDC}")
-    track_deleted_message()
+    # track_deleted_message()
     bot.delete_message(chat_id,message_id=message_id)
 @shared_task
 def clearDBRecord(user_id):
