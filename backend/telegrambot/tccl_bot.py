@@ -596,7 +596,8 @@ def processCheckAndBan(message):
     text = message.text.lower() if message.text else ""
     caption = message.caption.lower() if message.caption else ""
     
-
+    if "link ở bio"  in text:
+        return True
     if "dịch vụ kubet"  in text:
         return True
     if "@cccd" in text:
