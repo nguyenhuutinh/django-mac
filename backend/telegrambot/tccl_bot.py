@@ -542,7 +542,7 @@ def _deleteMessage(message):
 
     # Hash the message content
     message_hash = hashlib.md5((message.text or "").encode()).hexdigest()
-
+    print(f"{bcolors.FAIL} _deleteMessage -> message_hash {message_hash} {bcolors.ENDC}")
     # Check if the message hash is in the set of recently deleted messages
     if message_hash in recently_deleted_messages:
         # Update the counter when a message is deleted
