@@ -550,7 +550,7 @@ def _deleteMessage(message):
     
     if message_hash not in recently_deleted_messages:
         print(f"{bcolors.FAIL} _deleteMessage -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
+        # bot.reply_to(message, "⚠️ không chia sẻ link hoặc nội dung vi phạm quy định của TCCL. ⚠️")
     else:
         # If the message hash is not found, warn the user or take further action
         print(f"{bcolors.FAIL} _deleteMessage -> ban_user {message} {bcolors.ENDC}")
@@ -719,7 +719,7 @@ def banUser(message, error_text):
 
     if not is_exist:
         print(f"{bcolors.FAIL} banUser -> reply_to {message} {bcolors.ENDC}")
-        bot.reply_to(message, f"‼️ TÀI KHOẢN {full_name} ĐÃ BỊ KHÓA DO VI PHẠM CHÍNH SÁCH VỀ SPAM / LỪA ĐẢO ‼️")
+        # bot.reply_to(message, f"‼️ TÀI KHOẢN {full_name} ĐÃ BỊ KHÓA DO VI PHẠM CHÍNH SÁCH VỀ SPAM / LỪA ĐẢO ‼️")
 
         # URL of the warning image
         image_url = "https://s3-hn-2.cloud.cmctelecom.vn/vnba.org.vn/vnba-media/bancanbiet/Agribank_khuyen_cao_khach_hang_1.jpg"
