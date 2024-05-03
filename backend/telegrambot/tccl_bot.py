@@ -599,6 +599,8 @@ def processCheckAndBan(message):
     caption = message.caption.lower() if message.caption else ""
     if "FX_GOLD_VIP_SIGNAL"  in text:
         return True
+    if "GOLD_VIPPP_SIGNALS" :
+        return True
     if "@Vip_Paid_signals_availble"  in text:
         return True
     if "link ở bio"  in text:
