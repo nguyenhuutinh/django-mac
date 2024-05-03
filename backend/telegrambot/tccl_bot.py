@@ -597,13 +597,21 @@ def processCheckAndBan(message):
 
     text = message.text.lower() if message.text else ""
     caption = message.caption.lower() if message.caption else ""
-    if "FX_GOLD_VIP_SIGNAL" in text:
+    if "fx_gold_vip_signal" in text:
         return True
-    if "XAUUASD_PIPS_66" in text:
+    if "xauuasd_pips_66" in text:
         return True
-    if "GOLD_VIPPP_SIGNALS" in text:
+    if "gold_vippp_signals" in text:
         return True
-    if "GOLD_VIPPP_SIGNALS" in text:
+    if "gold_vippp_signals" in text:
+        return True
+    if "forex_xauusd_pro" in text:
+        return True
+    if "@" in text and "signal" in text:
+        return True
+    if "@" in text and "forex" in text:
+        return True
+    if "@" in text and "vip" in text and "_" in text:
         return True
     if "@Vip_Paid_signals_availble"  in text:
         return True
@@ -615,10 +623,10 @@ def processCheckAndBan(message):
         return True
     if "giveaway" in firstName.lower() or "giveaway" in lastName.lower():
         return True
-    if "tradingview" in firstName.lower() or "tradingview" in lastName.lower():
-        return True
-    if "tai khoan tradingview" in text:
-        return True
+    # if "tradingview" in firstName.lower() or "tradingview" in lastName.lower():
+    #     return True
+    # if "tai khoan tradingview" in text:
+        # return True
     if "puffer.farm" in text:
         return True
     if "tín hiệu" in text and "của tôi" in text:
