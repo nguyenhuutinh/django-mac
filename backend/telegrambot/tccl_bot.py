@@ -502,7 +502,7 @@ def checkAndDeleteMessage(message):
     if (
         isRussia(text_to_check) or
         (isEnglish(text_to_check) and ("https://" in text_to_check or "@" in text_to_check)) or
-        (isEnglish(text_to_check) and len(text_to_check) > 30 and "," not in text_to_check) or
+        (isEnglish(text_to_check) and len(text_to_check) >80 and "," not in text_to_check) or
 
         ("cập nhập plan btc mới nhất" in text_to_check and "uptrend" in text_to_check) or
         ("vào avatar" in text_to_check and "plan" in text_to_check) or
