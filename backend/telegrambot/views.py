@@ -81,7 +81,7 @@ class TCCLBotView(viewsets.ViewSet):
         permission_classes=[AllowAny],
         url_path='health',
     )
-    def health_check():
+    def health_check(self, request):
         return Response(status=200)
 
     @action(
