@@ -72,23 +72,23 @@ from telegrambot.tccl_bot import process_request
 
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
-@action(
-        detail=False,
-        methods=['head', 'get'],
-        permission_classes=[AllowAny],
-        url_path='check',
-    )
-@csrf_exempt
-def health_check(request):
-    accept = request.META.get('HTTP_ACCEPT', '')
+    @action(
+            detail=False,
+            methods=['head', 'get'],
+            permission_classes=[AllowAny],
+            url_path='check',
+        )
+    @csrf_exempt
+    def health_check(request):
+        accept = request.META.get('HTTP_ACCEPT', '')
 
-    if 'application/xml' in accept:
-        response = HttpResponse('<status>ok</status>', content_type='application/xml')
-    else:
-        response = JsonResponse({"status": "ok"})
+        if 'application/xml' in accept:
+            response = HttpResponse('<status>ok</status>', content_type='application/xml')
+        else:
+            response = JsonResponse({"status": "ok"})
 
-    response.status_code = 200
-    return response
+        response.status_code = 200
+        return response
 
 class TCCLBotView(viewsets.ViewSet):
 
