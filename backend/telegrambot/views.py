@@ -84,6 +84,7 @@ class TCCLBotView(viewsets.ViewSet):
     @csrf_exempt
 
     def health_check(self, request):
+        print("request", request)
         return Response(status=200)
 
     @action(
