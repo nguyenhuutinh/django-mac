@@ -72,7 +72,12 @@ from telegrambot.tccl_bot import process_request
 
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
-
+@action(
+        detail=False,
+        methods=['head', 'get'],
+        permission_classes=[AllowAny],
+        url_path='check',
+    )
 @csrf_exempt
 def health_check(request):
     accept = request.META.get('HTTP_ACCEPT', '')
