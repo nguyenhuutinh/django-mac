@@ -86,8 +86,14 @@ class TCCLBotView(viewsets.ViewSet):
     @csrf_exempt
 
     def health_check(self, request):
-        print("request", request)
-        return Response(status=200)
+        try:
+            if request.method == 'HEAD':
+                html_content = "<html><body><h1>Health Check OK</h1></body></html>"
+                return Response(html_content, content_type='text/html', status=200)
+            return Response(status=200)
+        except Exception as e:
+            logger.error(f"Error in health check endpoint: {e}")
+            return Response(status=500)
 
     @action(
         detail=False,
