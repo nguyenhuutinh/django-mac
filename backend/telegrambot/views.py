@@ -54,7 +54,6 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, BrowsableAPIRenderer
 
 
 from telegrambot.tccl_bot import process_request
@@ -74,25 +73,21 @@ from telegrambot.tccl_bot import process_request
 class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
 
+@csrf_exempt
+def health_check(request):
+    accept = request.META.get('HTTP_ACCEPT', '')
+
+    if 'application/xml' in accept:
+        response = HttpResponse('<status>ok</status>', content_type='application/xml')
+    else:
+        response = JsonResponse({"status": "ok"})
+
+    response.status_code = 200
+    return response
+
 class TCCLBotView(viewsets.ViewSet):
-    renderer_classes = [JSONRenderer, TemplateHTMLRenderer]
-    template_name = 'common/index.html'
 
-    @action(
-        detail=False,
-        methods=['head', 'get'],
-        permission_classes=[AllowAny],
-        url_path='health',
-    )
-    @csrf_exempt
-
-    def health_check(self, request):
-        try:
-            html_content = "<html><body><h1>Health Check OK</h1></body></html>"
-            return Response(html_content, content_type='text/html', status=200)
-        except Exception as e:
-            logger.error(f"Error in health check endpoint: {e}")
-            return Response(status=500)
+    
 
     @action(
         detail=False,
