@@ -74,6 +74,17 @@ class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
 
 class TCCLBotView(viewsets.ViewSet):
+
+    @action(
+        detail=False,
+        methods=['head', 'get'],
+        permission_classes=[AllowAny],
+        url_path='health',
+    )
+    @csrf_exempt
+    def health_check():
+        return Response(status=200)
+
     @action(
         detail=False,
         methods=['post'],
