@@ -1,7 +1,7 @@
-from .views import TCCLBotView, IndexView
+from .views import TCCLBotView, health_check
 routes = [
     {'regex': r'tccl-bot', 'viewset': TCCLBotView, 'basename': 'TCCLBotView'},
-    {'regex': r'health', 'viewset': IndexView, 'basename': 'IndexView'},
+    {'regex': r'health', 'viewset': health_check, 'basename': 'health_check'},
 
     # {'regex': r'tccl-admin', 'viewset': UsersApi, 'basename': 'UsersApi'},
 
