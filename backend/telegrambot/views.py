@@ -76,7 +76,7 @@ class IndexView(generic.TemplateView):
 
 class TCCLBotView(viewsets.ViewSet):
     renderer_classes = [JSONRenderer, TemplateHTMLRenderer]
-    template_name = 'templates/base.html'
+    template_name = 'common/index.html'
 
     @action(
         detail=False,
