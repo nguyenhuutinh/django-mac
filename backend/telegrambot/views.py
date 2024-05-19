@@ -81,7 +81,6 @@ class TCCLBotView(viewsets.ViewSet):
         permission_classes=[AllowAny],
         url_path='health',
     )
-    @csrf_exempt
     def health_check():
         return Response(status=200)
 
