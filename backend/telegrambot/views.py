@@ -54,6 +54,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, BrowsableAPIRenderer
 
 
 from telegrambot.tccl_bot import process_request
@@ -74,6 +75,7 @@ class IndexView(generic.TemplateView):
     template_name = 'common/index.html'
 
 class TCCLBotView(viewsets.ViewSet):
+    renderer_classes = [JSONRenderer, TemplateHTMLRenderer, BrowsableAPIRenderer]  # Ensure appropriate renderers
 
     @action(
         detail=False,
