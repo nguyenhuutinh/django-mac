@@ -19,7 +19,7 @@ dj-database-url
 gunicorn
 whitenoise
 psutil
-ipython>=8.24.0
+ipython<=8.25.0
 sentry-sdk
 pytz
 google-api-python-client
