@@ -17,9 +17,10 @@ brotlipy
 django-log-request-id
 dj-database-url
 gunicorn
+numpy==2.0.0
 whitenoise
 psutil
-ipython<=8.25.0
+ipython
 sentry-sdk
 pytz
 google-api-python-client
