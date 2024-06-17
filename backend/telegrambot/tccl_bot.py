@@ -4,7 +4,7 @@ import uuid
 
 from datetime import datetime, timedelta
 import os
-import cv2
+# import cv2
 import re
 from re import M
 import telebot
@@ -331,66 +331,66 @@ def checkingPhoto(message):
                 handle.write(block)
 
         # Check if the file exists
-        if os.path.exists(filePath):
-            # Read the image using OpenCV
-            img = cv2.imread(filePath)
+        # if os.path.exists(filePath):
+        #     # Read the image using OpenCV
+        #     img = cv2.imread(filePath)
 
-            # Convert the image to grayscale
-            gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        #     # Convert the image to grayscale
+        #     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            # Use pytesseract to extract text from the image
-            text = pytesseract.image_to_string(gray_img, lang="eng")
-            print("Converted text:", text)
+        #     # Use pytesseract to extract text from the image
+        #     text = pytesseract.image_to_string(gray_img, lang="eng")
+        #     print("Converted text:", text)
 
-            # Check for specific text patterns
-            if "chưa tham gia" in text.lower() or "Futures ai tham gia" in text.lower() or "cần bán" in text.lower() or "cần ra đi" in text.lower():
-                os.remove(filePath)
-                return 3
+        #     # Check for specific text patterns
+        #     if "chưa tham gia" in text.lower() or "Futures ai tham gia" in text.lower() or "cần bán" in text.lower() or "cần ra đi" in text.lower():
+        #         os.remove(filePath)
+        #         return 3
 
-            # Use regular expressions to find percentage values
-            pattern = r'\b\d{4,}%'
-            match = re.search(pattern, text)
-            if match:
-                print(f"Percentage value greater than or equal to 1000 found: {match.group(0)}")
-                os.remove(filePath)
-                return 1
+        #     # Use regular expressions to find percentage values
+        #     pattern = r'\b\d{4,}%'
+        #     match = re.search(pattern, text)
+        #     if match:
+        #         print(f"Percentage value greater than or equal to 1000 found: {match.group(0)}")
+        #         os.remove(filePath)
+        #         return 1
 
-            # Load the pre-trained neural network model for nudity detection
-            model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
+        #     # Load the pre-trained neural network model for nudity detection
+        #     model = cv2.dnn.readNetFromCaffe('/home/user/app/backend/data/deploy.prototxt', '/home/user/app/backend/data/res10_300x300_ssd_iter_140000.caffemodel')
 
-            # Define the classes for the neural network model
-            classes = ['background', 'person']
+        #     # Define the classes for the neural network model
+        #     classes = ['background', 'person']
 
-            # Convert the image to a blob
-            input_size = (300, 300)
-            blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
+        #     # Convert the image to a blob
+        #     input_size = (300, 300)
+        #     blob = cv2.dnn.blobFromImage(img, 1.0, input_size, (104.0, 177.0, 123.0))
 
-            # Set the input for the neural network model and perform forward pass
-            model.setInput(blob)
-            output = model.forward()
+        #     # Set the input for the neural network model and perform forward pass
+        #     model.setInput(blob)
+        #     output = model.forward()
 
-            # Check if any detected objects are classified as a person
-            for i in range(output.shape[2]):
-                confidence = output[0, 0, i, 2]
-                if confidence > 0.8 and classes[int(output[0, 0, i, 1])] == 'person':
-                    try:
-                        # Classify the image for nudity using an external API
-                        api_response = api_instance.nsfw_classify(filePath)
-                        nsfw_score = api_response.score
-                        classification_outcome = api_response.classification_outcome
-                        print(nsfw_score, classification_outcome)
-                        if nsfw_score > 0.8 or classification_outcome == "UnsafeContent_HighProbability":
-                            print('Nudity detected')
-                            os.remove(filePath)
-                            return 2
-                    except ApiException as e:
-                        print("Exception when calling ImageNudityApi->image_nudity_classify: %s\n" % e)
-                    os.remove(filePath)
-                    print('No nudity detected')
-                    return -1
+        #     # Check if any detected objects are classified as a person
+        #     for i in range(output.shape[2]):
+        #         confidence = output[0, 0, i, 2]
+        #         if confidence > 0.8 and classes[int(output[0, 0, i, 1])] == 'person':
+        #             try:
+        #                 # Classify the image for nudity using an external API
+        #                 api_response = api_instance.nsfw_classify(filePath)
+        #                 nsfw_score = api_response.score
+        #                 classification_outcome = api_response.classification_outcome
+        #                 print(nsfw_score, classification_outcome)
+        #                 if nsfw_score > 0.8 or classification_outcome == "UnsafeContent_HighProbability":
+        #                     print('Nudity detected')
+        #                     os.remove(filePath)
+        #                     return 2
+        #             except ApiException as e:
+        #                 print("Exception when calling ImageNudityApi->image_nudity_classify: %s\n" % e)
+        #             os.remove(filePath)
+        #             print('No nudity detected')
+        #             return -1
 
-        # Remove the temporary file
-        os.remove(filePath)
+        # # Remove the temporary file
+        # os.remove(filePath)
 
     return -1
 
