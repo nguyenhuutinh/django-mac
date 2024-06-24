@@ -517,7 +517,7 @@ def checkAndDeleteMessage(message):
         "follow us" in text_to_check or
         "gold vip signal" in text_to_check or
         "rewards distribution" in text_to_check or
-        ("get" in text_to_check and "$" in text_to_check) or
+        (" get" in text_to_check and "$" in text_to_check) or
         "@RyanNguyenVBC" in text_to_check or
         "@tradefutureforexsignals" in text_to_check or
         ("@" in text_to_check and "kèo" in text_to_check and ":" in text_to_check and message.reply_to_message is None) or
