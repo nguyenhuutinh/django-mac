@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED 1
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
 
+
 RUN pip install --no-cache-dir redis flower
 
 RUN apt-get update && \
@@ -39,5 +40,7 @@ RUN apt-get purge libpq-dev -y && apt-get autoremove -y && \
 ADD backend/ /home/user/app/backend
 # RUN mkdir /home/user/app/data
 RUN chown user:user /home/user/app/backend
+RUN sudo chown -R user:user celerybeat-schedule
+
 USER user
 CMD gunicorn --timeout 600 telegrambot.wsgi --log-file - -b 0.0.0.0:8000 --reload
