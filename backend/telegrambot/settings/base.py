@@ -99,6 +99,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     # 'rest_captcha',
     # "django.contrib.admin",   
+    'django_celery_beat',
     'rest_framework_simplejwt',
 
     "django.contrib.auth",
@@ -115,8 +116,8 @@ INSTALLED_APPS = [
     "common",
     "users",
     'corsheaders',
-    'telegrambot',
-    'django_celery_beat'
+    'telegrambot'
+    
 
 ]
 
