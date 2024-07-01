@@ -216,6 +216,7 @@ CELERY_IMPORTS = ("telegrambot")
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_SEND_TASK_ERROR_EMAILS = True
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Sentry
 # SENTRY_DSN = config("SENTRY_DSN", default="")
