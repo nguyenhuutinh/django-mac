@@ -115,7 +115,8 @@ INSTALLED_APPS = [
     "common",
     "users",
     'corsheaders',
-    'telegrambot'
+    'telegrambot',
+    'django_celery_beat'
 
 ]
 
