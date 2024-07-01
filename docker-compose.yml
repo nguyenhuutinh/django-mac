@@ -68,7 +68,7 @@ services:
       dockerfile: backend/Dockerfile
       context: .
     command: >
-      bash -c "celery -A telegrambot worker -B -l info -s /tmp/celerybeat-schedule"
+      bash -c "celery -A telegrambot worker -B -l info"
     
     volumes:
       - ./:/home/user/app/
