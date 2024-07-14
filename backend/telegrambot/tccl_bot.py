@@ -597,6 +597,8 @@ def processCheckAndBan(message):
     print(f"{bcolors.WARNING}processCheckAndBan {firstName} - {lastName} - {username} {bcolors.ENDC}")
 
     text = message.text.lower() if message.text else ""
+    text = text.replace('.', '')
+
     caption = message.caption.lower() if message.caption else ""
     if "fx_gold_vip_signal" in text:
         return True
