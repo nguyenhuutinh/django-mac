@@ -526,6 +526,7 @@ def checkAndDeleteMessage(message):
         "🥇" in text_to_check or 
         # "tradingview" in text_to_check or 
         # "trading view" in text_to_check or 
+        ("https" in text_to_check and "adidas" in text_to_check) or
         ("https" in text_to_check and "airdrop" in text_to_check) or
         ("www." in text_to_check and "airdrop" in text_to_check) or
         ("airdrop" in text_to_check and "$" in text_to_check) or
@@ -685,7 +686,7 @@ def processCheckAndBan(message):
     if "tccl" in (username or "").lower():
         print(f"{bcolors.WARNING}case 9  {bcolors.ENDC}")
         return True
-    if any(word in (firstName + " " + lastName).lower() for word in ["trung kim son", "trade coin chiến lược", "admln"]):
+    if any(word in (firstName + " " + lastName).lower() for word in ["trung kim son", "trade coin chiến lược", "admln", "đỗ bảo"]):
         print(f"{bcolors.WARNING}case 10-11-12-13-14-15-16-17-18  {bcolors.ENDC}")
         return True
     if "glcapital1" in text:
