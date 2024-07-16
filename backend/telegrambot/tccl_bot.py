@@ -246,7 +246,7 @@ def checkingUserProfilePhoto(userId, mode):
                 print(f"{bcolors.OKGREEN}{mode} - diff logo2 - {userId}: {str(result)} {bcolors.ENDC}")
 
 
-            result = diff('/home/user/app/backend/data/logo4.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+            result = diff('/home/user/app/backend/data/logo5.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
             TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
@@ -456,6 +456,7 @@ def moderate(message):
         print(f"{bcolors.WARNING}Received Photo{caption_info}{bcolors.ENDC}")
     else:
         print(f"{bcolors.WARNING}Received Text: {message.text}{bcolors.ENDC}")
+        print(f"{bcolors.WARNING}from user name: {from_user.first_name} {from_user.last_name}{bcolors.ENDC}")
 
     if checkAndDeleteMessage(message):
         _deleteMessage(message)
@@ -656,7 +657,7 @@ def processCheckAndBan(message):
         if "whaless" in text:
             print(f"{bcolors.WARNING}case 2  {bcolors.ENDC}")
             return True
-        if "thông báo nhóm" in text:
+        if "thông báo" in text and "nhóm" in text : 
             print(f"{bcolors.WARNING}case 3  {bcolors.ENDC}")
             return True
         if "anh em" in text and "vào nhóm" in text and "vip" in text:
