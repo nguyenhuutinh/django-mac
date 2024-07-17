@@ -647,6 +647,8 @@ def processCheckAndBan(message):
         return True
     if "link" in text and "👉" in text:
         return True
+    if "@toncoin" in text:
+        return True
     if "nhómvip" in text or "ai chưa tham gia" in text:
         print(f"{bcolors.WARNING}case 1  {bcolors.ENDC}")
         return True
