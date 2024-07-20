@@ -643,6 +643,8 @@ def processCheckAndBan(message):
         return True
     if "https://t.me/+" in text:
         return True
+    if "✅" in text :
+        return True
     if "kèo" in text and "👉" in text:
         return True
     if "link" in text and "👉" in text:
