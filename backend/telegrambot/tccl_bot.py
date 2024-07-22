@@ -641,7 +641,7 @@ def processCheckAndBan(message):
         return True
     if "vào avatar" in text and "link" in text:
         return True
-    if "https://t.me/+" in text:
+    if "https://t.me/+" in text or "https://www.fanvue.com"  in text:
         return True
     if "✅" in text :
         return True
