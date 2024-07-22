@@ -120,33 +120,33 @@ def photo(message):
     last_name = message.from_user.last_name or ''
     full_name = f"{first_name}{last_name}"
 
-    res = checkingPhoto(message=message)
+    # res = checkingPhoto(message=message)
     caption_text = f" with caption: {message.caption}" if message.caption else ""
-    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{first_name} sent photo URL {photoUrl}{caption_text}{bcolors.ENDC}\n")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{full_name} sent photo URL {photoUrl}{bcolors.ENDC}\n")
+    print(f"\n{bcolors.UNDERLINE}{bcolors.OKCYAN}{full_name} caption_text {caption_text}{bcolors.ENDC}\n")
+    # if res == 1:
+    #     print("stop")
+    # elif res == 3:
+    #     process_image_scan_result(message, full_name, "SCAM / LỪA ĐẢO")
+    # elif res == 2:
+    #     process_image_scan_result(message, full_name, "18+")
+    # else:
+    #     print("check photo and it is valid")
 
-    if res == 1:
-        print("stop")
-    elif res == 3:
-        process_image_scan_result(message, full_name, "SCAM / LỪA ĐẢO")
-    elif res == 2:
-        process_image_scan_result(message, full_name, "18+")
-    else:
-        print("check photo and it is valid")
 
+# def process_image_scan_result(message, full_name, scan_type):
+#     userId = message.from_user.id
+#     chatId = message.chat.id
+#     deleteMessageTask.apply_async(kwargs={"chat_id": chatId, 'message_id': message.message_id}, countdown=3)
 
-def process_image_scan_result(message, full_name, scan_type):
-    userId = message.from_user.id
-    chatId = message.chat.id
-    deleteMessageTask.apply_async(kwargs={"chat_id": chatId, 'message_id': message.message_id}, countdown=3)
-
-    bot.ban_chat_member(chatId, userId)
-    bot.reply_to(message, f"‼️ {full_name} bị ban vì post hình ảnh có nội dung {scan_type}. ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
+#     bot.ban_chat_member(chatId, userId)
+#     bot.reply_to(message, f"‼️ {full_name} bị ban vì post hình ảnh có nội dung {scan_type}. ‼️\n\n👉 ⚠️TCCL KHÔNG có group VIP.\n👉 ⚠️TCCL KHÔNG THU khoản phí nào.\n👉 ⚠️Các admin KHÔNG BAO GIỜ NHẮN TIN trước.\n👉 ⚠️ Bất kỳ ai đều có thể đổi tên và avatar giống admin để chat với bạn\n👉 Hãy luôn CẨN THẬN với tài sản của mình.")
     
-    bot.send_message("-1001349899890", f"IMAGE SCAN - {scan_type} BẰNG HÌNH")
-    try:
-        bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
-    except Exception as e:
-        print("Error sending photo:", e)
+#     bot.send_message("-1001349899890", f"IMAGE SCAN - {scan_type} BẰNG HÌNH")
+#     try:
+#         bot.send_photo("-1001349899890", photo=open(photoUrl, 'rb'))
+#     except Exception as e:
+#         print("Error sending photo:", e)
         
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_callback(call):
@@ -308,27 +308,27 @@ def checkingUserProfilePhoto(userId, mode):
 
     return False
 
-def checkingPhoto(message):
-    global photoUrl
-    print("checking photo")
+# def checkingPhoto(message):
+#     global photoUrl
+#     print("checking photo")
 
-    # Check if the message contains a photo
-    if message.photo and message.photo[-1]:
-        # Extract file information
-        file_id = message.photo[-1].file_id
-        file_info = bot.get_file(file_id)
-        file_extension = '.' + file_info.file_path.split('.')[-1]
-        fileName = str(uuid.uuid4()) + file_extension
-        filePath = '/home/user/app/backend/data/' + fileName
-        photoUrl = filePath
+#     # Check if the message contains a photo
+#     if message.photo and message.photo[-1]:
+#         # Extract file information
+#         file_id = message.photo[-1].file_id
+#         file_info = bot.get_file(file_id)
+#         file_extension = '.' + file_info.file_path.split('.')[-1]
+#         fileName = str(uuid.uuid4()) + file_extension
+#         filePath = '/home/user/app/backend/data/' + fileName
+#         photoUrl = filePath
 
-        # Download the photo
-        response = requests.get(bot.get_file_url(file_id), stream=True)
-        with open(filePath, 'wb') as handle:
-            for block in response.iter_content(1024):
-                if not block:
-                    break
-                handle.write(block)
+#         # Download the photo
+#         response = requests.get(bot.get_file_url(file_id), stream=True)
+#         with open(filePath, 'wb') as handle:
+#             for block in response.iter_content(1024):
+#                 if not block:
+#                     break
+#                 handle.write(block)
 
         # Check if the file exists
         # if os.path.exists(filePath):
@@ -392,7 +392,7 @@ def checkingPhoto(message):
         # # Remove the temporary file
         # os.remove(filePath)
 
-    return -1
+#    return -1
 
 # def compare_images(img1, img2):
 #     """Calculate the difference between two images of the same size
