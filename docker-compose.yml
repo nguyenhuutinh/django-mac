@@ -12,10 +12,22 @@ services:
       - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data:delegated
-
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+        reservations:
+          memory: 200M
+    memswap_limit: 600M
   broker:
     image: "redis:alpine"
-
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+        reservations:
+          memory: 50M
+    memswap_limit: 200M
   # result:
   #   image: "redis:alpine"
 
@@ -47,7 +59,13 @@ services:
       # - tesseract
       # - result
       # - frontend
-
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+        reservations:
+          memory: 200M
+    memswap_limit: 600M
   
   flower:
     image: mher/flower
@@ -62,6 +80,13 @@ services:
       - FLOWER_BASIC_AUTH=tccl:tccl2024  # Add this line
     depends_on:
       - broker
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+        reservations:
+          memory: 25M
+    memswap_limit: 100M
 
   celery:
     build:
@@ -76,6 +101,14 @@ services:
     depends_on:
       - db
       - broker
+
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 100M
+    memswap_limit: 400M
       # - result
   # mailhog: # service for faking a SMTP server
   #   image: mailhog/mailhog
