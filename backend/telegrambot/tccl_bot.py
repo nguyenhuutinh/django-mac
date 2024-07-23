@@ -645,7 +645,7 @@ def processCheckAndBan(message):
         return True
     if "✅" in text :
         return True
-         koi short white ear
+        
     if "khóa học trading" in text :
         return True
     if "👆👆👆👆👆👆👆" in text or "👍👍👍👍👍👍" in text :
