@@ -645,9 +645,11 @@ def processCheckAndBan(message):
         return True
     if "✅" in text :
         return True
+         koi short white ear
     if "khóa học trading" in text :
         return True
-    if "👆👆👆👆👆👆👆" in text :
+    if "👆👆👆👆👆👆👆" in text or "👍👍👍👍👍👍" in text :
+        print(f"{bcolors.WARNING}{message} {bcolors.ENDC}")
         return True
     if "kèo" in text and "👉" in text:
         return True
@@ -710,6 +712,7 @@ def processCheckAndBan(message):
     if "chưa vào" in text and "nhắn ad" in text:
         print(f"{bcolors.WARNING}case 31  {bcolors.ENDC}")
         return True
+
     if "chưa tham" in text and "nhóm" in text:
         if "ad" in text:
             print(f"{bcolors.WARNING}case 10112  {bcolors.ENDC}")
