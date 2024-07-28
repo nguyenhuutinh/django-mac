@@ -645,6 +645,8 @@ def processCheckAndBan(message):
         return True
     if "✅" in text :
         return True
+    if "xem chi tiết tại" in text :
+        return True
         
     if "khóa học trading" in text :
         return True
