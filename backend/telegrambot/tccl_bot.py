@@ -652,6 +652,8 @@ def processCheckAndBan(message):
         return True
     if "join" in text and "signal" in text and "group" in text:
         return True
+    if "join" in text and "vip" in text and "group" in text:
+        return True
 
     if "👆👆👆👆👆👆👆" in text or "👍👍👍👍👍👍" in text :
         print(f"{bcolors.WARNING}{message} {bcolors.ENDC}")
