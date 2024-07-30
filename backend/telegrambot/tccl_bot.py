@@ -650,6 +650,9 @@ def processCheckAndBan(message):
         
     if "khóa học trading" in text :
         return True
+    if "join" in text and "signal" in text and "group" in text:
+        return True
+
     if "👆👆👆👆👆👆👆" in text or "👍👍👍👍👍👍" in text :
         print(f"{bcolors.WARNING}{message} {bcolors.ENDC}")
         return True
