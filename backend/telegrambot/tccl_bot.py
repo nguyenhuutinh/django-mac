@@ -524,6 +524,7 @@ def checkAndDeleteMessage(message):
         ("@" in text_to_check and "kèo" in text_to_check and ":" in text_to_check and message.reply_to_message is None) or
         "opensea.io" in text_to_check or
         "vinacoin.live" in text_to_check or
+        "xin phép ad" in text_to_check or
         "🥇" in text_to_check or 
         # "tradingview" in text_to_check or 
         # "trading view" in text_to_check or 
