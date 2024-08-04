@@ -473,7 +473,7 @@ def moderate(message):
                 print(f"add user {from_user.id} to DB")
 
             print("step 2")
-            processChecUserProfile.apply_async(kwargs={"userId": from_user.id, "chatId": chat_id, "messageId": message.message_id}, countdown=1)
+            processChecUserProfile.apply_async(kwargs={"userId": from_user.id, "chatId": chat_id, "messageId": message.message_id}, countdown=5)
 
             if checkingUserProfilePhoto(from_user.id, "function"):
                 banUser(message, 'message bi cam')
