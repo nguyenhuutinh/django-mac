@@ -82,7 +82,16 @@ services:
   #   ports:
   #     - '1025:1025' # smtp server
   #     - '8025:8025' # web ui
+  celery-beat:
+    build:
+      dockerfile: backend/Dockerfile
 
+    command: celery -A telegrambot beat -l info
+    volumes:
+      - ./:/home/user/app/
+    depends_on:
+      - db
+      - broker
 volumes:
   dbdata:
     external:
