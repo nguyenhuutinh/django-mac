@@ -85,10 +85,11 @@ services:
   celery-beat:
     build:
       dockerfile: backend/Dockerfile
-
+      context: .
     command: celery -A telegrambot beat -l info
     volumes:
       - ./:/home/user/app/
+    env_file: backend/.env
     depends_on:
       - db
       - broker
