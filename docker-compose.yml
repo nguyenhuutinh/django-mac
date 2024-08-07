@@ -1,5 +1,4 @@
-version: '3.8'  # Ensure you specify a version compatible with your Docker setup
-
+version: '3.3'
 
 services:
   db:
