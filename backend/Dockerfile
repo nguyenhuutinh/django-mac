@@ -41,7 +41,7 @@ RUN apt-get purge libpq-dev -y && apt-get autoremove -y && \
 ADD backend/ /home/user/app/backend
 # RUN mkdir /home/user/app/data
 RUN chown user:user /home/user/app/backend
-RUN chown -R user:user /home/user/app/backend/celerybeat-schedule.db
+RUN ls -la /home/user/app/backend/celerybeat-schedule.db
 
 USER user
 CMD gunicorn --timeout 600 telegrambot.wsgi --log-file - -b 0.0.0.0:8000 --reload
