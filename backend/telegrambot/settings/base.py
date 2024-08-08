@@ -219,6 +219,10 @@ LOGGING = {
         },
     },
 }
+
+CELERYBEAT_SCHEDULE_FILENAME = os.path.join(BASE_DIR, 'celerybeat-schedule.db')
+
+
 # Celery
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
