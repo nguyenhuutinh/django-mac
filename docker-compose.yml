@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.1'
 
 services:
   db:
@@ -82,17 +82,7 @@ services:
   #   ports:
   #     - '1025:1025' # smtp server
   #     - '8025:8025' # web ui
-  celery-beat:
-    build:
-      dockerfile: backend/Dockerfile
-      context: .
-    command: celery -A telegrambot beat -l info
-    volumes:
-      - ./:/home/user/app/
-    env_file: backend/.env
-    depends_on:
-      - db
-      - broker
+
 volumes:
   dbdata:
     external:
