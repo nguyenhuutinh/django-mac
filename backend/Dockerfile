@@ -4,7 +4,6 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 WORKDIR /home/user/app/backend
-
 RUN pip install --no-cache-dir redis flower
 
 RUN apt-get update && \
