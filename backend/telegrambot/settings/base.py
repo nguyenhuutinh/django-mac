@@ -222,6 +222,7 @@ LOGGING = {
 
 CELERYBEAT_SCHEDULE_FILENAME = os.path.join(BASE_DIR, 'celerybeat-schedule.db')
 
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Celery
 CELERY_ACCEPT_CONTENT = ["json"]
