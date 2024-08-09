@@ -502,6 +502,7 @@ def checkAndDeleteMessage(message):
 
     # Check for specific language or content patterns to include messages
     if (
+        "https://" in text_to_check or 
         isRussia(text_to_check) or
         (isEnglish(text_to_check) and ("https://" in text_to_check or "@" in text_to_check)) or
         (isEnglish(text_to_check) and len(text_to_check) >80 and "," not in text_to_check) or
