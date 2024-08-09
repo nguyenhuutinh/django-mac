@@ -11,7 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data:delegated
-
+    networks:
+      - app_network
   broker:
     image: "redis:alpine"
 
@@ -43,6 +44,8 @@ services:
     depends_on:
       - db
       - broker
+    networks:
+      - app_network
       # - tesseract
       # - result
       # - frontend
@@ -88,4 +91,4 @@ volumes:
       name: telegrambot_dbdata
 networks:
   default:
-    name: telegrambot_network
+    name: app_network
