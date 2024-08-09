@@ -100,7 +100,7 @@ INSTALLED_APPS = [
     # 'rest_captcha',
     # "django.contrib.admin",   
     'rest_framework_simplejwt',
-    # 'django_celery_beat',
+    'django_celery_beat',
 
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -223,7 +223,7 @@ WEBPACK_LOADER = {
 
 # CELERYBEAT_SCHEDULE_FILENAME = os.path.join(BASE_DIR, 'celerybeat-schedule.db')
 
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Celery
 CELERY_ACCEPT_CONTENT = ["json"]

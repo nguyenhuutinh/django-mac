@@ -10,7 +10,7 @@ Faker
 apscheduler
 django-import-export
 djangorestframework
-#django-celery-beat
+django-celery-beat
 django-debreach
 python-decouple
 psycopg2
