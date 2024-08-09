@@ -96,8 +96,8 @@ class TCCLBotView(viewsets.ViewSet):
         url_path='webhook',
     )
     @csrf_exempt
-    def check_bot(self, request):
-        return process_request(request)
+    async def check_bot(self, request):
+        return await process_request(request)
 
 
 # class UsersApi(generics.GenericAPIView):
