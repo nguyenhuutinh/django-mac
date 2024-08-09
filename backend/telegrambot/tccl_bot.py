@@ -485,7 +485,7 @@ def moderate(message):
 
 
 def checkAndDeleteMessage(message):
-    print("checkAndDeleteMessage")
+    print(f"{bcolors.WARNING} check And Delete Message - user id : {message.from_user.id} - text:  {message.text} {bcolors.ENDC}")
     text_to_check = (message.text or message.caption or "").lower()
 
     # Check for specific patterns to exclude messages
