@@ -81,7 +81,7 @@ def clear_periodic(self):
     # Call the clear_last_message_time task
     clear_last_message_time.delay()
 
-async def process_request(request):
+def process_request(request):
     # print(request.data)
     json_string = request.data
     print("received message: ", json_string)

@@ -27,7 +27,6 @@ from rest_framework.permissions import IsAuthenticated
 from werkzeug.utils import secure_filename
 from rest_framework import generics, permissions, mixins
 # from common.models import Message
-from asgiref.sync import async_to_sync
 
 # from common.models import TelegramUser
 
@@ -98,7 +97,7 @@ class TCCLBotView(viewsets.ViewSet):
     )
     @csrf_exempt
     def check_bot(self, request):
-        return async_to_sync(process_request)(request)
+        return process_request(request)
 
 
 # class UsersApi(generics.GenericAPIView):
