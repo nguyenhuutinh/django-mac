@@ -81,14 +81,14 @@ def clear_periodic(self):
     # Call the clear_last_message_time task
     clear_last_message_time.delay()
 
-def process_request(request):
+async def process_request(request):
     # print(request.data)
     json_string = request.data
     print("received message: ", json_string)
     if json_string == None or json_string == '':
         return "empty body", 400
     update = telebot.types.Update.de_json(json_string)
-    bot.process_new_updates([update])
+    await bot.process_new_updates([update])
     return JsonResponse({"result": "ok" }, status=200)
 
 
