@@ -485,6 +485,7 @@ def moderate(message):
 
 
 def checkAndDeleteMessage(message):
+    print("checkAndDeleteMessage")
     text_to_check = (message.text or message.caption or "").lower()
 
     # Check for specific patterns to exclude messages
@@ -536,8 +537,9 @@ def checkAndDeleteMessage(message):
         ("vào avatar" in text_to_check and "cập nhập" in text_to_check) or
         ("avatar" in text_to_check and "cập nhập" in text_to_check and "link" in text_to_check)
     ):
+        print(f"{bcolors.WARNING}checkAndDeleteMessage : true{bcolors.ENDC}")
         return True
-
+    print(f"{bcolors.WARNING}checkAndDeleteMessage : false{bcolors.ENDC}")
     return False
 
 def _deleteMessage(message):
