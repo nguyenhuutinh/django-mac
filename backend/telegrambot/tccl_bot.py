@@ -88,7 +88,7 @@ async def process_request(request):
     if json_string == None or json_string == '':
         return "empty body", 400
     update = telebot.types.Update.de_json(json_string)
-    await bot.process_new_updates([update])
+    bot.process_new_updates([update])
     return JsonResponse({"result": "ok" }, status=200)
 
 
