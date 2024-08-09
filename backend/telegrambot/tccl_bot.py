@@ -82,7 +82,7 @@ def clear_periodic(self):
     clear_last_message_time.delay()
 
 def process_request(request):
-    print(request.data)
+    # print(request.data)
     json_string = request.data
     print("received message: ", json_string)
     if json_string == None or json_string == '':
