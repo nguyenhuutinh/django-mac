@@ -7,7 +7,6 @@ services:
       - POSTGRES_USER=macos
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=macos
-
     ports:
       - "5432:5432"
     volumes:
@@ -87,3 +86,6 @@ volumes:
   dbdata:
     external:
       name: telegrambot_dbdata
+networks:
+  default:
+    name: telegrambot_network
