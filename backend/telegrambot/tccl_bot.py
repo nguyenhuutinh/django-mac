@@ -272,35 +272,35 @@ def checkingUserProfilePhoto(userId, mode):
 
             # result = diff('/home/user/app/backend/data/teo2.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
+            # TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.039:
-                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
-                os.remove(filePath)
-                return True
-            # else:
-                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # if result is not None and result < 0.039:
+            #     print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+            #     os.remove(filePath)
+            #     return True
+            # # else:
+            #     # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
-            result = diff('/home/user/app/backend/data/teo3.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+            # result = diff('/home/user/app/backend/data/teo3.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
+            # TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.039:
-                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
-                os.remove(filePath)
-                return True
-            # else:
-                # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
+            # if result is not None and result < 0.039:
+            #     print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+            #     os.remove(filePath)
+            #     return True
+            # # else:
+            #     # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
 
-            result = diff('/home/user/app/backend/data/thinh.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
+            # result = diff('/home/user/app/backend/data/thinh.jpg', filePath, diff_img_file = '/home/user/app/backend/data/' + 'diff_img' + fileName + '.png', delete_diff_file=True)
 
-            TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
+            # TelegramUser.objects.filter(user_id=userId).update(user_avatar_link = pic_url, profile_score = result)
 
-            if result is not None and result < 0.039:
-                print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
-                os.remove(filePath)
-                return True
+            # if result is not None and result < 0.039:
+            #     print(f"{bcolors.FAIL}detected use TCCL logo: {str(result)} {bcolors.ENDC}")
+            #     os.remove(filePath)
+            #     return True
             # else:
                 # print(f"{bcolors.OKGREEN}diff: {str(result)} {bcolors.ENDC}")
 
