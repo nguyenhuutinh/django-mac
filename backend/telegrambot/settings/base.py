@@ -204,22 +204,22 @@ WEBPACK_LOADER = {
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'celery': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'celery': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
 
 # CELERYBEAT_SCHEDULE_FILENAME = os.path.join(BASE_DIR, 'celerybeat-schedule.db')
 
@@ -233,9 +233,9 @@ CELERY_ACKS_LATE = True
 CELERY_TIMEZONE = TIME_ZONE
 
 # Celery configuration
-CELERY_LOG_LEVEL = 'DEBUG'
-CELERY_WORKER_LOG_LEVEL = 'DEBUG'
-CELERY_BEAT_LOG_LEVEL = 'DEBUG'
+# CELERY_LOG_LEVEL = 'DEBUG'
+# CELERY_WORKER_LOG_LEVEL = 'DEBUG'
+# CELERY_BEAT_LOG_LEVEL = 'DEBUG'
 
 
 # Celery
