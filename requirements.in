@@ -10,7 +10,7 @@ Faker
 apscheduler
 django-import-export
 djangorestframework
-django-celery-beat
+#django-celery-beat
 django-debreach
 python-decouple
 psycopg2
@@ -41,4 +41,4 @@ djangorestframework-simplejwt
 diffimg
 pytesseract
 # opencv-python
-cloudmersive_image_api_client
+#cloudmersive_image_api_client
