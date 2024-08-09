@@ -27,6 +27,7 @@ from rest_framework.permissions import IsAuthenticated
 from werkzeug.utils import secure_filename
 from rest_framework import generics, permissions, mixins
 # from common.models import Message
+from asgiref.sync import async_to_sync
 
 # from common.models import TelegramUser
 
@@ -96,8 +97,8 @@ class TCCLBotView(viewsets.ViewSet):
         url_path='webhook',
     )
     @csrf_exempt
-    async def check_bot(self, request):
-        return await process_request(request)
+    def check_bot(self, request):
+        return async_to_sync(process_request)(request)
 
 
 # class UsersApi(generics.GenericAPIView):
