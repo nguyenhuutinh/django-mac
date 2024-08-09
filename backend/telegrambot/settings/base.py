@@ -23,7 +23,7 @@ ADMINS = (("Admin", "huutinh.baoloc@gmail.com"),)
 AUTH_USER_MODEL = "users.User"
 
 ALLOWED_HOSTS = ["139.180.185.245", "tele-check.xyz", 'localhost', '0.0.0.0', '8b67-2402-800-63b6-817c-e451-5128-d771-ecc5.ngrok.io']
-TELEGRAM_BOT_TOKEN = ""
+TELEGRAM_BOT_TOKEN = "5495185707:AAHfM3MiF5nC-z_dCX-1YWv0oz-ZWL1boJs"
 
 DATABASES = {
     "default": config("DATABASE_URL", cast=db_url),

@@ -21,7 +21,7 @@ AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 # Celery
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
-TELEGRAM_BOT_TOKEN = "5697634365:AAEUgF96qD1wcXtxF5x1tXJSH5CjU18KAYM"
+TELEGRAM_BOT_TOKEN = "5495185707:AAHfM3MiF5nC-z_dCX-1YWv0oz-ZWL1boJs"
 # Email settings for mailhog
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'mailhog'
