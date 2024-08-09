@@ -1,7 +1,6 @@
 version: '3.1'
-
 networks:
-  default:
+  app_network:
     name: app_network
 
 services:
@@ -19,7 +18,8 @@ services:
       - app_network
   broker:
     image: "redis:alpine"
-
+    networks:
+      - app_network
   # result:
   #   image: "redis:alpine"
 
@@ -82,6 +82,8 @@ services:
     depends_on:
       - db
       - broker
+    networks:
+      - app_network
       # - result
   # mailhog: # service for faking a SMTP server
   #   image: mailhog/mailhog
